@@ -1,0 +1,125 @@
+# Suppression for Error #1
+INVALID HEAP ARGUMENT
+libstdc++-6.dll!ZNSt18basic_stringstreamIcSt11char_traitsIcESaIcEED0Ev
+*
+
+# Suppression for Error #1
+INVALID HEAP ARGUMENT
+name=Error #1 (update to meaningful name)
+Core Model Tester Current.exe!*___ZN11xercesc_3_116XMLPlatformUtils15fgMemoryManagerE
+*
+
+POSSIBLE LEAK
+name=Error #1 (update to meaningful name)
+libxerces-c-3-1.dll!xercesc_3_1::MemoryManagerImpl::allocate()
+*
+
+LEAK
+name=Error #1 (update to meaningful name)
+libxerces-c-3-1.dll!xercesc_3_1::MemoryManagerImpl::allocate()
+*
+
+# Suppression for Error #3
+LEAK
+name=Error #3 (update to meaningful name)
+Core Model Tester Current.exe!_fu1273___ZN11xercesc_3_116XMLPlatformUtils15fgMemoryManagerE
+*
+
+# Suppression for Error #2
+UNINITIALIZED READ
+name=Error #2 (update to meaningful name)
+system call NtPowerInformation parameter #1
+*
+
+# Suppression for Error #1
+UNINITIALIZED READ
+name=Error #1 (update to meaningful name)
+ntdll.dll!LdrUnlockLoaderLock
+*
+
+# Suppression for Error #275
+LEAK
+name=Error #275 (update to meaningful name)
+Core model tester current.exe!_fu1344___ZN11xercesc_3_116XMLPlatformUtils15fgMemoryManagerE
+*
+
+# Suppression for Error #1
+LEAK
+name=Error #1 (update to meaningful name)
+Core Model Tester Current.exe!_fu1354___ZN11xercesc_3_116XMLPlatformUtils15fgMemoryManagerE
+*
+
+UNINITIALIZED READ
+name=Error #1 (update to meaningful name)
+SHELL32.dll!Ordinal99
+*
+
+# Suppression for Error #2
+UNINITIALIZED READ
+name=Error #2 (update to meaningful name)
+system call NtConnectPort parameter #6
+UxTheme.dll!GetThemeBitmap
+*
+
+# Suppression for Error #3
+UNINITIALIZED READ
+name=Error #3 (update to meaningful name)
+SHELL32.dll!ShellExecuteExW
+*
+
+# Suppression for Error #19
+UNINITIALIZED READ
+name=Error #19 (update to meaningful name)
+msvcrt.dll!_output_l
+*
+
+# Suppression for Error #2
+UNINITIALIZED READ
+name=Error #2 (update to meaningful name)
+system call NtSetInformationProcess parameter #2
+*
+
+LEAK
+name=Error #1 (update to meaningful name)
+Core Model Tester Current.exe!clSimManager::GoToNoDataState()
+Core Model Tester Current.exe!_fu1354___ZN11xercesc_3_116XMLPlatformUtils15fgMemoryManagerE
+*
+
+# Suppression for Error #2
+LEAK
+name=Error #2 (update to meaningful name)
+ntdll.dll!RtlRunOnceBeginInitialize
+*
+
+# Suppression for Error #1
+POSSIBLE LEAK
+name=Error #1 (update to meaningful name)
+RPCRT4.dll!*
+*
+
+# Suppression for Error #3
+LEAK
+name=Error #3 (update to meaningful name)
+ntdll.dll!RtlFindMessage
+*
+
+#Suppression for Error #10
+#POSSIBLE LEAK
+#name=Error #10 (update to meaningful name)
+#ole32.dll!CoTaskMemRealloc
+#*
+
+# Suppression for Error #8
+LEAK
+name=Error #8 (update to meaningful name)
+RSAENH.dll!*
+
+
+# Suppression for Error #1
+POSSIBLE LEAK
+name=Error #1 (update to meaningful name)
+ole32.dll!CoTaskMemRealloc
+ole32.dll!CoTaskMemRealloc
+ole32.dll!CoTaskMemRealloc
+ole32.dll!CoTaskMemRealloc
+*
