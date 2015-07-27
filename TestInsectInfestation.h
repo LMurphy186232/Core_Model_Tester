@@ -10,15 +10,19 @@ class clTreePopulation;
 /**
  * Writes the parameter file for TestNormalProcessingX().
  * @param iNumYrsTimestep Number of years per timestep.
+ * @param iTSStart Timestep to start infection.
+ * @param iTSEnd Timestep to end infection. If it is 0, it won't be
+ * written at all (to check backwards compatibility).
  * @return File name of the freshly written parameter file.
  */
-const char* WriteInsectInfestationXMLNormalFile(int iNumYrsTimestep, int iTSStart);
+const char* WriteInsectInfestationXMLNormalFile(int iNumYrsTimestep, int iTSStart, int iTSEnd);
 
 /**
- * Writes the parameter file for TestNormalProcessing2().
+ * Writes the parameter file for TestNormalProcessing3().
+ * @param iNumYrsTimestep Number of years per timestep.
  * @return File name of the freshly written parameter file.
  */
-const char* WriteInsectInfestationXMLFile2();
+const char* WriteInsectInfestationXMLFile3();
 
 /**
  * Writes an error file where the minimum DBH is negative.

@@ -27,6 +27,12 @@ const char* WriteDensDepInfestationXMLFile2();
 const char* WriteDensDepInfestationXMLFile3();
 
 /**
+ * Writes the parameter file for TestNormalProcessing4().
+ * @return File name of the freshly written parameter file.
+ */
+const char* WriteDensDepInfestationXMLFile4();
+
+/**
  * Writes an error file where the minimum DBH is negative.
  * @return File name of the freshly written parameter file.
  */

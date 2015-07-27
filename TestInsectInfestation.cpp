@@ -116,7 +116,7 @@ TEST(InsectInfestation, TestNormalProcessingRun1)
   clSimManager * p_oSimManager = new clSimManager( 7, 1, "" );
   try {
     //Feed our file to the sim manager
-    p_oSimManager->ReadFile( WriteInsectInfestationXMLNormalFile(1, 3));
+    p_oSimManager->ReadFile( WriteInsectInfestationXMLNormalFile(1, 3, -1));
 
     //Get the tree population
     p_oPop = ( clTreePopulation * ) p_oSimManager->GetPopulationObject( "treepopulation" );
@@ -453,7 +453,7 @@ TEST(InsectInfestation, TestNormalProcessingRun2)
   try {
 
     //Feed our file to the sim manager
-    p_oSimManager->ReadFile( WriteInsectInfestationXMLNormalFile(3, 1));
+    p_oSimManager->ReadFile( WriteInsectInfestationXMLNormalFile(3, 1, 0));
 
     //Get the tree population
     p_oPop = ( clTreePopulation * ) p_oSimManager->GetPopulationObject( "treepopulation" );
@@ -552,9 +552,200 @@ TEST(InsectInfestation, TestNormalProcessingRun2)
 }
 
 /////////////////////////////////////////////////////////////////////////////
+// TestNormalProcessingRun3()
+// Tests setting an infestation end date.
+/////////////////////////////////////////////////////////////////////////////
+TEST(InsectInfestation, TestNormalProcessingRun3)
+{
+  clTreePopulation * p_oPop;
+  clTreeSearch *p_oAllTrees;
+  clTree *p_oTree;
+  long *p_iTotal = new long[5], *p_iInfested = new long[5];
+  float fDiam, fX, fY, fExpected;
+  int i, iNumSp = 5, iInf;
+
+  clSimManager * p_oSimManager = new clSimManager( 7, 1, "" );
+  try {
+    //Feed our file to the sim manager
+    p_oSimManager->ReadFile( WriteInsectInfestationXMLNormalFile(1, 3, 9));
+
+    //Get the tree population
+    p_oPop = ( clTreePopulation * ) p_oSimManager->GetPopulationObject( "treepopulation" );
+
+    //Add 1000 trees of each species, to start.
+    fDiam = 20;
+    for ( i = 0; i < 1000; i++ )
+    {
+      fX = clModelMath::GetRand() * 100;
+      fY = clModelMath::GetRand() * 100;
+      p_oPop->CreateTree( fX, fY, 0, clTreePopulation::adult, fDiam );
+      p_oPop->CreateTree( fX, fY, 1, clTreePopulation::adult, fDiam );
+      p_oPop->CreateTree( fX, fY, 2, clTreePopulation::adult, fDiam );
+      p_oPop->CreateTree( fX, fY, 3, clTreePopulation::adult, fDiam );
+      p_oPop->CreateTree( fX, fY, 4, clTreePopulation::adult, fDiam );
+
+    }
+
+    //******************************************************
+    // Timestep 1
+    // Infestation not yet started.
+    p_oSimManager->RunSim( 1 );
+    GetTreeCount1Yr(p_oPop, p_iTotal, p_iInfested, false);
+    fExpected = 900;
+    for (i = 0; i < iNumSp; i++) {
+      EXPECT_EQ(0, p_iInfested[i]);
+      EXPECT_LT(fabs(fExpected - p_iTotal[i])/fExpected, 0.1);
+    }
+
+    //******************************************************
+    // Timestep 2
+    // Infestation not yet started.
+    p_oSimManager->RunSim( 1 );
+    GetTreeCount1Yr(p_oPop, p_iTotal, p_iInfested, false);
+    fExpected = 810;
+    for (i = 0; i < iNumSp; i++) {
+      EXPECT_EQ(0, p_iInfested[i]);
+      EXPECT_LT(fabs(fExpected - p_iTotal[i])/fExpected, 0.1);
+    }
+
+    //******************************************************
+    // Timestep 3
+    p_oSimManager->RunSim( 1 );
+    GetTreeCount1Yr(p_oPop, p_iTotal, p_iInfested, false);
+    fExpected = 729;
+    for (i = 0; i < iNumSp; i++) {
+      EXPECT_LT(fabs(fExpected - p_iTotal[i])/fExpected, 0.1);
+    }
+    fExpected = 0.01;
+    ASSERT_TRUE(p_iInfested[0] > 0 && fabs(fExpected -
+        ((float)p_iInfested[0]/(float)p_iTotal[0])) < 0.01);
+    fExpected = 0.01;
+    ASSERT_TRUE(p_iInfested[1] > 0 && fabs(fExpected -
+        ((float)p_iInfested[1]/(float)p_iTotal[1])) < 0.01);
+    EXPECT_EQ(0, p_iInfested[2]);
+    EXPECT_EQ(p_iInfested[3], p_iTotal[3]);
+    fExpected = 0.01;
+    ASSERT_TRUE(p_iInfested[4] > 0 && fabs(fExpected -
+        ((float)p_iInfested[4]/(float)p_iTotal[4])) < 0.01);
+
+    //******************************************************
+    // Timestep 4
+    p_oSimManager->RunSim( 1 );
+    GetTreeCount1Yr(p_oPop, p_iTotal, p_iInfested, false);
+    fExpected = 2456.1;
+    for (i = 0; i < iNumSp; i++) {
+      EXPECT_LT(fabs(fExpected - p_iTotal[i])/fExpected, 0.1);
+    }
+    fExpected = 0.01158147;
+    ASSERT_TRUE(p_iInfested[0] > 0 && fabs(fExpected -
+        ((float)p_iInfested[0]/(float)p_iTotal[0])) < 0.01);
+    fExpected = 0.01000186;
+    ASSERT_TRUE(p_iInfested[1] > 0 && fabs(fExpected -
+        ((float)p_iInfested[1]/(float)p_iTotal[1])) < 0.01);
+    EXPECT_EQ(0, p_iInfested[2]);
+    EXPECT_EQ(p_iInfested[3], p_iTotal[3]);
+    fExpected = 0.01;
+    ASSERT_TRUE(p_iInfested[4] > 0 && fabs(fExpected -
+        ((float)p_iInfested[4]/(float)p_iTotal[4])) < 0.01);
+
+    //******************************************************
+    // Timestep 5
+    p_oSimManager->RunSim( 1 );
+    GetTreeCount1Yr(p_oPop, p_iTotal, p_iInfested, false);
+    fExpected = 0.034711388;
+    ASSERT_TRUE(fabs(fExpected -
+        ((float)p_iInfested[0]/(float)p_iTotal[0])) < 0.01);
+    fExpected = 0.010119209;
+    ASSERT_TRUE(p_iInfested[1] > 0 && fabs(fExpected -
+        ((float)p_iInfested[1]/(float)p_iTotal[1])) < 0.01);
+    EXPECT_EQ(0, p_iInfested[2]);
+    EXPECT_EQ(p_iInfested[3], p_iTotal[3]);
+    fExpected = 0.010000563;
+    ASSERT_TRUE(p_iInfested[4] > 0 && fabs(fExpected -
+        ((float)p_iInfested[4]/(float)p_iTotal[4])) < 0.01);
+
+    //******************************************************
+    // Timestep 6
+    p_oSimManager->RunSim( 1 );
+    GetTreeCount1Yr(p_oPop, p_iTotal, p_iInfested, false);
+    fExpected = 0.123583569;
+    ASSERT_TRUE(fabs(fExpected -
+        ((float)p_iInfested[0]/(float)p_iTotal[0])) < 0.01);
+    fExpected = 0.011356164;
+    ASSERT_TRUE(p_iInfested[1] > 0 && fabs(fExpected -
+        ((float)p_iInfested[1]/(float)p_iTotal[1])) < 0.01);
+    EXPECT_EQ(0, p_iInfested[2]);
+    EXPECT_EQ(p_iInfested[3], p_iTotal[3]);
+    fExpected = 0.010032444;
+    ASSERT_TRUE(p_iInfested[4] > 0 && fabs(fExpected -
+        ((float)p_iInfested[4]/(float)p_iTotal[4])) < 0.01);
+
+    //******************************************************
+    // Timestep 7
+    p_oSimManager->RunSim( 1 );
+    GetTreeCount1Yr(p_oPop, p_iTotal, p_iInfested, false);
+    fExpected = 0.297673099;
+    ASSERT_TRUE(fabs(fExpected -
+        ((float)p_iInfested[0]/(float)p_iTotal[0])) < 0.01);
+    fExpected = 0.017571914;
+    ASSERT_TRUE(fabs(fExpected -
+        ((float)p_iInfested[1]/(float)p_iTotal[1])) < 0.01);
+    EXPECT_EQ(0, p_iInfested[2]);
+    EXPECT_EQ(p_iInfested[3], p_iTotal[3]);
+    fExpected = 0.01057561;
+    ASSERT_TRUE(p_iInfested[4] > 0 && fabs(fExpected -
+        ((float)p_iInfested[4]/(float)p_iTotal[4])) < 0.01);
+
+    //******************************************************
+    // Timestep 8
+    p_oSimManager->RunSim( 1 );
+    GetTreeCount1Yr(p_oPop, p_iTotal, p_iInfested, false);
+    fExpected = 0.505;
+    ASSERT_TRUE(fabs(fExpected -
+        ((float)p_iInfested[0]/(float)p_iTotal[0])) < 0.01);
+    fExpected = 0.038275839;
+    ASSERT_TRUE(fabs(fExpected -
+        ((float)p_iInfested[1]/(float)p_iTotal[1])) < 0.01);
+    EXPECT_EQ(0, p_iInfested[2]);
+    EXPECT_EQ(p_iInfested[3], p_iTotal[3]);
+    fExpected = 0.015317655;
+    ASSERT_TRUE(fabs(fExpected -
+        ((float)p_iInfested[4]/(float)p_iTotal[4])) < 0.01);
+
+    //******************************************************
+    // Timestep 9 and beyond - infestation has ended and it
+    // ain't coming back
+    for (i = 0; i < 15; i++) {
+      p_oSimManager->RunSim( 1 );
+      p_oAllTrees = p_oPop->Find( "all" );
+      p_oTree = p_oAllTrees->NextTree();
+      while (p_oTree) {
+        if (2 != p_oTree->GetSpecies()) {
+          int iCode = p_oPop->GetIntDataCode("YearsInfested", p_oTree->GetSpecies(), p_oTree->GetType());
+          if (iCode > -1) {
+            p_oTree->GetValue(iCode, &iInf);
+            ASSERT_EQ(0, iInf);
+          }
+        }
+        p_oTree = p_oAllTrees->NextTree();
+      }
+    }
+
+    delete[] p_iInfested;
+    delete[] p_iTotal;
+    delete p_oSimManager;
+  } catch (modelErr &e) {
+    delete[] p_iInfested;
+    delete[] p_iTotal;
+    delete p_oSimManager;
+    FAIL() << "Testing failed in function: " << e.sFunction << " with message: " << e.sMoreInfo;
+  }
+}
+
+/////////////////////////////////////////////////////////////////////////////
 // WriteInsectInfestationXMLNormalFile()
 /////////////////////////////////////////////////////////////////////////////
-const char* WriteInsectInfestationXMLNormalFile(int iNumYrsTimestep, int iTSStart)
+const char* WriteInsectInfestationXMLNormalFile(int iNumYrsTimestep, int iTSStart, int iTSEnd)
 {
   using namespace std;
   const char *cFileString = "TestFile1.xml";
@@ -879,10 +1070,14 @@ const char* WriteInsectInfestationXMLNormalFile(int iNumYrsTimestep, int iTSStar
       << "<di_imdVal species=\"Species_4\">2.2</di_imdVal>"
       << "<di_imdVal species=\"Species_5\">2.2</di_imdVal>"
       << "</di_insectMinDBH>"
-      << "<di_insectStartTimestep>" << iTSStart << "</di_insectStartTimestep>"
-      << "</InsectInfestation6>";
+      << "<di_insectStartTimestep>" << iTSStart << "</di_insectStartTimestep>";
 
-  oOut << "<ConstRadialGrowth1>"
+  if (iTSEnd != 0) {
+    oOut << "<di_insectEndTimestep>" << iTSEnd << "</di_insectEndTimestep>";
+  }
+
+  oOut << "</InsectInfestation6>"
+       << "<ConstRadialGrowth1>"
       << "<gr_adultConstRadialInc>"
       << "<gr_acriVal species=\"Species_1\">4.3</gr_acriVal>"
       << "<gr_acriVal species=\"Species_2\">4.3</gr_acriVal>"
