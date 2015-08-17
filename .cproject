@@ -30,8 +30,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Core Model Current/Behaviors}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Core Model Current/Behaviors/NCI}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Code\libs\gtest-1.6.0\include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:\Code\libs\gsl-1.11&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:\Code\libs\xerces-c-3.1.1\src&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Code\libs\gsl-1.16&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Code\libs\xerces-c-3.1.2\src&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.151370561" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
@@ -46,7 +46,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}}&quot;"/>
 								</option>
 								<option id="gnu.cpp.link.option.libs.1929151872" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
-									<listOptionValue builtIn="false" value="libxerces-c"/>
+									<listOptionValue builtIn="false" value="libxerces-c-3-1-2"/>
 									<listOptionValue builtIn="false" value="libgsl-0"/>
 									<listOptionValue builtIn="false" value="gtest_main"/>
 								</option>

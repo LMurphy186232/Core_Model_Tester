@@ -4,6 +4,7 @@
 #if !defined(TestAllometry_H)
 #define TestAllometry_H
 
+#include <fstream>
 
 /**
  * Tests the clAllometry class.
@@ -52,19 +53,6 @@ const char* WriteAllometryXMLFile5();
  * @return Filename written.
  */
 const char* WriteAllometryXMLFile6();
-
-/**
- * This writes a file with non-spatial density dependent crown allometry
- * parameters.
- * @return Filename written.
- */
-const char* WriteAllometryXMLFile7();
-
-/**
- * This writes a file with NCI crown allometry parameters.
- * @return Filename written.
- */
-const char* WriteAllometryXMLFile8();
 
 /**
  * This writes a file with an unrecognized function for adult allometry.
@@ -150,5 +138,42 @@ const char* WriteAllometryXMLErrorFile13();
  */
 const char* WriteAllometryXMLErrorFile14();
 
+/**
+ * This writes common plot parameters.
+ * @param oOut File stream to write to.
+ */
+void WriteAllometryCommonPlot(std::fstream &oOut);
+
+/**
+ * This writes common trees parameters.
+ * @param oOut File stream to write to.
+ * @param iNumSpp Number of species.
+ */
+void WriteAllometryCommonTrees(std::fstream &oOut, const int &iNumSpp);
+
+/**
+ * This writes a common behavior list.
+ * @param oOut File stream to write to.
+ */
+void WriteAllometryCommonBehaviorList(std::fstream &oOut);
+
+/**
+ * This writes a common error file portion.
+ * @param oOut File stream to write to.
+ */
+void WriteAllometryCommonErrorBlock1(std::fstream &oOut);
+
+/**
+ * This writes a common error file portion.
+ * @param oOut File stream to write to.
+ */
+void WriteAllometryCommonErrorBlock2(std::fstream &oOut);
+
+/**
+ * This writes a common error file portion.
+ * @param oOut File stream to write to.
+ */
+void WriteAllometryCommonErrorBlock3(std::fstream &oOut);
+
 //---------------------------------------------------------------------------
-#endif // TestTree_H
+#endif // TestAllometry_H
