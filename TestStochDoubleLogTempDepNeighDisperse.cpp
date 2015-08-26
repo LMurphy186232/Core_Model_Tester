@@ -736,6 +736,10 @@ const char* WriteXMLFile1()
   for (i = 0; i < iNumSpecies; i++)
     oOut << "<tr_screVal species=\"Species_" << i << "\">1.0</tr_screVal>";
   oOut << "</tr_stdCrownRadExp>"
+       << "<tr_stdMaxCrownRad>";
+  for (i = 0; i < iNumSpecies; i++)
+    oOut  << "<tr_smcrVal species=\"Species_" << i << "\">10</tr_smcrVal>";
+  oOut << "</tr_stdMaxCrownRad>"
        << "<tr_conversionDiam10ToDBH>";
   for (i = 0; i < iNumSpecies; i++)
     oOut << "<tr_cdtdVal species=\"Species_" << i << "\">1</tr_cdtdVal>";
@@ -904,6 +908,12 @@ const char* WriteXMLFile2()
        << "<tr_screVal species=\"Species_3\">1.0</tr_screVal>"
        << "<tr_screVal species=\"Species_4\">1.0</tr_screVal>"
        << "</tr_stdCrownRadExp>"
+       << "<tr_stdMaxCrownRad>"
+       << "<tr_smcrVal species=\"Species_1\">10</tr_smcrVal>"
+       << "<tr_smcrVal species=\"Species_2\">10</tr_smcrVal>"
+       << "<tr_smcrVal species=\"Species_3\">10</tr_smcrVal>"
+       << "<tr_smcrVal species=\"Species_4\">10</tr_smcrVal>"
+       << "</tr_stdMaxCrownRad>"
        << "<tr_conversionDiam10ToDBH>"
        << "<tr_cdtdVal species=\"Species_1\">1</tr_cdtdVal>"
        << "<tr_cdtdVal species=\"Species_2\">1</tr_cdtdVal>"
@@ -1151,6 +1161,12 @@ const char* WriteXMLFile34(int iYearsPerTimestep )
        << "<tr_screVal species=\"Species_3\">1.0</tr_screVal>"
        << "<tr_screVal species=\"Species_4\">1.0</tr_screVal>"
        << "</tr_stdCrownRadExp>"
+       << "<tr_stdMaxCrownRad>"
+       << "<tr_smcrVal species=\"Species_1\">10</tr_smcrVal>"
+       << "<tr_smcrVal species=\"Species_2\">10</tr_smcrVal>"
+       << "<tr_smcrVal species=\"Species_3\">10</tr_smcrVal>"
+       << "<tr_smcrVal species=\"Species_4\">10</tr_smcrVal>"
+       << "</tr_stdMaxCrownRad>"
        << "<tr_conversionDiam10ToDBH>"
        << "<tr_cdtdVal species=\"Species_1\">1</tr_cdtdVal>"
        << "<tr_cdtdVal species=\"Species_2\">1</tr_cdtdVal>"

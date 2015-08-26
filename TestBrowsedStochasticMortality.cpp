@@ -1010,7 +1010,7 @@ const char* WriteBrowsedStochasticMortalityXMLErrorFile1() {
       << "</di_randBrowseProb>"
       << "</RandomBrowse1>";
 
-  oOut << "<BrowsedStochasticMortality1>"
+  oOut << "<BrowsedStochasticMortality2>"
       << "<mo_browsedRandomMortality>"
       << "<mo_brmVal species=\"Species_1\">-0.1</mo_brmVal>"
       << "<mo_brmVal species=\"Species_2\">0.53</mo_brmVal>"
@@ -1021,7 +1021,7 @@ const char* WriteBrowsedStochasticMortalityXMLErrorFile1() {
       << "<mo_smrVal species=\"Species_2\">0</mo_smrVal>"
       << "<mo_smrVal species=\"Species_4\">0.285</mo_smrVal>"
       << "</mo_stochasticMortRate>"
-      << "</BrowsedStochasticMortality1>";
+      << "</BrowsedStochasticMortality2>";
 
   oOut << "</paramFile>";
 
@@ -1253,6 +1253,12 @@ void WriteBrowsedStochasticMortalityCommonStuff(std::fstream &oOut)
       << "<tr_screVal species=\"Species_3\">1.0</tr_screVal>"
       << "<tr_screVal species=\"Species_4\">1.0</tr_screVal>"
       << "</tr_stdCrownRadExp>"
+      << "<tr_stdMaxCrownRad>"
+      << "<tr_smcrVal species=\"Species_1\">10</tr_smcrVal>"
+      << "<tr_smcrVal species=\"Species_2\">10</tr_smcrVal>"
+      << "<tr_smcrVal species=\"Species_3\">10</tr_smcrVal>"
+      << "<tr_smcrVal species=\"Species_4\">10</tr_smcrVal>"
+      << "</tr_stdMaxCrownRad>"
       << "<tr_conversionDiam10ToDBH>"
       << "<tr_cdtdVal species=\"Species_1\">0.8008</tr_cdtdVal>"
       << "<tr_cdtdVal species=\"Species_2\">0.5944</tr_cdtdVal>"

@@ -99,19 +99,12 @@ const char* WriteNCIGrowthXMLFile13();
 
 /**
  * Writes an error condition where max radius of neighbor effects is < 0,
- * with default NCI.
+ * with default NCI or NCI with neighbor damage.
  *
+ * @param bDefault if true, write default NCI; if false, write with neighbor damage.
  * @return Filename written.
  */
-const char* WriteNCIGrowthXMLErrorFile1A();
-
-/**
- * Writes an error condition where max radius of neighbor effects is < 0,
- * with NCI with neighbor damage.
- *
- * @return Filename written.
- */
-const char* WriteNCIGrowthXMLErrorFile1B();
+const char* WriteNCIGrowthXMLErrorFile1(bool bDefault);
 
 /**
  * Writes an error condition where max growth for a species is < 0.
@@ -200,19 +193,12 @@ const char* WriteNCIGrowthXMLErrorFile13();
 
 /**
  * Writes an error condition where a neighbor DBH is less than 0,
- * with default NCI.
+ * with default NCI or NCI with neighbor damage.
  *
+ * @param bDefault if true, write default NCI; if false, write with neighbor damage.
  * @return Filename written.
  */
-const char* WriteNCIGrowthXMLErrorFile14A();
-
-/**
- * Writes an error condition where a neighbor DBH is less than 0,
- * with NCI with neighbor damage.
- *
- * @return Filename written.
- */
-const char* WriteNCIGrowthXMLErrorFile14B();
+const char* WriteNCIGrowthXMLErrorFile14(bool bDefault);
 
 
 /**
@@ -271,5 +257,11 @@ void WriteNCIGrowthRun6CommonStuff(std::fstream &oOut);
  * @param oOut File stream to write to.
  */
 void WriteNCIGrowthErrorFileCommonStuff(std::fstream &oOut);
+
+/**
+ * Writes common portions of the test error parameter files that deal with storms.
+ * @param oOut File stream to write to.
+ */
+void WriteNCIGrowthStormErrorFileCommonStuff(std::fstream &oOut);
 //---------------------------------------------------------------------------
 #endif // TestNciGrowth_H
