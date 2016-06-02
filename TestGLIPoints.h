@@ -1,7 +1,8 @@
 //---------------------------------------------------------------------------
-
 #ifndef TestGLIPointsH
 #define TestGLIPointsH
+
+#include <fstream>
 
 /**
  * Writes a parameter file to direct testing.  There is one species and one
@@ -10,6 +11,22 @@
  * @return Filename written.
  */
 const char* WriteGLIPointsXMLFile1();
+
+/**
+ * Writes a parameter file to direct testing.  There is one species and one
+ * behavior:  GLI points.
+ *
+ * @return Filename written.
+ */
+const char* WriteGLIPointsXMLRotateFile1();
+
+/**
+ * Writes a parameter file to direct testing.  There is one species and one
+ * behavior:  GLI points.
+ *
+ * @return Filename written.
+ */
+const char* WriteGLIPointsXMLRotateFile2();
 
 /**
  * Writes a parameter file with no points in the points list.
@@ -41,5 +58,11 @@ const char* WriteGLIPointsXMLErrorFile4();
  * @return Filename written.
  */
 const char* WriteGLIPointsXMLErrorFile5();
+
+/**
+ * Writes common parameters for the test parameter files.
+ * @param oOut File stream to write to.
+ */
+void WriteGLIPointsCommonStuff(std::fstream &oOut);
 //---------------------------------------------------------------------------
 #endif

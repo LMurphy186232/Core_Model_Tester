@@ -32,11 +32,5 @@ const char* WriteGLILightXMLFile2();
  */
 const char* WriteGLILightXMLFile3();
 
-/**
- * Writes a parameter file with a deliberate error.  The number of years per
- * timestep is less than 1, which should cause light to throw an error.
- * @return Filename written.
- */
-const char* WriteGLILightXMLErrorFile1();
 //---------------------------------------------------------------------------
 #endif

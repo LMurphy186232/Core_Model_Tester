@@ -1448,7 +1448,7 @@ const char* WriteRandomBrowseXMLFile1()
       << "<paramFile fileCode=\"06010101\">"
       << "<plot>"
       << "<timesteps>2</timesteps>"
-      << "<randomSeed>-1</randomSeed>"
+      << "<randomSeed>6</randomSeed>"
       << "<yearsPerTimestep>1.0</yearsPerTimestep>"
       << "<plot_lenX>200.0</plot_lenX>"
       << "<plot_lenY>200.0</plot_lenY>"
