@@ -26,9 +26,10 @@ bFound;  /**<whether it was found in the tree population*/
 /**
  * Writes a parameter file to test disturbance for run 1.  This has a tree
  * map so an expected tree set is created.
+ * @param bTallestFirst What to set the "tallest first" cut flag to.
  * @return Filename written.
  */
-const char* WriteHarvestXMLFile1();
+const char* WriteHarvestXMLFile1(bool bTallestFirst);
 
 /**
  * Writes a parameter file to test disturbance for run 2.  This has a tree
@@ -40,30 +41,33 @@ const char* WriteHarvestXMLFile2();
 /**
  * Writes a parameter file to test disturbance for run 3.  This has a tree
  * map so an expected tree set is created.
+ * @param bTallestFirst What to set the "tallest first" cut flag to.
  * @return Filename written.
  */
-const char* WriteHarvestXMLFile3();
+const char* WriteHarvestXMLFile3(bool bTallestFirst);
 
 /**
  * Writes a parameter file to test disturbance for run 4.  This has a tree
  * map so an expected tree set is created.
+ * @param bTallestFirst What to set the "tallest first" cut flag to.
  * @return Filename written.
  */
-const char* WriteHarvestXMLFile4();
+const char* WriteHarvestXMLFile4(bool bTallestFirst);
 
 /**
  * Writes a parameter file to test disturbance for run 5.  This has a tree
  * map so an expected tree set is created.
+ * @param bTallestFirst What to set the "tallest first" cut flag to.
  * @return Filename written.
  */
-const char* WriteHarvestXMLFile5();
+const char* WriteHarvestXMLFile5(bool bTallestFirst);
 
 /**
  * Writes a parameter file to test disturbance for run 6.  This has a tree
  * map so an expected tree set is created.
  * @return Filename written.
  */
-const char* WriteHarvestXMLFile6();
+const char* WriteHarvestXMLFile6(bool bTallestFirst);
 
 /**
  * Writes a parameter file to test disturbance for run 8. This has a tree
@@ -77,7 +81,7 @@ const char* WriteHarvestXMLFile8();
  * map so an expected tree set is created.
  * @return Filename written.
  */
-const char* WriteHarvestXMLFile9();
+const char* WriteHarvestXMLFile9(bool bTallestFirst);
 
 /**
  * Writes the tree map for harvest parameter files.
