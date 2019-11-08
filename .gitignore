@@ -47,3 +47,5 @@ Temporary Items
 *.dll
 *.a
 TestFile1.xml
+.cproject
+.settings/language.settings.xml
