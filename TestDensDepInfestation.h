@@ -9,7 +9,6 @@ class clTreePopulation;
 
 /**
  * Writes the parameter file for TestNormalProcessing1().
- * @param iNumYrsTimestep Number of years per timestep.
  * @return File name of the freshly written parameter file.
  */
 const char* WriteDensDepInfestationXMLFile1();

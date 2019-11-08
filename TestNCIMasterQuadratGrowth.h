@@ -9,7 +9,7 @@
 /**
  * Writes a parameter file with the designated number of years per time step.
  * @param iYearsPerTimestep The desired number of years per time step.
- * @param iPrecp Precipitation type.
+ * @param iPrecip Precipitation type.
  * @return Filename written.
  */
 const char* WriteNCIQuadratGrowthXMLFile(int iYearsPerTimestep, int iPrecip );
@@ -17,7 +17,7 @@ const char* WriteNCIQuadratGrowthXMLFile(int iYearsPerTimestep, int iPrecip );
 /**
  * Writes a parameter file with the designated number of years per time step.
  * @param iYearsPerTimestep The desired number of years per time step.
- * @param iPrecp Precipitation type.
+ * @param iPrecip Precipitation type.
  * @return Filename written.
  */
 const char* WriteNCIQuadratGrowthXMLFile2(int iYearsPerTimestep, int iPrecip );

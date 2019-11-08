@@ -5,7 +5,7 @@
 #define TestWindstorm_H
 #include <fstream>
 
-/**
+/*
  * Tests normal processing Run 8. WriteWindstormXMLFile8() writes the parameter
  * file. This run tests to make sure storms below the minimum intensity are
  * handled correctly.

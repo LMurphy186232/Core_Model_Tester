@@ -19,7 +19,6 @@ const char* WriteInsectInfestationXMLNormalFile(int iNumYrsTimestep, int iTSStar
 
 /**
  * Writes the parameter file for TestNormalProcessing3().
- * @param iNumYrsTimestep Number of years per timestep.
  * @return File name of the freshly written parameter file.
  */
 const char* WriteInsectInfestationXMLFile3();
