@@ -949,8 +949,8 @@ TEST(CompetitionHarvest, DoHarvestRun4) {
     string sHarvestFile = "core_model_tester1.txt";
     char cTemp[MAX_FILE_LINE_LENGTH], c;
     float fTemp, fX, fY, fDbh;
-    int i, iTemp, iSp, iTs,
-    iDead;
+    int i, iTemp, iSp, iTs, iDead;
+    bool bThirdTreeRemoved, bLastTreeRemoved;
 
     p_oSimManager->ReadFile( WriteCompetitionHarvestXMLFile4() );
     p_oPop = ( clTreePopulation * ) p_oSimManager->GetPopulationObject( "treepopulation" );
@@ -971,7 +971,7 @@ TEST(CompetitionHarvest, DoHarvestRun4) {
     p_oPop->CreateTree(59, 50, 2, clTreePopulation::adult, 25);
     p_oPop->CreateTree(50, 59, 0, clTreePopulation::adult, 30);
     p_oPop->CreateTree(55, 55, 1, clTreePopulation::adult, 45);
-    p_oPop->CreateTree(30, 10, 2, clTreePopulation::sapling, 3);
+    p_oPop->CreateTree(30, 10, 2, clTreePopulation::sapling, 1);
     p_oPop->CreateTree(56, 56, 0, clTreePopulation::snag, 30);
     p_oPop->CreateTree(56, 56, 0, clTreePopulation::seedling, 0.2);
     p_oPop->CreateTree(52, 52, 0, clTreePopulation::sapling, 4);
@@ -984,23 +984,68 @@ TEST(CompetitionHarvest, DoHarvestRun4) {
     p_oTree->SetValue(p_oPop->GetIntDataCode("dead",
         p_oTree->GetSpecies(), p_oTree->GetType()), iDead);
 
+
     //*********************************************
-    // Timestep 1
+    // Timestep 1 - no harvest
+    //*********************************************
+    p_oSimManager->RunSim(1);
+
+    //Check the harvest results grid - should be all zeroes
+    p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetIntDataCode("Cut Density_0"), &iTemp);
+    EXPECT_EQ(0, iTemp);
+    p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetIntDataCode("Cut Density_1"), &iTemp);
+    EXPECT_EQ(0, iTemp);
+    p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetIntDataCode("Cut Density_2"), &iTemp);
+    EXPECT_EQ(0, iTemp);
+    p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetFloatDataCode("Cut Basal Area_0"), &fTemp);
+    EXPECT_EQ(0, fTemp);
+    p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetFloatDataCode("Cut Basal Area_1"), &fTemp);
+    EXPECT_EQ(0, fTemp);
+    p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetFloatDataCode("Cut Basal Area_2"), &fTemp);
+    EXPECT_EQ(0, fTemp);
+
+    //*********************************************
+    // Timestep 2 - no harvest
+    //*********************************************
+    p_oSimManager->RunSim(1);
+
+    //Check the harvest results grid - should be all zeroes
+    p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetIntDataCode("Cut Density_0"), &iTemp);
+    EXPECT_EQ(0, iTemp);
+    p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetIntDataCode("Cut Density_1"), &iTemp);
+    EXPECT_EQ(0, iTemp);
+    p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetIntDataCode("Cut Density_2"), &iTemp);
+    EXPECT_EQ(0, iTemp);
+    p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetFloatDataCode("Cut Basal Area_0"), &fTemp);
+    EXPECT_EQ(0, fTemp);
+    p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetFloatDataCode("Cut Basal Area_1"), &fTemp);
+    EXPECT_EQ(0, fTemp);
+    p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetFloatDataCode("Cut Basal Area_2"), &fTemp);
+    EXPECT_EQ(0, fTemp);
+
+
+    //*********************************************
+    // Timestep 3
     //*********************************************
     //Harvest
     p_oSimManager->RunSim(1);
 
     //Check the harvest results grid
     p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetIntDataCode("Cut Density_0"), &iTemp);
-    EXPECT_EQ(1, iTemp);
+    EXPECT_EQ(0, iTemp);
     p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetIntDataCode("Cut Density_1"), &iTemp);
-    EXPECT_EQ(3, iTemp);
+    if (iTemp == 2) bThirdTreeRemoved = false;
+    else if (iTemp == 3) bThirdTreeRemoved = true;
+    else EXPECT_EQ(-100, iTemp);
+    if (bThirdTreeRemoved) EXPECT_EQ(3, iTemp);
+    else EXPECT_EQ(2, iTemp);
     p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetIntDataCode("Cut Density_2"), &iTemp);
     EXPECT_EQ(0, iTemp);
     p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetFloatDataCode("Cut Basal Area_0"), &fTemp);
-    EXPECT_LT(fabs(fTemp - 0.001256637), 0.0001);
+    EXPECT_EQ(0, fTemp);
     p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetFloatDataCode("Cut Basal Area_1"), &fTemp);
-    EXPECT_LT(fabs(fTemp - 0.177971224), 0.0001);
+    if (bThirdTreeRemoved) EXPECT_LT(fabs(fTemp - 0.177971224), 0.0001);
+    else EXPECT_LT(fabs(fTemp - 0.018928096), 0.0001);
     p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetFloatDataCode("Cut Basal Area_2"), &fTemp);
     EXPECT_EQ(0, fTemp);
 
@@ -1016,29 +1061,31 @@ TEST(CompetitionHarvest, DoHarvestRun4) {
     EXPECT_EQ(53.0, fY);
     EXPECT_EQ(1, iSp);
     EXPECT_EQ(4.0, fDbh);
-    EXPECT_EQ(1, iTs);
+    EXPECT_EQ(3, iTs);
     //Tree 5
     outfile >> fX >> fY >> iSp >> fDbh >> iTs;
     EXPECT_EQ(53.0, fX);
     EXPECT_EQ(52.0, fY);
     EXPECT_EQ(1, iSp);
     EXPECT_EQ(15.0, fDbh);
-    EXPECT_EQ(1, iTs);
+    EXPECT_EQ(3, iTs);
     //Tree 8 - this one's a maybe
-    ASSERT_TRUE(!outfile.eof());
-    outfile >> fX >> fY >> iSp >> fDbh >> iTs;
-    EXPECT_EQ(55.0, fX);
-    EXPECT_EQ(55.0, fY);
-    EXPECT_EQ(1, iSp);
-    EXPECT_EQ(45.0, fDbh);
-    EXPECT_EQ(1, iTs);
+    if (bThirdTreeRemoved) {
+      ASSERT_TRUE(!outfile.eof());
+      outfile >> fX >> fY >> iSp >> fDbh >> iTs;
+      EXPECT_EQ(55.0, fX);
+      EXPECT_EQ(55.0, fY);
+      EXPECT_EQ(1, iSp);
+      EXPECT_EQ(45.0, fDbh);
+      EXPECT_EQ(3, iTs);
+    }
 
     outfile >> c;
     ASSERT_TRUE(outfile.eof());
     outfile.close();
 
     //*********************************************
-    // Timestep 2
+    // Timestep 4
     //*********************************************
     //No harvest. But we're adding some trees.
     //First - some snags.
@@ -1061,8 +1108,7 @@ TEST(CompetitionHarvest, DoHarvestRun4) {
     while (p_oTree) {
       if (clTreePopulation::snag == p_oTree->GetType()) iTemp++;
       p_oTree = p_oAllTrees->NextTree();
-    }
-    EXPECT_EQ(31, iTemp);
+    }    EXPECT_EQ(31, iTemp);
 
     //Check the harvest results grid - should be all zeroes
     p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetIntDataCode("Cut Density_0"), &iTemp);
@@ -1079,7 +1125,7 @@ TEST(CompetitionHarvest, DoHarvestRun4) {
     EXPECT_EQ(0, fTemp);
 
     //Verify that nothing new has been written to the harvest file - that it's
-    //still only 5 lines long (4 trees plus header)
+    //still same length
     ifstream outfile2( sHarvestFile.c_str() );
     iTemp = 0;
     while (!outfile2.eof()) {
@@ -1087,82 +1133,166 @@ TEST(CompetitionHarvest, DoHarvestRun4) {
       if (strlen(cTemp) > 1) iTemp++;
     }
     outfile2.close();
-    EXPECT_EQ(5, iTemp);
+    if (bThirdTreeRemoved) EXPECT_EQ(4, iTemp);
+    else EXPECT_EQ(3, iTemp);
 
     //*********************************************
-    // Timestep 3
+    // Timestep 5
     //*********************************************
     p_oSimManager->RunSim(1);
 
-    //Check the harvest results grid
-    p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetIntDataCode("Cut Density_0"), &iTemp);
-    EXPECT_EQ(2, iTemp);
-    p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetIntDataCode("Cut Density_1"), &iTemp);
-    EXPECT_EQ(1, iTemp);
-    p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetIntDataCode("Cut Density_2"), &iTemp);
-    EXPECT_EQ(3, iTemp);
-    p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetFloatDataCode("Cut Basal Area_0"), &fTemp);
-    EXPECT_LT(fabs(fTemp - 0.205008556), 0.0001);
-    p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetFloatDataCode("Cut Basal Area_1"), &fTemp);
-    EXPECT_LT(fabs(fTemp - 0.070685835), 0.0001);
-    p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetFloatDataCode("Cut Basal Area_2"), &fTemp);
-    EXPECT_LT(fabs(fTemp - 0.12817698), 0.0001);
+    if (bThirdTreeRemoved) {
 
-    //Verify that the correct trees have been written to the harvest output file
-    ifstream outfile3( sHarvestFile.c_str() );
-    //Skip the header line and the first 4 trees
-    outfile3.getline(cTemp, MAX_FILE_LINE_LENGTH);
-    outfile3.getline(cTemp, MAX_FILE_LINE_LENGTH);
-    outfile3.getline(cTemp, MAX_FILE_LINE_LENGTH);
-    outfile3.getline(cTemp, MAX_FILE_LINE_LENGTH);
-    outfile3.getline(cTemp, MAX_FILE_LINE_LENGTH);
-    ASSERT_TRUE(!outfile3.eof());
-    //Tree 21
-    outfile3 >> fX >> fY >> iSp >> fDbh >> iTs;
-    EXPECT_EQ(53.0, fX);
-    EXPECT_EQ(53.0, fY);
-    EXPECT_EQ(1, iSp);
-    EXPECT_EQ(30.0, fDbh);
-    EXPECT_EQ(3, iTs);
-    //Tree 14
-    ASSERT_TRUE(!outfile3.eof());
-    outfile3 >> fX >> fY >> iSp >> fDbh >> iTs;
-    EXPECT_EQ(54.0, fX);
-    EXPECT_EQ(54.0, fY);
-    EXPECT_EQ(2, iSp);
-    EXPECT_EQ(4.0, fDbh);
-    EXPECT_EQ(3, iTs);
-    //Tree 22
-    ASSERT_TRUE(!outfile3.eof());
-    outfile3 >> fX >> fY >> iSp >> fDbh >> iTs;
-    EXPECT_EQ(51.0, fX);
-    EXPECT_EQ(53.0, fY);
-    EXPECT_EQ(2, iSp);
-    EXPECT_EQ(40.0, fDbh);
-    EXPECT_EQ(3, iTs);
-    //Tree 4
-    ASSERT_TRUE(!outfile3.eof());
-    outfile3 >> fX >> fY >> iSp >> fDbh >> iTs;
-    EXPECT_EQ(50.0, fX);
-    EXPECT_EQ(50.0, fY);
-    EXPECT_EQ(0, iSp);
-    EXPECT_EQ(10.5, fDbh);
-    EXPECT_EQ(3, iTs);
-    //Tree 23 - maybe
-    //ASSERT_TRUE(!outfile3.eof());
-    //outfile3 >> fX >> fY >> iSp >> fDbh >> iTs;
-    //EXPECT_EQ(54.0, fX);
-    //EXPECT_EQ(51.0, fY);
-    //EXPECT_EQ(0, iSp);
-    //EXPECT_EQ(50.0, fDbh);
-    //EXPECT_EQ(3, iTs);
+      //Check the harvest results grid
+      p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetIntDataCode("Cut Density_0"), &iTemp);
+      if (iTemp == 3) bLastTreeRemoved = true;
+      else if (iTemp == 2) bLastTreeRemoved = false;
+      else EXPECT_EQ(-1000, iTemp);
+      if (bLastTreeRemoved) EXPECT_EQ(3, iTemp);
+      else EXPECT_EQ(2, iTemp);
+      p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetIntDataCode("Cut Density_1"), &iTemp);
+      EXPECT_EQ(1, iTemp);
+      p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetIntDataCode("Cut Density_2"), &iTemp);
+      EXPECT_EQ(2, iTemp);
+      p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetFloatDataCode("Cut Basal Area_0"), &fTemp);
+      if (bLastTreeRemoved) EXPECT_LT(fabs(fTemp - 0.206265193), 0.0001);
+      else EXPECT_LT(fabs(fTemp - 0.009915652), 0.0001);
+      p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetFloatDataCode("Cut Basal Area_1"), &fTemp);
+      EXPECT_LT(fabs(fTemp - 0.070685835), 0.0001);
+      p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetFloatDataCode("Cut Basal Area_2"), &fTemp);
+      EXPECT_LT(fabs(fTemp - 0.126920343), 0.0001);
 
-    outfile3 >> c;
-    ASSERT_TRUE(outfile3.eof());
-    outfile3.close();
+      //Verify that the correct trees have been written to the harvest output file
+      ifstream outfile3( sHarvestFile.c_str() );
+      //Skip the header line and the first 4 trees
+      outfile3.getline(cTemp, MAX_FILE_LINE_LENGTH);
+      outfile3.getline(cTemp, MAX_FILE_LINE_LENGTH);
+      outfile3.getline(cTemp, MAX_FILE_LINE_LENGTH);
+      outfile3.getline(cTemp, MAX_FILE_LINE_LENGTH);
+      ASSERT_TRUE(!outfile3.eof());
+      //Tree 21
+      outfile3 >> fX >> fY >> iSp >> fDbh >> iTs;
+      EXPECT_EQ(53.0, fX);
+      EXPECT_EQ(53.0, fY);
+      EXPECT_EQ(1, iSp);
+      EXPECT_EQ(30.0, fDbh);
+      EXPECT_EQ(5, iTs);
+      //Tree 14
+      ASSERT_TRUE(!outfile3.eof());
+      outfile3 >> fX >> fY >> iSp >> fDbh >> iTs;
+      EXPECT_EQ(54.0, fX);
+      EXPECT_EQ(54.0, fY);
+      EXPECT_EQ(2, iSp);
+      EXPECT_EQ(4.0, fDbh);
+      EXPECT_EQ(5, iTs);
+      //Tree 22
+      ASSERT_TRUE(!outfile3.eof());
+      outfile3 >> fX >> fY >> iSp >> fDbh >> iTs;
+      EXPECT_EQ(51.0, fX);
+      EXPECT_EQ(53.0, fY);
+      EXPECT_EQ(2, iSp);
+      EXPECT_EQ(40.0, fDbh);
+      EXPECT_EQ(5, iTs);
+      //Tree 12
+      ASSERT_TRUE(!outfile3.eof());
+      outfile3 >> fX >> fY >> iSp >> fDbh >> iTs;
+      EXPECT_EQ(52.0, fX);
+      EXPECT_EQ(52.0, fY);
+      EXPECT_EQ(0, iSp);
+      EXPECT_EQ(4.0, fDbh);
+      EXPECT_EQ(5, iTs);
+      //Tree 4
+      ASSERT_TRUE(!outfile3.eof());
+      outfile3 >> fX >> fY >> iSp >> fDbh >> iTs;
+      EXPECT_EQ(50.0, fX);
+      EXPECT_EQ(50.0, fY);
+      EXPECT_EQ(0, iSp);
+      EXPECT_EQ(10.5, fDbh);
+      EXPECT_EQ(5, iTs);
+      //Tree 23 - maybe
+      if (bLastTreeRemoved) {
+        ASSERT_TRUE(!outfile3.eof());
+        outfile3 >> fX >> fY >> iSp >> fDbh >> iTs;
+        EXPECT_EQ(54.0, fX);
+        EXPECT_EQ(51.0, fY);
+        EXPECT_EQ(0, iSp);
+        EXPECT_EQ(50.0, fDbh);
+        EXPECT_EQ(5, iTs);
+      }
+
+      outfile3 >> c;
+      ASSERT_TRUE(outfile3.eof());
+      outfile3.close();
+
+
+    } else {
+
+      //Check the harvest results grid
+      p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetIntDataCode("Cut Density_0"), &iTemp);
+      EXPECT_EQ(0, iTemp);
+      p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetIntDataCode("Cut Density_1"), &iTemp);
+      EXPECT_EQ(2, iTemp);
+      p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetIntDataCode("Cut Density_2"), &iTemp);
+      if (iTemp == 2) bLastTreeRemoved = true;
+      else if (iTemp == 1) bLastTreeRemoved = false;
+      else EXPECT_EQ(-100, iTemp);
+      if (bLastTreeRemoved) EXPECT_EQ(2, iTemp);
+      else EXPECT_EQ(1, iTemp);
+      p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetFloatDataCode("Cut Basal Area_0"), &fTemp);
+      EXPECT_LT(fabs(fTemp - 0), 0.0001);
+      p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetFloatDataCode("Cut Basal Area_1"), &fTemp);
+      EXPECT_LT(fabs(fTemp - 0.229728963), 0.0001);
+      p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetFloatDataCode("Cut Basal Area_2"), &fTemp);
+      if (bLastTreeRemoved) EXPECT_LT(fabs(fTemp - 0.126920343), 0.0001);
+      else EXPECT_LT(fabs(fTemp - 0.001256637), 0.0001);
+
+      //Verify that the correct trees have been written to the harvest output file
+      ifstream outfile3( sHarvestFile.c_str() );
+      //Skip the header line and the first 2 trees
+      outfile3.getline(cTemp, MAX_FILE_LINE_LENGTH);
+      outfile3.getline(cTemp, MAX_FILE_LINE_LENGTH);
+      outfile3.getline(cTemp, MAX_FILE_LINE_LENGTH);
+      ASSERT_TRUE(!outfile3.eof());
+      //Tree 21
+      outfile3 >> fX >> fY >> iSp >> fDbh >> iTs;
+      EXPECT_EQ(53.0, fX);
+      EXPECT_EQ(53.0, fY);
+      EXPECT_EQ(1, iSp);
+      EXPECT_EQ(30.0, fDbh);
+      EXPECT_EQ(5, iTs);
+      //Tree 8
+      ASSERT_TRUE(!outfile3.eof());
+      outfile3 >> fX >> fY >> iSp >> fDbh >> iTs;
+      EXPECT_EQ(55.0, fX);
+      EXPECT_EQ(55.0, fY);
+      EXPECT_EQ(1, iSp);
+      EXPECT_EQ(45.0, fDbh);
+      EXPECT_EQ(5, iTs);
+      //Tree 14
+      ASSERT_TRUE(!outfile3.eof());
+      outfile3 >> fX >> fY >> iSp >> fDbh >> iTs;
+      EXPECT_EQ(54.0, fX);
+      EXPECT_EQ(54.0, fY);
+      EXPECT_EQ(2, iSp);
+      EXPECT_EQ(4.0, fDbh);
+      EXPECT_EQ(5, iTs);
+      if (bLastTreeRemoved) {
+        //Tree 22 - maybe
+        ASSERT_TRUE(!outfile3.eof());
+        outfile3 >> fX >> fY >> iSp >> fDbh >> iTs;
+        EXPECT_EQ(51.0, fX);
+        EXPECT_EQ(53.0, fY);
+        EXPECT_EQ(2, iSp);
+        EXPECT_EQ(40.0, fDbh);
+        EXPECT_EQ(5, iTs);
+      }
+      outfile3 >> c;
+      ASSERT_TRUE(outfile3.eof());
+      outfile3.close();
+    }
 
     //*********************************************
-    // Timestep 4
+    // Timestep 6
     //*********************************************
     //No harvest.
     p_oSimManager->RunSim(1);
@@ -1181,8 +1311,7 @@ TEST(CompetitionHarvest, DoHarvestRun4) {
     p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetFloatDataCode("Cut Basal Area_2"), &fTemp);
     EXPECT_EQ(0, fTemp);
 
-    //Verify that nothing new has been written to the harvest file - that it's
-    //still only 11 lines long (10 trees plus header)
+    //Verify that nothing new has been written to the harvest file
     ifstream outfile4( sHarvestFile.c_str() );
     iTemp = 0;
     while (!outfile4.eof()) {
@@ -1190,38 +1319,15 @@ TEST(CompetitionHarvest, DoHarvestRun4) {
       if (strlen(cTemp) > 1) iTemp++;
     }
     outfile4.close();
-    EXPECT_EQ(11, iTemp);
 
-    //*********************************************
-    // Timestep 5
-    //*********************************************
-    //No harvest due to insufficient basal area.
-    p_oSimManager->RunSim(1);
-
-    //Check the harvest results grid - should be all zeroes
-    p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetIntDataCode("Cut Density_0"), &iTemp);
-    EXPECT_EQ(0, iTemp);
-    p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetIntDataCode("Cut Density_1"), &iTemp);
-    EXPECT_EQ(0, iTemp);
-    p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetIntDataCode("Cut Density_2"), &iTemp);
-    EXPECT_EQ(0, iTemp);
-    p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetFloatDataCode("Cut Basal Area_0"), &fTemp);
-    EXPECT_EQ(0, fTemp);
-    p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetFloatDataCode("Cut Basal Area_1"), &fTemp);
-    EXPECT_EQ(0, fTemp);
-    p_oResultsGrid->GetValueOfCell(0, 0, p_oResultsGrid->GetFloatDataCode("Cut Basal Area_2"), &fTemp);
-    EXPECT_EQ(0, fTemp);
-
-    //Verify that nothing new has been written to the harvest file - that it's
-    //still only 11 lines long (10 trees plus header)
-    ifstream outfile5 ( sHarvestFile.c_str() );
-    iTemp = 0;
-    while (!outfile5.eof()) {
-      outfile5.getline(cTemp, MAX_FILE_LINE_LENGTH);
-      if (strlen(cTemp) > 1) iTemp++;
+    if (bThirdTreeRemoved) {
+      if (bLastTreeRemoved) EXPECT_EQ(10, iTemp);
+      else EXPECT_EQ(9, iTemp);
+    } else {
+      if (bLastTreeRemoved) EXPECT_EQ(7, iTemp);
+      else EXPECT_EQ(6, iTemp);
     }
-    outfile5.close();
-    EXPECT_EQ(11, iTemp);
+
 
     DeleteThisFile(sHarvestFile);
 
@@ -2343,11 +2449,11 @@ const char* WriteCompetitionHarvestXMLFile4()
   oOut.open(cFileString, ios::out | ios::trunc);
 
   oOut << "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?>"
-      << "<paramFile fileCode=\"06010101\">"
+      << "<paramFile fileCode=\"07010101\">"
       << "<plot>"
       << "<timesteps>8</timesteps>"
-      << "<yearsPerTimestep>1</yearsPerTimestep>"
-      << "<randomSeed>10</randomSeed>"
+      << "<yearsPerTimestep>2</yearsPerTimestep>"
+      << "<randomSeed>0</randomSeed>"
       << "<plot_lenX>200.0</plot_lenX>"
       << "<plot_lenY>200.0</plot_lenY>"
       << "<plot_precip_mm_yr>1150.645781</plot_precip_mm_yr>"
@@ -2544,7 +2650,8 @@ const char* WriteCompetitionHarvestXMLFile4()
       << "<di_compHarvMaxHarvDBH>100</di_compHarvMaxHarvDBH>"
       << "<di_compHarvTypeHarvest>3</di_compHarvTypeHarvest>"
       << "<di_compHarvCutAmount>0.4</di_compHarvCutAmount>"
-      << "<di_compHarvInterval>2</di_compHarvInterval>"
+      << "<di_compHarvInterval>4</di_compHarvInterval>"
+      << "<di_compHarvFirstHarvestYear>6</di_compHarvFirstHarvestYear>"
       << "<di_compHarvHarvestedListFile>core_model_tester1.txt</di_compHarvHarvestedListFile>"
       << "</CompetitionHarvest1>"
       << "<StochasticMortality2>"
