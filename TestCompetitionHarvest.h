@@ -22,7 +22,7 @@ const char* WriteCompetitionHarvestXMLFile1a();
  * Writes a parameter file for run 2.
  * @return Filename written.
  */
-const char* WriteCompetitionHarvestXMLFile2();
+const char* WriteCompetitionHarvestXMLFile2(int mostcomp);
 
 /**
  * Writes a parameter file for run 3.
@@ -34,7 +34,7 @@ const char* WriteCompetitionHarvestXMLFile3();
  * Writes a parameter file for run 4.
  * @return Filename written.
  */
-const char* WriteCompetitionHarvestXMLFile4();
+const char* WriteCompetitionHarvestXMLFile4(int mostcomp);
 
 /**
  * Writes a parameter file where the competition harvest behavior is applied
