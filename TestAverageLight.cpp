@@ -151,7 +151,7 @@ TEST(AverageLight, NormalProcessingRun2)
     //Run one timestep
     p_oSimManager->RunSim(1);
     p_oGrid = p_oSimManager->GetGridObject("Average Light");
-    fExpectedLight = 99.99;
+    fExpectedLight = 100.0;
 
     //Check the grid value
     EXPECT_EQ(1, p_oGrid->GetNumberXCells());
