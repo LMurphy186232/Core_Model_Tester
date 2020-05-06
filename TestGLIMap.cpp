@@ -227,7 +227,7 @@ TEST(GLIMap, TestNormalRun3) {
     EXPECT_LT(fabs(fExpectedGLI - fActualGLI), 0.1);
 
     //6, 6
-    fExpectedGLI = 78.54049256;
+    fExpectedGLI = 78.55348186;
     p_oGLIMapGrid->GetValueOfCell(6, 6, iMapGLICode, &fActualGLI);
     EXPECT_LT(fabs(fExpectedGLI - fActualGLI), 0.01);
 
@@ -315,7 +315,7 @@ TEST(GLIMap, TestNormalRun4) {
     EXPECT_LT(fabs(fExpectedGLI - fActualGLI), 0.1);
 
     //5, 5
-    fExpectedGLI = 62.6762;
+    fExpectedGLI = 62.67881634;
     p_oGLIMapGrid->GetValueOfCell(5, 5, iMapGLICode, &fActualGLI);
     EXPECT_LT(fabs(fExpectedGLI - fActualGLI), 0.01);
 
@@ -343,7 +343,7 @@ TEST(GLIMap, TestNormalRun4) {
     EXPECT_LT(fabs(fExpectedGLI - fActualGLI), 0.1);
 
     //6, 6
-    fExpectedGLI = 78.54049256;
+    fExpectedGLI = 78.55348186;
     p_oGLIMapGrid->GetValueOfCell(6, 6, iMapGLICode, &fActualGLI);
     EXPECT_LT(fabs(fExpectedGLI - fActualGLI), 0.01);
 
