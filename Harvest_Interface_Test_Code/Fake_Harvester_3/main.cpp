@@ -1,10 +1,11 @@
 #include <fstream>
+#include <cstring>
 #include <math.h>
 
 #ifdef linux
 #define TESTPATH "/home/lora/Documents/"
 #else
-#define TESTPATH "c:\\documents and settings\\lora\\my documents\\"
+#define TESTPATH "c:\\users\\lora\\documents\\"
 #endif
 
 //Fake tester for run 3 of the harvest interface test.
