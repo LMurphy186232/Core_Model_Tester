@@ -823,8 +823,9 @@ TEST(EpisodicMortality, DoMortEpisodeRun4) {
         if ((fabs(fX - 67.5964) < 0.001 && fabs(fY - 94.4275) < 0.001) ||
             (fabs(fX - 67.5964) < 0.001 && fabs(fY - 94.4275) < 0.001) ||
             (fabs(fX - 51.9287) < 0.001 && fabs(fY - 131.873) < 0.001) ||
-            (fabs(fX - 54.5044) < 0.001 && fabs(fY - 85.0464) < 0.001))
+            (fabs(fX - 54.5044) < 0.001 && fabs(fY - 85.0464) < 0.001)) {
           EXPECT_EQ(p_oTree->GetType(), clTreePopulation::snag);
+        }
 
         //Count the species 7 trees both within the cut area and outside it
         if (p_oTree->GetType() != clTreePopulation::snag) {
