@@ -32,13 +32,6 @@ const char* WriteMastingDisperseAutocorrelationXMLFile3();
 const char* WriteMastingDisperseAutocorrelationXMLFile4();
 
 /**
- * Writes a parameter file for normal processing run 5.
- * @param iRandomSeed Random seed.
- * @return Filename written.
- */
-const char* WriteMastingDisperseAutocorrelationXMLFile5(int iRandomSeed);
-
-/**
  * Writes a file where c in fraction participating is not between 0 and 1.
  * @return Filename written.
  */
