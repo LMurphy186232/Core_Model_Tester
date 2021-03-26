@@ -100,6 +100,34 @@ TEST(InsectInfestation, TestErrorProcessing)
     }
     ;
   }
+
+  try
+  {
+    p_oSimManager->ReadFile( WriteInsectInfestationXMLErrorFile7() );
+    FAIL() << "TestInsectInfestation error processing didn't catch error for WriteInsectInfestationXMLErrorFile7.";
+  }
+  catch ( modelErr& err )
+  {
+    if ( err.sFunction.compare("clInsectInfestation::ReadParFile" ) != 0 )
+    {
+      FAIL() << "TestInsectInfestation error processing caught wrong error for WriteInsectInfestationXMLErrorFile7.";
+    }
+    ;
+  }
+
+  try
+  {
+    p_oSimManager->ReadFile( WriteInsectInfestationXMLErrorFile8() );
+    FAIL() << "TestInsectInfestation error processing didn't catch error for WriteInsectInfestationXMLErrorFile8.";
+  }
+  catch ( modelErr& err )
+  {
+    if ( err.sFunction.compare("clInsectInfestation::ReadParFile" ) != 0 )
+    {
+      FAIL() << "TestInsectInfestation error processing caught wrong error for WriteInsectInfestationXMLErrorFile8.";
+    }
+    ;
+  }
   delete p_oSimManager;
 }
 
@@ -1513,6 +1541,97 @@ const char* WriteInsectInfestationXMLErrorFile6()
   return cFileString;
 
 }
+
+/////////////////////////////////////////////////////////////////////////////
+// WriteInsectInfestationXMLErrorFile7()
+/////////////////////////////////////////////////////////////////////////////
+const char* WriteInsectInfestationXMLErrorFile7()
+{
+  using namespace std;
+  const char *cFileString = "TestFile1.xml";
+
+  //Open file to write to
+  std::fstream oOut;
+  oOut.open( cFileString, ios::out | ios::trunc );
+
+  WriteInsectInfestationErrorCommonStuff(oOut);
+
+  oOut << "<InsectInfestation1>"
+      << "<di_insectIntercept>"
+      << "<di_iiVal species=\"Species_1\">0.95</di_iiVal>"
+      << "<di_iiVal species=\"Species_2\">0.01</di_iiVal>"
+      << "</di_insectIntercept>"
+      << "<di_insectMaxInfestation>"
+      << "<di_imiVal species=\"Species_1\">0.9</di_imiVal>"
+      << "<di_imiVal species=\"Species_2\">1</di_imiVal>"
+      << "</di_insectMaxInfestation>"
+      << "<di_insectX0>"
+      << "<di_ix0Val species=\"Species_1\">9</di_ix0Val>"
+      << "<di_ix0Val species=\"Species_2\">9</di_ix0Val>"
+      << "</di_insectX0>"
+      << "<di_insectXb>"
+      << "<di_ixbVal species=\"Species_1\">-6</di_ixbVal>"
+      << "<di_ixbVal species=\"Species_2\">-6</di_ixbVal>"
+      << "</di_insectXb>"
+      << "<di_insectMinDBH>"
+      << "<di_imdVal species=\"Species_1\">2.2</di_imdVal>"
+      << "<di_imdVal species=\"Species_2\">2.2</di_imdVal>"
+      << "</di_insectMinDBH>"
+      << "<di_insectStartTimestep>3</di_insectStartTimestep>"
+      << "</InsectInfestation1>"
+      << "</paramFile>";
+
+  oOut.close();
+
+  return cFileString;
+
+}
+
+/////////////////////////////////////////////////////////////////////////////
+// WriteInsectInfestationXMLErrorFile8()
+/////////////////////////////////////////////////////////////////////////////
+const char* WriteInsectInfestationXMLErrorFile8()
+{
+  using namespace std;
+  const char *cFileString = "TestFile1.xml";
+
+  //Open file to write to
+  std::fstream oOut;
+  oOut.open( cFileString, ios::out | ios::trunc );
+
+  WriteInsectInfestationErrorCommonStuff(oOut);
+
+  oOut << "<InsectInfestation1>"
+      << "<di_insectIntercept>"
+      << "<di_iiVal species=\"Species_1\">0.01</di_iiVal>"
+      << "<di_iiVal species=\"Species_2\">0.01</di_iiVal>"
+      << "</di_insectIntercept>"
+      << "<di_insectMaxInfestation>"
+      << "<di_imiVal species=\"Species_1\">0.9</di_imiVal>"
+      << "<di_imiVal species=\"Species_2\">1</di_imiVal>"
+      << "</di_insectMaxInfestation>"
+      << "<di_insectX0>"
+      << "<di_ix0Val species=\"Species_1\">9</di_ix0Val>"
+      << "<di_ix0Val species=\"Species_2\">9</di_ix0Val>"
+      << "</di_insectX0>"
+      << "<di_insectXb>"
+      << "<di_ixbVal species=\"Species_1\">6</di_ixbVal>"
+      << "<di_ixbVal species=\"Species_2\">-6</di_ixbVal>"
+      << "</di_insectXb>"
+      << "<di_insectMinDBH>"
+      << "<di_imdVal species=\"Species_1\">2.2</di_imdVal>"
+      << "<di_imdVal species=\"Species_2\">2.2</di_imdVal>"
+      << "</di_insectMinDBH>"
+      << "<di_insectStartTimestep>3</di_insectStartTimestep>"
+      << "</InsectInfestation1>"
+      << "</paramFile>";
+
+  oOut.close();
+
+  return cFileString;
+
+}
+
 
 /////////////////////////////////////////////////////////////////////////////
 // WriteInsectInfestationErrorCommonStuff()

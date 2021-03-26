@@ -61,6 +61,18 @@ const char* WriteInsectInfestationXMLErrorFile5();
 const char* WriteInsectInfestationXMLErrorFile6();
 
 /**
+ * Writes an error file where max is less than intercept.
+ * @return File name of the freshly written parameter file.
+ */
+const char* WriteInsectInfestationXMLErrorFile7();
+
+/**
+ * Writes an error file where Xb is not negative.
+ * @return File name of the freshly written parameter file.
+ */
+const char* WriteInsectInfestationXMLErrorFile8();
+
+/**
  * Writes common portions of the test parameter files.
  * @param oOut File stream to write to.
  */
