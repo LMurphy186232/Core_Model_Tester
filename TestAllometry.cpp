@@ -215,19 +215,19 @@ TEST(Allometry, CalcAdultDbh) {
 
 
     fHeight = 0;
-    iSp = 0;  fExpected = -1.163640157;
+    iSp = 0;  fExpected = MINDIAM; // fExpected = -1.163640157;
     fDBH = p_oAllom->CalcAdultDbh(fHeight, iSp);
     EXPECT_LT(fabs(fExpected - fDBH)/fExpected, 0.01);
 
-    iSp = 1;  fExpected = -1.441457116;
+    iSp = 1;  fExpected = MINDIAM; // fExpected = -1.441457116;
     fDBH = p_oAllom->CalcAdultDbh(fHeight, iSp);
     EXPECT_LT(fabs(fExpected - fDBH)/fExpected, 0.01);
 
-    iSp = 2;  fExpected = -1.158144771;
+    iSp = 2;  fExpected = MINDIAM; // fExpected = -1.158144771;
     fDBH = p_oAllom->CalcAdultDbh(fHeight, iSp);
     EXPECT_LT(fabs(fExpected - fDBH)/fExpected, 0.01);
 
-    iSp = 3;  fExpected = 0;
+    iSp = 3;  fExpected = MINDIAM; // fExpected = 0;
     fDBH = p_oAllom->CalcAdultDbh(fHeight, iSp);
     EXPECT_EQ(fExpected, fDBH);
 
@@ -241,45 +241,45 @@ TEST(Allometry, CalcAdultDbh) {
 
 
     fHeight = -35.778;
-    iSp = 0;  fExpected = -22.7398273;
+    iSp = 0;  fExpected = MINDIAM; // fExpected = -22.7398273;
     fDBH = p_oAllom->CalcAdultDbh(fHeight, iSp);
     EXPECT_LT(fabs(fExpected - fDBH)/fExpected, 0.01);
 
-    iSp = 1;  fExpected = -28.18030908;
+    iSp = 1;  fExpected = MINDIAM; // fExpected = -28.18030908;
     fDBH = p_oAllom->CalcAdultDbh(fHeight, iSp);
     EXPECT_LT(fabs(fExpected - fDBH)/fExpected, 0.01);
 
-    iSp = 2;  fExpected = -23.40309388;
+    iSp = 2;  fExpected = MINDIAM; // fExpected = -23.40309388;
     fDBH = p_oAllom->CalcAdultDbh(fHeight, iSp);
     EXPECT_LT(fabs(fExpected - fDBH)/fExpected, 0.01);
 
-    iSp = 3;  fExpected = -37.26875;
+    iSp = 3;  fExpected = MINDIAM; // fExpected = -37.26875;
     fDBH = p_oAllom->CalcAdultDbh(fHeight, iSp);
     EXPECT_LT(fabs(fExpected - fDBH)/fExpected, 0.01);
 
-    iSp = 4;  fExpected = -75.10962;
+    iSp = 4;  fExpected = MINDIAM; // fExpected = -75.10962;
     fDBH = p_oAllom->CalcAdultDbh(fHeight, iSp);
     EXPECT_LT(fabs(fExpected - fDBH)/fExpected, 0.01);
 
-    iSp = 5;  fExpected = -26.82923077;
+    iSp = 5;  fExpected = MINDIAM; // fExpected = -26.82923077;
     fDBH = p_oAllom->CalcAdultDbh(fHeight, iSp);
     EXPECT_LT(fabs(fExpected - fDBH)/fExpected, 0.01);
 
 
     fHeight = 4.30E-28;
-    iSp = 0;  fExpected = -1.163640157;
+    iSp = 0;  fExpected = MINDIAM; // fExpected = -1.163640157;
     fDBH = p_oAllom->CalcAdultDbh(fHeight, iSp);
     EXPECT_LT(fabs(fExpected - fDBH)/fExpected, 0.01);
 
-    iSp = 1;  fExpected = -1.441457116;
+    iSp = 1;  fExpected = MINDIAM; // fExpected = -1.441457116;
     fDBH = p_oAllom->CalcAdultDbh(fHeight, iSp);
     EXPECT_LT(fabs(fExpected - fDBH)/fExpected, 0.01);
 
-    iSp = 2;  fExpected = -1.158144771;
+    iSp = 2;  fExpected = MINDIAM; // fExpected = -1.158144771;
     fDBH = p_oAllom->CalcAdultDbh(fHeight, iSp);
     EXPECT_LT(fabs(fExpected - fDBH)/fExpected, 0.01);
 
-    iSp = 3;  fExpected = 4.47917E-28;
+    iSp = 3;  fExpected = MINDIAM; // fExpected = 4.47917E-28;
     fDBH = p_oAllom->CalcAdultDbh(fHeight, iSp);
     EXPECT_LT(fabs(fExpected - fDBH)/fExpected, 0.01);
 
@@ -774,15 +774,15 @@ TEST(Allometry, CalcSaplingDbh) {
 
 
     fHeight = 0;
-    iSp = 0;  fExpected = -1.163640157;
+    iSp = 0; fExpected = MINDIAM; // fExpected = -1.163640157;
     fDBH = p_oAllom->CalcSaplingDbh(fHeight, iSp);
     EXPECT_LT(fabs(fExpected - fDBH)/fExpected, 0.01);
 
-    iSp = 1;  fExpected = -2.43902439;
+    iSp = 1;  fExpected = MINDIAM; // fExpected = -2.43902439;
     fDBH = p_oAllom->CalcSaplingDbh(fHeight, iSp);
     EXPECT_LT(fabs(fExpected - fDBH)/fExpected, 0.01);
 
-    iSp = 2;  fExpected = -0.847;
+    iSp = 2;  fExpected = MINDIAM; // fExpected = -0.847;
     fDBH = p_oAllom->CalcSaplingDbh(fHeight, iSp);
     EXPECT_LT(fabs(fExpected - fDBH)/fExpected, 0.01);
 
@@ -794,47 +794,47 @@ TEST(Allometry, CalcSaplingDbh) {
     fDBH = p_oAllom->CalcSaplingDbh(fHeight, iSp);
     EXPECT_LT(fabs(fExpected - fDBH)/fExpected, 0.01);
 
-    iSp = 5;  fExpected = -1.158144771;
+    iSp = 5;  fExpected = MINDIAM; // fExpected = -1.158144771;
     fDBH = p_oAllom->CalcSaplingDbh(fHeight, iSp);
     EXPECT_LT(fabs(fExpected - fDBH)/fExpected, 0.01);
 
 
     fHeight = -2.4123;
-    iSp = 0;  fExpected = -3.147179441;
+    iSp = 0;  fExpected = MINDIAM; // fExpected = -3.147179441;
     fDBH = p_oAllom->CalcSaplingDbh(fHeight, iSp);
     EXPECT_LT(fabs(fExpected - fDBH)/fExpected, 0.01);
 
-    iSp = 1;  fExpected = -7.342073171;
+    iSp = 1;  fExpected = MINDIAM; // fExpected = -7.342073171;
     fDBH = p_oAllom->CalcSaplingDbh(fHeight, iSp);
     EXPECT_LT(fabs(fExpected - fDBH)/fExpected, 0.01);
 
-    iSp = 2;  fExpected = -3.50053;
+    iSp = 2;  fExpected = MINDIAM; // fExpected = -3.50053;
     fDBH = p_oAllom->CalcSaplingDbh(fHeight, iSp);
     EXPECT_LT(fabs(fExpected - fDBH)/fExpected, 0.01);
 
-    iSp = 3;  fExpected = -43.93989071;
+    iSp = 3;  fExpected = MINDIAM; // fExpected = -43.93989071;
     fDBH = p_oAllom->CalcSaplingDbh(fHeight, iSp);
     EXPECT_LT(fabs(fExpected - fDBH)/fExpected, 0.01);
 
-    iSp = 4;  fExpected = -2.85745;
+    iSp = 4;  fExpected = MINDIAM; // fExpected = -2.85745;
     fDBH = p_oAllom->CalcSaplingDbh(fHeight, iSp);
     EXPECT_LT(fabs(fExpected - fDBH)/fExpected, 0.01);
 
-    iSp = 5;  fExpected = -3.143665643;
+    iSp = 5;  fExpected = MINDIAM; // fExpected = -3.143665643;
     fDBH = p_oAllom->CalcSaplingDbh(fHeight, iSp);
     EXPECT_LT(fabs(fExpected - fDBH)/fExpected, 0.01);
 
 
     fHeight = 4.30E-28;
-    iSp = 0;  fExpected = -1.163640157;
+    iSp = 0;  fExpected = MINDIAM; // -1.163640157;
     fDBH = p_oAllom->CalcSaplingDbh(fHeight, iSp);
     EXPECT_LT(fabs(fExpected - fDBH)/fExpected, 0.01);
 
-    iSp = 1;  fExpected = -2.43902439;
+    iSp = 1;  fExpected = MINDIAM; // fExpected = -2.43902439;
     fDBH = p_oAllom->CalcSaplingDbh(fHeight, iSp);
     EXPECT_LT(fabs(fExpected - fDBH)/fExpected, 0.01);
 
-    iSp = 2;  fExpected = -0.847;
+    iSp = 2;  fExpected = MINDIAM; // fExpected = -0.847;
     fDBH = p_oAllom->CalcSaplingDbh(fHeight, iSp);
     EXPECT_LT(fabs(fExpected - fDBH)/fExpected, 0.01);
 
@@ -846,7 +846,7 @@ TEST(Allometry, CalcSaplingDbh) {
     fDBH = p_oAllom->CalcSaplingDbh(fHeight, iSp);
     EXPECT_LT(fabs(fExpected - fDBH)/fExpected, 0.01);
 
-    iSp = 5;  fExpected = -1.158144771;
+    iSp = 5;  fExpected = MINDIAM; // fExpected = -1.158144771;
     fDBH = p_oAllom->CalcSaplingDbh(fHeight, iSp);
     EXPECT_LT(fabs(fExpected - fDBH)/fExpected, 0.01);
 
@@ -1335,7 +1335,7 @@ TEST(Allometry, CalcSeedlingDiam10) {
 
 
     fHeight = 0;
-    iSp = 0;  fExpected = -0.09736074;
+    iSp = 0;  fExpected = MINDIAM; //fExpected = -0.09736074;
     fDBH = p_oAllom->CalcSeedlingDiam10(fHeight, iSp);
     EXPECT_LT(fabs(fExpected - fDBH)/fExpected, 0.01);
 
@@ -1343,11 +1343,11 @@ TEST(Allometry, CalcSeedlingDiam10) {
     fDBH = p_oAllom->CalcSeedlingDiam10(fHeight, iSp);
     EXPECT_LT(fabs(fExpected - fDBH)/fExpected, 0.01);
 
-    iSp = 2;  fExpected = -0.011591049;
+    iSp = 2;  fExpected = MINDIAM; //fExpected = -0.011591049;
     fDBH = p_oAllom->CalcSeedlingDiam10(fHeight, iSp);
     EXPECT_LT(fabs(fExpected - fDBH)/fExpected, 0.01);
 
-    iSp = 3;  fExpected = 0;
+    iSp = 3;  fExpected = MINDIAM; //fExpected = 0;
     fDBH = p_oAllom->CalcSeedlingDiam10(fHeight, iSp);
     EXPECT_LT(fabs(fExpected), 0.01);
 
@@ -1361,7 +1361,7 @@ TEST(Allometry, CalcSeedlingDiam10) {
 
 
     fHeight = -0.35234;
-    iSp = 0;  fExpected = -0.437842505;
+    iSp = 0;  fExpected = MINDIAM; //fExpected = -0.437842505;
     fDBH = p_oAllom->CalcSeedlingDiam10(fHeight, iSp);
     EXPECT_LT(fabs(fExpected - fDBH)/fExpected, 0.01);
 
@@ -1369,11 +1369,11 @@ TEST(Allometry, CalcSeedlingDiam10) {
     fDBH = p_oAllom->CalcSeedlingDiam10(fHeight, iSp);
     EXPECT_LT(fabs(fExpected - fDBH)/fExpected, 0.01);
 
-    iSp = 2;  fExpected = -0.052126286;
+    iSp = 2;  fExpected = MINDIAM; //fExpected = -0.052126286;
     fDBH = p_oAllom->CalcSeedlingDiam10(fHeight, iSp);
     EXPECT_LT(fabs(fExpected - fDBH)/fExpected, 0.01);
 
-    iSp = 3;  fExpected = -0.003659155;
+    iSp = 3;  fExpected = MINDIAM; //fExpected = -0.003659155;
     fDBH = p_oAllom->CalcSeedlingDiam10(fHeight, iSp);
     EXPECT_LT(fabs(fExpected - fDBH)/fExpected, 0.01);
 
@@ -1387,7 +1387,7 @@ TEST(Allometry, CalcSeedlingDiam10) {
 
 
     fHeight = 4.30E-28;
-    iSp = 0;  fExpected = -0.09736074;
+    iSp = 0;  fExpected = MINDIAM; //fExpected = -0.09736074;
     fDBH = p_oAllom->CalcSeedlingDiam10(fHeight, iSp);
     EXPECT_LT(fabs(fExpected - fDBH)/fExpected, 0.01);
 
@@ -1395,11 +1395,11 @@ TEST(Allometry, CalcSeedlingDiam10) {
     fDBH = p_oAllom->CalcSeedlingDiam10(fHeight, iSp);
     EXPECT_LT(fabs(fExpected - fDBH)/fExpected, 0.01);
 
-    iSp = 2;  fExpected = -0.011591049;
+    iSp = 2;  fExpected = MINDIAM; //fExpected = -0.011591049;
     fDBH = p_oAllom->CalcSeedlingDiam10(fHeight, iSp);
     EXPECT_LT(fabs(fExpected - fDBH)/fExpected, 0.01);
 
-    iSp = 3;  fExpected = 4.46568E-28;
+    iSp = 3;  fExpected = MINDIAM; //fExpected = 4.46568E-28;
     fDBH = p_oAllom->CalcSeedlingDiam10(fHeight, iSp);
     EXPECT_LT(fabs(fExpected - fDBH)/fExpected, 0.01);
 
@@ -1455,14 +1455,14 @@ TEST(Allometry, ConvertDiam10ToDbh) {
     fCrownDepth = p_oAllom->ConvertDiam10ToDbh(fDBH, iSp);
     EXPECT_LT(fabs(fExpected - fCrownDepth)/fExpected, 0.01);
 
-    iSp = 5;  fExpected = -1.16903658;
+    iSp = 5;  fExpected = MINDIAM; //fExpected = -1.16903658;
     fCrownDepth = p_oAllom->ConvertDiam10ToDbh(fDBH, iSp);
     EXPECT_LT(fabs(fExpected - fCrownDepth)/fExpected, 0.01);
 
 
 
     fDBH = 0;
-    iSp = 0;  fExpected = 0;
+    iSp = 0;  fExpected = MINDIAM; //fExpected = 0;
     fCrownDepth = p_oAllom->ConvertDiam10ToDbh(fDBH, iSp);
     EXPECT_LT(fabs(fExpected), 0.01);
 
@@ -1470,7 +1470,7 @@ TEST(Allometry, ConvertDiam10ToDbh) {
     fCrownDepth = p_oAllom->ConvertDiam10ToDbh(fDBH, iSp);
     EXPECT_LT(fabs(fExpected - fCrownDepth)/fExpected, 0.01);
 
-    iSp = 2;  fExpected = -0.2;
+    iSp = 2;  fExpected = MINDIAM; //fExpected = -0.2;
     fCrownDepth = p_oAllom->ConvertDiam10ToDbh(fDBH, iSp);
     EXPECT_LT(fabs(fExpected - fCrownDepth)/fExpected, 0.01);
 
@@ -1482,34 +1482,34 @@ TEST(Allometry, ConvertDiam10ToDbh) {
     fCrownDepth = p_oAllom->ConvertDiam10ToDbh(fDBH, iSp);
     EXPECT_LT(fabs(fExpected), 0.01);
 
-    iSp = 5;  fExpected = -3;
+    iSp = 5;  fExpected = MINDIAM; //fExpected = -3;
     fCrownDepth = p_oAllom->ConvertDiam10ToDbh(fDBH, iSp);
     EXPECT_LT(fabs(fExpected - fCrownDepth)/fExpected, 0.01);
 
 
 
     fDBH = -9.94983;
-    iSp = 0;  fExpected = -7.967823864;
+    iSp = 0;  fExpected = MINDIAM; //fExpected = -7.967823864;
     fCrownDepth = p_oAllom->ConvertDiam10ToDbh(fDBH, iSp);
     EXPECT_LT(fabs(fExpected - fCrownDepth)/fExpected, 0.01);
 
-    iSp = 1;  fExpected = -4.914178952;
+    iSp = 1;  fExpected = MINDIAM; //fExpected = -4.914178952;
     fCrownDepth = p_oAllom->ConvertDiam10ToDbh(fDBH, iSp);
     EXPECT_LT(fabs(fExpected - fCrownDepth)/fExpected, 0.01);
 
-    iSp = 2;  fExpected = -7.223584997;
+    iSp = 2;  fExpected = MINDIAM; //fExpected = -7.223584997;
     fCrownDepth = p_oAllom->ConvertDiam10ToDbh(fDBH, iSp);
     EXPECT_LT(fabs(fExpected - fCrownDepth)/fExpected, 0.01);
 
-    iSp = 3;  fExpected = -7.667823864;
+    iSp = 3;  fExpected = MINDIAM; //fExpected = -7.667823864;
     fCrownDepth = p_oAllom->ConvertDiam10ToDbh(fDBH, iSp);
     EXPECT_LT(fabs(fExpected - fCrownDepth)/fExpected, 0.01);
 
-    iSp = 4;  fExpected = -5.914178952;
+    iSp = 4;  fExpected = MINDIAM; //fExpected = -5.914178952;
     fCrownDepth = p_oAllom->ConvertDiam10ToDbh(fDBH, iSp);
     EXPECT_LT(fabs(fExpected - fCrownDepth)/fExpected, 0.01);
 
-    iSp = 5;  fExpected = -10.023585;
+    iSp = 5;  fExpected = MINDIAM; //fExpected = -10.023585;
     fCrownDepth = p_oAllom->ConvertDiam10ToDbh(fDBH, iSp);
     EXPECT_LT(fabs(fExpected - fCrownDepth)/fExpected, 0.01);
 
@@ -1544,7 +1544,7 @@ TEST(Allometry, ConvertDiam10ToDbh) {
 
 
     fDBH = 4.30E-28;
-    iSp = 0;  fExpected = 3.44E-28;
+    iSp = 0;  fExpected = MINDIAM; //fExpected = 3.44E-28;
     fCrownDepth = p_oAllom->ConvertDiam10ToDbh(fDBH, iSp);
     EXPECT_LT(fabs(fExpected - fCrownDepth)/fExpected, 0.01);
 
@@ -1552,7 +1552,7 @@ TEST(Allometry, ConvertDiam10ToDbh) {
     fCrownDepth = p_oAllom->ConvertDiam10ToDbh(fDBH, iSp);
     EXPECT_LT(fabs(fExpected - fCrownDepth)/fExpected, 0.01);
 
-    iSp = 2;  fExpected = -0.2;
+    iSp = 2;  fExpected = MINDIAM; //fExpected = -0.2;
     fCrownDepth = p_oAllom->ConvertDiam10ToDbh(fDBH, iSp);
     EXPECT_LT(fabs(fExpected - fCrownDepth)/fExpected, 0.01);
 
@@ -1560,11 +1560,11 @@ TEST(Allometry, ConvertDiam10ToDbh) {
     fCrownDepth = p_oAllom->ConvertDiam10ToDbh(fDBH, iSp);
     EXPECT_LT(fabs(fExpected - fCrownDepth)/fExpected, 0.01);
 
-    iSp = 4;  fExpected = 2.55592E-28;
+    iSp = 4;  fExpected = MINDIAM; //fExpected = 2.55592E-28;
     fCrownDepth = p_oAllom->ConvertDiam10ToDbh(fDBH, iSp);
     EXPECT_LT(fabs(fExpected - fCrownDepth)/fExpected, 0.01);
 
-    iSp = 5;  fExpected = -3;
+    iSp = 5;  fExpected = MINDIAM; //fExpected = -3;
     fCrownDepth = p_oAllom->ConvertDiam10ToDbh(fDBH, iSp);
     EXPECT_LT(fabs(fExpected - fCrownDepth)/fExpected, 0.01);
 
@@ -1623,7 +1623,7 @@ TEST(Allometry, ConvertDbhToDiam10) {
     fCrownDepth = p_oAllom->ConvertDbhToDiam10(fDBH, iSp);
     EXPECT_LT(fabs(fExpected), 0.01);
 
-    iSp = 1;  fExpected = -1.682368775;
+    iSp = 1;  fExpected = MINDIAM; //fExpected = -1.682368775;
     fCrownDepth = p_oAllom->ConvertDbhToDiam10(fDBH, iSp);
     EXPECT_LT(fabs(fExpected - fCrownDepth)/fExpected, 0.01);
 
@@ -1631,7 +1631,7 @@ TEST(Allometry, ConvertDbhToDiam10) {
     fCrownDepth = p_oAllom->ConvertDbhToDiam10(fDBH, iSp);
     EXPECT_LT(fabs(fExpected - fCrownDepth)/fExpected, 0.01);
 
-    iSp = 3;  fExpected = -0.374625375;
+    iSp = 3;  fExpected = MINDIAM; //fExpected = -0.374625375;
     fCrownDepth = p_oAllom->ConvertDbhToDiam10(fDBH, iSp);
     EXPECT_LT(fabs(fExpected - fCrownDepth)/fExpected, 0.01);
 
@@ -1646,27 +1646,27 @@ TEST(Allometry, ConvertDbhToDiam10) {
 
 
     fDBH = -33.98034;
-    iSp = 0;  fExpected = -42.43299201;
+    iSp = 0;  fExpected = MINDIAM; //fExpected = -42.43299201;
     fCrownDepth = p_oAllom->ConvertDbhToDiam10(fDBH, iSp);
     EXPECT_LT(fabs(fExpected - fCrownDepth)/fExpected, 0.01);
 
-    iSp = 1;  fExpected = -58.84983176;
+    iSp = 1;  fExpected = MINDIAM; //fExpected = -58.84983176;
     fCrownDepth = p_oAllom->ConvertDbhToDiam10(fDBH, iSp);
     EXPECT_LT(fabs(fExpected - fCrownDepth)/fExpected, 0.01);
 
-    iSp = 2;  fExpected = -47.85428531;
+    iSp = 2;  fExpected = MINDIAM; //fExpected = -47.85428531;
     fCrownDepth = p_oAllom->ConvertDbhToDiam10(fDBH, iSp);
     EXPECT_LT(fabs(fExpected - fCrownDepth)/fExpected, 0.01);
 
-    iSp = 3;  fExpected = -42.80761738;
+    iSp = 3;  fExpected = MINDIAM; //fExpected = -42.80761738;
     fCrownDepth = p_oAllom->ConvertDbhToDiam10(fDBH, iSp);
     EXPECT_LT(fabs(fExpected - fCrownDepth)/fExpected, 0.01);
 
-    iSp = 4;  fExpected = -57.16746299;
+    iSp = 4;  fExpected = MINDIAM; //fExpected = -57.16746299;
     fCrownDepth = p_oAllom->ConvertDbhToDiam10(fDBH, iSp);
     EXPECT_LT(fabs(fExpected - fCrownDepth)/fExpected, 0.01);
 
-    iSp = 5;  fExpected = -43.88771781;
+    iSp = 5;  fExpected = MINDIAM; //fExpected = -43.88771781;
     fCrownDepth = p_oAllom->ConvertDbhToDiam10(fDBH, iSp);
     EXPECT_LT(fabs(fExpected - fCrownDepth)/fExpected, 0.01);
 
@@ -1700,11 +1700,11 @@ TEST(Allometry, ConvertDbhToDiam10) {
 
 
     fDBH = 4.30E-28;
-    iSp = 0;  fExpected = 5.36963E-28;
+    iSp = 0;  fExpected = MINDIAM; //fExpected = 5.36963E-28;
     fCrownDepth = p_oAllom->ConvertDbhToDiam10(fDBH, iSp);
     EXPECT_LT(fabs(fExpected - fCrownDepth)/fExpected, 0.01);
 
-    iSp = 1;  fExpected = -1.682368775;
+    iSp = 1;  fExpected = MINDIAM; //fExpected = -1.682368775;
     fCrownDepth = p_oAllom->ConvertDbhToDiam10(fDBH, iSp);
     EXPECT_LT(fabs(fExpected - fCrownDepth)/fExpected, 0.01);
 
@@ -1712,11 +1712,11 @@ TEST(Allometry, ConvertDbhToDiam10) {
     fCrownDepth = p_oAllom->ConvertDbhToDiam10(fDBH, iSp);
     EXPECT_LT(fabs(fExpected - fCrownDepth)/fExpected, 0.01);
 
-    iSp = 3;  fExpected = -0.374625375;
+    iSp = 3;  fExpected = MINDIAM; //fExpected = -0.374625375;
     fCrownDepth = p_oAllom->ConvertDbhToDiam10(fDBH, iSp);
     EXPECT_LT(fabs(fExpected - fCrownDepth)/fExpected, 0.01);
 
-    iSp = 4;  fExpected = 7.23419E-28;
+    iSp = 4;  fExpected = MINDIAM; //fExpected = 7.23419E-28;
     fCrownDepth = p_oAllom->ConvertDbhToDiam10(fDBH, iSp);
     EXPECT_LT(fabs(fExpected - fCrownDepth)/fExpected, 0.01);
 
