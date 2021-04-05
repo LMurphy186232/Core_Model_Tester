@@ -54,6 +54,13 @@ const char* WriteSpatialDispersalXMLFile1();
  * @return Filename written.
  */
 const char* WriteSpatialDispersalXMLFile2();
+
+/**
+ * Re-does test 1, but with the beta and STRs only using one set of tags
+ * per function.
+ * @return Filename written.
+ */
+const char* WriteSpatialDispersalXMLFile3();
 //---------------------------------------------------------------------------
 
 #endif // TestSpatialDispersal_H

@@ -536,20 +536,6 @@ TEST(MastingDisperseAutocorrelation, TestErrorProcessing) {
   try
   {
     p_oSimManager->ReadFile(WriteMastingDisperseAutocorrelationXMLErrorFile6());
-    FAIL() << "TestMastingDisperseAutocorrelation error processing didn't catch error for WriteMastingDisperseAutocorrelationXMLErrorFile6.";
-  }
-  catch (modelErr& err)
-  {
-    if (err.sFunction.compare("clMastingDisperseAutocorrelation::GetParameterFileData") != 0)
-    {
-      FAIL() << "TestMastingDisperseAutocorrelation error processing caught wrong error for WriteMastingDisperseAutocorrelationXMLErrorFile6.";
-    }
-    ;
-  }
-
-  try
-  {
-    p_oSimManager->ReadFile(WriteMastingDisperseAutocorrelationXMLErrorFile7());
     FAIL() << "TestMastingDisperseAutocorrelation error processing didn't catch error for WriteMastingDisperseAutocorrelationXMLErrorFile7.";
   }
   catch (modelErr& err)
@@ -641,18 +627,18 @@ const char* WriteMastingDisperseAutocorrelationXMLFile1()
       << "</di_maxDbhForSizeEffect>"
 
       //Beta
-      << "<di_spatialBeta>"
-      << "<di_sbVal species=\"Species_1\">1</di_sbVal>"
-      << "<di_sbVal species=\"Species_2\">1</di_sbVal>"
-      << "<di_sbVal species=\"Species_4\">1</di_sbVal>"
-      << "</di_spatialBeta>"
+      << "<di_weibullCanopyBeta>"
+      << "<di_wcbVal species=\"Species_1\">1</di_wcbVal>"
+      << "<di_wcbVal species=\"Species_2\">1</di_wcbVal>"
+      << "<di_wcbVal species=\"Species_4\">1</di_wcbVal>"
+      << "</di_weibullCanopyBeta>"
 
       //Mean STR
-      << "<di_spatialSTR>"
-      << "<di_sstrVal species=\"Species_1\">1000</di_sstrVal>"
-      << "<di_sstrVal species=\"Species_2\">1000</di_sstrVal>"
-      << "<di_sstrVal species=\"Species_4\">1000</di_sstrVal>"
-      << "</di_spatialSTR>"
+      << "<di_weibullCanopySTR>"
+      << "<di_wcsVal species=\"Species_1\">1000</di_wcsVal>"
+      << "<di_wcsVal species=\"Species_2\">1000</di_wcsVal>"
+      << "<di_wcsVal species=\"Species_4\">1000</di_wcsVal>"
+      << "</di_weibullCanopySTR>"
 
       //A, B, and C for fraction participating
       << "<di_mdaReproFracA>"
@@ -805,18 +791,18 @@ const char* WriteMastingDisperseAutocorrelationXMLFile2()
         << "</di_maxDbhForSizeEffect>"
 
         //Beta
-        << "<di_spatialBeta>"
-        << "<di_sbVal species=\"Species_1\">1</di_sbVal>"
-        << "<di_sbVal species=\"Species_2\">0.8</di_sbVal>"
-        << "<di_sbVal species=\"Species_4\">2</di_sbVal>"
-        << "</di_spatialBeta>"
+        << "<di_weibullCanopyBeta>"
+        << "<di_wcbVal species=\"Species_1\">1</di_wcbVal>"
+        << "<di_wcbVal species=\"Species_2\">0.8</di_wcbVal>"
+        << "<di_wcbVal species=\"Species_4\">2</di_wcbVal>"
+        << "</di_weibullCanopyBeta>"
 
         //Mean STR
-        << "<di_spatialSTR>"
-        << "<di_sstrVal species=\"Species_1\">1000</di_sstrVal>"
-        << "<di_sstrVal species=\"Species_2\">74458</di_sstrVal>"
-        << "<di_sstrVal species=\"Species_4\">1000</di_sstrVal>"
-        << "</di_spatialSTR>"
+        << "<di_weibullCanopySTR>"
+        << "<di_wcsVal species=\"Species_1\">1000</di_wcsVal>"
+        << "<di_wcsVal species=\"Species_2\">74458</di_wcsVal>"
+        << "<di_wcsVal species=\"Species_4\">1000</di_wcsVal>"
+        << "</di_weibullCanopySTR>"
 
         //A, B, and C for fraction participating
         << "<di_mdaReproFracA>"
@@ -969,18 +955,18 @@ const char* WriteMastingDisperseAutocorrelationXMLFile3()
         << "</di_maxDbhForSizeEffect>"
 
         //Beta
-        << "<di_spatialBeta>"
-        << "<di_sbVal species=\"Species_1\">1</di_sbVal>"
-        << "<di_sbVal species=\"Species_2\">0.5</di_sbVal>"
-        << "<di_sbVal species=\"Species_4\">2</di_sbVal>"
-        << "</di_spatialBeta>"
+        << "<di_weibullCanopyBeta>"
+        << "<di_wcbVal species=\"Species_1\">1</di_wcbVal>"
+        << "<di_wcbVal species=\"Species_2\">0.5</di_wcbVal>"
+        << "<di_wcbVal species=\"Species_4\">2</di_wcbVal>"
+        << "</di_weibullCanopyBeta>"
 
         //Mean STR
-        << "<di_spatialSTR>"
-        << "<di_sstrVal species=\"Species_1\">1000</di_sstrVal>"
-        << "<di_sstrVal species=\"Species_2\">744</di_sstrVal>"
-        << "<di_sstrVal species=\"Species_4\">10</di_sstrVal>"
-        << "</di_spatialSTR>"
+        << "<di_weibullCanopySTR>"
+        << "<di_wcsVal species=\"Species_1\">1000</di_wcsVal>"
+        << "<di_wcsVal species=\"Species_2\">744</di_wcsVal>"
+        << "<di_wcsVal species=\"Species_4\">10</di_wcsVal>"
+        << "</di_weibullCanopySTR>"
 
         //A, B, and C for fraction participating
         << "<di_mdaReproFracA>"
@@ -1118,16 +1104,16 @@ const char* WriteMastingDisperseAutocorrelationXMLFile4()
       << "</di_maxDbhForSizeEffect>"
 
       //Beta
-      << "<di_spatialBeta>"
-      << "<di_sbVal species=\"Species_1\">1</di_sbVal>"
-      << "<di_sbVal species=\"Species_2\">1</di_sbVal>"
-      << "</di_spatialBeta>"
+      << "<di_weibullCanopyBeta>"
+      << "<di_wcbVal species=\"Species_1\">1</di_wcbVal>"
+      << "<di_wcbVal species=\"Species_2\">1</di_wcbVal>"
+      << "</di_weibullCanopyBeta>"
 
       //Mean STR
-      << "<di_spatialSTR>"
-      << "<di_sstrVal species=\"Species_1\">100</di_sstrVal>"
-      << "<di_sstrVal species=\"Species_2\">100</di_sstrVal>"
-      << "</di_spatialSTR>"
+      << "<di_weibullCanopySTR>"
+      << "<di_wcsVal species=\"Species_1\">100</di_wcsVal>"
+      << "<di_wcsVal species=\"Species_2\">100</di_wcsVal>"
+      << "</di_weibullCanopySTR>"
 
       //A, B, and C for fraction participating
       << "<di_mdaReproFracA>"
@@ -1493,16 +1479,16 @@ const char* WriteMastingDisperseAutocorrelationXMLErrorFile1()
         << "</di_maxDbhForSizeEffect>"
 
         //Beta
-        << "<di_spatialBeta>"
-        << "<di_sbVal species=\"Species_1\">1</di_sbVal>"
-        << "<di_sbVal species=\"Species_2\">1</di_sbVal>"
-        << "</di_spatialBeta>"
+        << "<di_weibullCanopyBeta>"
+        << "<di_wcbVal species=\"Species_1\">1</di_wcbVal>"
+        << "<di_wcbVal species=\"Species_2\">1</di_wcbVal>"
+        << "</di_weibullCanopyBeta>"
 
         //Mean STR
-        << "<di_spatialSTR>"
-        << "<di_sstrVal species=\"Species_1\">1000</di_sstrVal>"
-        << "<di_sstrVal species=\"Species_2\">1000</di_sstrVal>"
-        << "</di_spatialSTR>"
+        << "<di_weibullCanopySTR>"
+        << "<di_wcsVal species=\"Species_1\">1000</di_wcsVal>"
+        << "<di_wcsVal species=\"Species_2\">1000</di_wcsVal>"
+        << "</di_weibullCanopySTR>"
 
         //A, B, and C for fraction participating
         << "<di_mdaReproFracA>"
@@ -1638,16 +1624,16 @@ const char* WriteMastingDisperseAutocorrelationXMLErrorFile2()
       << "</di_maxDbhForSizeEffect>"
 
       //Beta
-      << "<di_spatialBeta>"
-      << "<di_sbVal species=\"Species_1\">1</di_sbVal>"
-      << "<di_sbVal species=\"Species_2\">1</di_sbVal>"
-      << "</di_spatialBeta>"
+      << "<di_weibullCanopyBeta>"
+      << "<di_wcbVal species=\"Species_1\">1</di_wcbVal>"
+      << "<di_wcbVal species=\"Species_2\">1</di_wcbVal>"
+      << "</di_weibullCanopyBeta>"
 
       //Mean STR
-      << "<di_spatialSTR>"
-      << "<di_sstrVal species=\"Species_1\">1000</di_sstrVal>"
-      << "<di_sstrVal species=\"Species_2\">1000</di_sstrVal>"
-      << "</di_spatialSTR>"
+      << "<di_weibullCanopySTR>"
+      << "<di_wcsVal species=\"Species_1\">1000</di_wcsVal>"
+      << "<di_wcsVal species=\"Species_2\">1000</di_wcsVal>"
+      << "</di_weibullCanopySTR>"
 
       //A, B, and C for fraction participating
       << "<di_mdaReproFracA>"
@@ -1775,16 +1761,16 @@ const char* WriteMastingDisperseAutocorrelationXMLErrorFile3()
         << "</di_maxDbhForSizeEffect>"
 
         //Beta
-        << "<di_spatialBeta>"
-        << "<di_sbVal species=\"Species_1\">1</di_sbVal>"
-        << "<di_sbVal species=\"Species_2\">1</di_sbVal>"
-        << "</di_spatialBeta>"
+        << "<di_weibullCanopyBeta>"
+        << "<di_wcbVal species=\"Species_1\">1</di_wcbVal>"
+        << "<di_wcbVal species=\"Species_2\">1</di_wcbVal>"
+        << "</di_weibullCanopyBeta>"
 
         //Mean STR
-        << "<di_spatialSTR>"
-        << "<di_sstrVal species=\"Species_1\">1000</di_sstrVal>"
-        << "<di_sstrVal species=\"Species_2\">1000</di_sstrVal>"
-        << "</di_spatialSTR>"
+        << "<di_weibullCanopySTR>"
+        << "<di_wcsVal species=\"Species_1\">1000</di_wcsVal>"
+        << "<di_wcsVal species=\"Species_2\">1000</di_wcsVal>"
+        << "</di_weibullCanopySTR>"
 
         //A, B, and C for fraction participating
         << "<di_mdaReproFracA>"
@@ -1911,16 +1897,16 @@ const char* WriteMastingDisperseAutocorrelationXMLErrorFile4()
         << "</di_maxDbhForSizeEffect>"
 
         //Beta
-        << "<di_spatialBeta>"
-        << "<di_sbVal species=\"Species_1\">1</di_sbVal>"
-        << "<di_sbVal species=\"Species_2\">1</di_sbVal>"
-        << "</di_spatialBeta>"
+        << "<di_weibullCanopyBeta>"
+        << "<di_wcbVal species=\"Species_1\">1</di_wcbVal>"
+        << "<di_wcbVal species=\"Species_2\">1</di_wcbVal>"
+        << "</di_weibullCanopyBeta>"
 
         //Mean STR
-        << "<di_spatialSTR>"
-        << "<di_sstrVal species=\"Species_1\">1000</di_sstrVal>"
-        << "<di_sstrVal species=\"Species_2\">1000</di_sstrVal>"
-        << "</di_spatialSTR>"
+        << "<di_weibullCanopySTR>"
+        << "<di_wcsVal species=\"Species_1\">1000</di_wcsVal>"
+        << "<di_wcsVal species=\"Species_2\">1000</di_wcsVal>"
+        << "</di_weibullCanopySTR>"
 
         //A, B, and C for fraction participating
         << "<di_mdaReproFracA>"
@@ -2047,16 +2033,16 @@ const char* WriteMastingDisperseAutocorrelationXMLErrorFile5()
         << "</di_maxDbhForSizeEffect>"
 
         //Beta
-        << "<di_spatialBeta>"
-        << "<di_sbVal species=\"Species_1\">1</di_sbVal>"
-        << "<di_sbVal species=\"Species_2\">1</di_sbVal>"
-        << "</di_spatialBeta>"
+        << "<di_weibullCanopyBeta>"
+        << "<di_wcbVal species=\"Species_1\">1</di_wcbVal>"
+        << "<di_wcbVal species=\"Species_2\">1</di_wcbVal>"
+        << "</di_weibullCanopyBeta>"
 
         //Mean STR
-        << "<di_spatialSTR>"
-        << "<di_sstrVal species=\"Species_1\">1000</di_sstrVal>"
-        << "<di_sstrVal species=\"Species_2\">1000</di_sstrVal>"
-        << "</di_spatialSTR>"
+        << "<di_weibullCanopySTR>"
+        << "<di_wcsVal species=\"Species_1\">1000</di_wcsVal>"
+        << "<di_wcsVal species=\"Species_2\">1000</di_wcsVal>"
+        << "</di_weibullCanopySTR>"
 
         //A, B, and C for fraction participating
         << "<di_mdaReproFracA>"
@@ -2183,152 +2169,16 @@ const char* WriteMastingDisperseAutocorrelationXMLErrorFile6()
         << "</di_maxDbhForSizeEffect>"
 
         //Beta
-        << "<di_spatialBeta>"
-        << "<di_sbVal species=\"Species_1\">1</di_sbVal>"
-        << "<di_sbVal species=\"Species_2\">1</di_sbVal>"
-        << "</di_spatialBeta>"
+        << "<di_weibullCanopyBeta>"
+        << "<di_wcbVal species=\"Species_1\">1</di_wcbVal>"
+        << "<di_wcbVal species=\"Species_2\">1</di_wcbVal>"
+        << "</di_weibullCanopyBeta>"
 
         //Mean STR
-        << "<di_spatialSTR>"
-        << "<di_sstrVal species=\"Species_1\">1000</di_sstrVal>"
-        << "<di_sstrVal species=\"Species_2\">1000</di_sstrVal>"
-        << "</di_spatialSTR>"
-
-        //A, B, and C for fraction participating
-        << "<di_mdaReproFracA>"
-        << "<di_mdarfaVal species=\"Species_1\">1</di_mdarfaVal>"
-        << "<di_mdarfaVal species=\"Species_2\">1</di_mdarfaVal>"
-        << "</di_mdaReproFracA>"
-        << "<di_mdaReproFracB>"
-        << "<di_mdarfbVal species=\"Species_1\">1</di_mdarfbVal>"
-        << "<di_mdarfbVal species=\"Species_2\">1</di_mdarfbVal>"
-        << "</di_mdaReproFracB>"
-        << "<di_mdaReproFracC>"
-        << "<di_mdarfcVal species=\"Species_1\">0</di_mdarfcVal>"
-        << "<di_mdarfcVal species=\"Species_2\">1</di_mdarfcVal>"
-        << "</di_mdaReproFracC>"
-
-        //Autocorrelation factor for rho
-        << "<di_mdaRhoACF>"
-        << "<di_mdaraVal species=\"Species_1\">1</di_mdaraVal>"
-        << "<di_mdaraVal species=\"Species_2\">0</di_mdaraVal>"
-        << "</di_mdaRhoACF>"
-
-        //Standard deviation for noise for rho
-        << "<di_mdaRhoNoiseSD>"
-        << "<di_mdarnsdVal species=\"Species_1\">0</di_mdarnsdVal>"
-        << "<di_mdarnsdVal species=\"Species_2\">0</di_mdarnsdVal>"
-        << "</di_mdaRhoNoiseSD>"
-
-        //Slope and intercept of the linear function of DBH for individual
-        //probability of reproducting
-        << "<di_mdaPRA>"
-        << "<di_mdapraVal species=\"Species_1\">0.75</di_mdapraVal>"
-        << "<di_mdapraVal species=\"Species_2\">0.75</di_mdapraVal>"
-        << "</di_mdaPRA>"
-        << "<di_mdaPRB>"
-        << "<di_mdaprbVal species=\"Species_1\">0.004</di_mdaprbVal>"
-        << "<di_mdaprbVal species=\"Species_2\">0.004</di_mdaprbVal>"
-        << "</di_mdaPRB>"
-
-        //Seed producer score standard deviation
-        << "<di_mdaSPSSD>"
-        << "<di_mdaspssdVal species=\"Species_1\">0.1</di_mdaspssdVal>"
-        << "<di_mdaspssdVal species=\"Species_2\">0.1</di_mdaspssdVal>"
-        << "</di_mdaSPSSD>"
-
-        << "<di_canopyFunction>"
-        << "<di_cfVal species=\"Species_1\">0</di_cfVal>"
-        << "<di_cfVal species=\"Species_2\">0</di_cfVal>"
-        << "</di_canopyFunction>"
-        << "<di_weibullCanopyDispersal>"
-        << "<di_wcdVal species=\"Species_1\">1.76E-04</di_wcdVal>"
-        << "<di_wcdVal species=\"Species_2\">1.82E-04</di_wcdVal>"
-        << "</di_weibullCanopyDispersal>"
-        << "<di_weibullCanopyTheta>"
-        << "<di_wctVal species=\"Species_1\">3</di_wctVal>"
-        << "<di_wctVal species=\"Species_2\">3</di_wctVal>"
-        << "</di_weibullCanopyTheta>"
-        << "</MastingDisperseAutocorrelation1>"
-        << "</paramFile>";
-
-    oOut.close();
-
-    return cFileString;
-}
-
-/////////////////////////////////////////////////////////////////////////////
-//WriteMastingDisperseAutocorrelationXMLErrorFile7()
-/////////////////////////////////////////////////////////////////////////////
-const char* WriteMastingDisperseAutocorrelationXMLErrorFile7()
-{
-  using namespace std;
-    const char *cFileString = "TestFile1.xml";
-
-    //Open file to write to
-    fstream oOut;
-    oOut.open(cFileString, ios::out | ios::trunc);
-
-    oOut << "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?>"
-        << "<paramFile fileCode=\"06070101\">"
-        << "<plot>"
-        << "<timesteps>5</timesteps>"
-        << "<randomSeed>0</randomSeed>"
-        << "<yearsPerTimestep>1</yearsPerTimestep>"
-        << "<plot_lenX>200.0</plot_lenX>"
-        << "<plot_lenY>200.0</plot_lenY>"
-        << "<plot_precip_mm_yr>1150.645781</plot_precip_mm_yr>"
-        << "<plot_temp_C>12.88171785</plot_temp_C>"
-        << "<plot_latitude>55.37</plot_latitude>"
-        << "</plot>";
-
-    WriteMastingDisperseAutocorrelationTreesForError(oOut);
-
-    oOut << "<behaviorList>"
-        << "<behavior>"
-        << "<behaviorName>MastingDisperseAutocorrelation</behaviorName>"
-        << "<version>1.0</version>"
-        << "<listPosition>1</listPosition>"
-        << "<applyTo species=\"Species_1\" type=\"Adult\"/>"
-        << "<applyTo species=\"Species_2\" type=\"Adult\"/>"
-        << "</behavior>"
-        << "<behavior>"
-        << "<behaviorName>Establishment</behaviorName>"
-        << "<version>1.0</version>"
-        << "<listPosition>2</listPosition>"
-        << "<applyTo species=\"Species_1\" type=\"Seed\"/>"
-        << "<applyTo species=\"Species_2\" type=\"Seed\"/>"
-        << "</behavior>"
-        << "</behaviorList>";
-
-    WriteMastingDisperseAutocorrelationAllometryForError(oOut);
-
-    oOut << "<GeneralDisperse>"
-        << "<di_seedDistributionMethod>0</di_seedDistributionMethod>"
-        << "</GeneralDisperse>"
-        << "<MastingDisperseAutocorrelation1>"
-        << "<di_minDbhForReproduction>"
-        << "<di_mdfrVal species=\"Species_1\">10.0</di_mdfrVal>"
-        << "<di_mdfrVal species=\"Species_2\">10.0</di_mdfrVal>"
-        << "</di_minDbhForReproduction>"
-
-        //Maximum DBH for size effects
-        << "<di_maxDbhForSizeEffect>"
-        << "<di_mdfseVal species=\"Species_1\">100</di_mdfseVal>"
-        << "<di_mdfseVal species=\"Species_2\">100</di_mdfseVal>"
-        << "</di_maxDbhForSizeEffect>"
-
-        //Beta
-        << "<di_spatialBeta>"
-        << "<di_sbVal species=\"Species_1\">1</di_sbVal>"
-        << "<di_sbVal species=\"Species_2\">1</di_sbVal>"
-        << "</di_spatialBeta>"
-
-        //Mean STR
-        << "<di_spatialSTR>"
-        << "<di_sstrVal species=\"Species_1\">1000</di_sstrVal>"
-        << "<di_sstrVal species=\"Species_2\">1000</di_sstrVal>"
-        << "</di_spatialSTR>"
+        << "<di_weibullCanopySTR>"
+        << "<di_wcsVal species=\"Species_1\">1000</di_wcsVal>"
+        << "<di_wcsVal species=\"Species_2\">1000</di_wcsVal>"
+        << "</di_weibullCanopySTR>"
 
         //A, B, and C for fraction participating
         << "<di_mdaReproFracA>"

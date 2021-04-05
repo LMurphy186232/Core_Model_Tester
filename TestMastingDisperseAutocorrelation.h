@@ -62,16 +62,10 @@ const char* WriteMastingDisperseAutocorrelationXMLErrorFile4();
 const char* WriteMastingDisperseAutocorrelationXMLErrorFile5();
 
 /**
- * Writes a file where Autocorrelation factor = 0
- * @return Filename written.
- */
-const char* WriteMastingDisperseAutocorrelationXMLErrorFile6();
-
-/**
  * Writes a file where seed producer score standard deviation < 0
  * @return Filename written.
  */
-const char* WriteMastingDisperseAutocorrelationXMLErrorFile7();
+const char* WriteMastingDisperseAutocorrelationXMLErrorFile6();
 
 /**
  * Writes tree stuff.
