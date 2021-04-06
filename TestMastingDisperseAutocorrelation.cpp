@@ -164,11 +164,13 @@ TEST(MastingDisperseAutocorrelation, NormalProcessingRun1) {
     //------------------------------------------------------------------------/
     for (iNumSp1 = 0; iNumSp1 < 1000; iNumSp1++) {
       p_oPop->CreateTree(10, 1, 0, clTreePopulation::adult, 20.0);
+      p_oPop->CreateTree(10, 1, 2, clTreePopulation::adult, 20.0);
     }
     p_oSimManager->RunSim(1);
 
     // Calculate mean
     iNumSp1 = 0;
+
     fMean = 0;
     p_oAllTrees = p_oPop->Find("all");
     p_oTree = p_oAllTrees->NextTree();
@@ -177,6 +179,9 @@ TEST(MastingDisperseAutocorrelation, NormalProcessingRun1) {
         p_oTree->GetValue(p_oPop->GetFloatDataCode("sps", p_oTree->GetSpecies(), p_oTree->GetType()), &fTemp);
         fMean += fTemp;
         iNumSp1++;
+      } else if (p_oTree->GetType() == clTreePopulation::adult && 2 == p_oTree->GetSpecies()) {
+        p_oTree->GetValue(p_oPop->GetFloatDataCode("sps", p_oTree->GetSpecies(), p_oTree->GetType()), &fTemp);
+        EXPECT_EQ(1, fTemp);
       }
       p_oTree = p_oAllTrees->NextTree();
     }
@@ -584,6 +589,7 @@ const char* WriteMastingDisperseAutocorrelationXMLFile1()
       << "<listPosition>1</listPosition>"
       << "<applyTo species=\"Species_1\" type=\"Adult\"/>"
       << "<applyTo species=\"Species_2\" type=\"Adult\"/>"
+      << "<applyTo species=\"Species_3\" type=\"Adult\"/>"
       << "<applyTo species=\"Species_4\" type=\"Adult\"/>"
       << "</behavior>"
       << "<behavior>"
@@ -592,6 +598,7 @@ const char* WriteMastingDisperseAutocorrelationXMLFile1()
       << "<listPosition>2</listPosition>"
       << "<applyTo species=\"Species_1\" type=\"Seed\"/>"
       << "<applyTo species=\"Species_2\" type=\"Seed\"/>"
+      << "<applyTo species=\"Species_3\" type=\"Seed\"/>"
       << "<applyTo species=\"Species_4\" type=\"Seed\"/>"
       << "</behavior>"
       << "</behaviorList>";
@@ -623,6 +630,7 @@ const char* WriteMastingDisperseAutocorrelationXMLFile1()
       << "<di_maxDbhForSizeEffect>"
       << "<di_mdfseVal species=\"Species_1\">100</di_mdfseVal>"
       << "<di_mdfseVal species=\"Species_2\">100</di_mdfseVal>"
+      << "<di_mdfseVal species=\"Species_3\">100</di_mdfseVal>"
       << "<di_mdfseVal species=\"Species_4\">100</di_mdfseVal>"
       << "</di_maxDbhForSizeEffect>"
 
@@ -630,6 +638,7 @@ const char* WriteMastingDisperseAutocorrelationXMLFile1()
       << "<di_weibullCanopyBeta>"
       << "<di_wcbVal species=\"Species_1\">1</di_wcbVal>"
       << "<di_wcbVal species=\"Species_2\">1</di_wcbVal>"
+      << "<di_wcbVal species=\"Species_3\">1</di_wcbVal>"
       << "<di_wcbVal species=\"Species_4\">1</di_wcbVal>"
       << "</di_weibullCanopyBeta>"
 
@@ -637,6 +646,7 @@ const char* WriteMastingDisperseAutocorrelationXMLFile1()
       << "<di_weibullCanopySTR>"
       << "<di_wcsVal species=\"Species_1\">1000</di_wcsVal>"
       << "<di_wcsVal species=\"Species_2\">1000</di_wcsVal>"
+      << "<di_wcsVal species=\"Species_3\">1</di_wcsVal>"
       << "<di_wcsVal species=\"Species_4\">1000</di_wcsVal>"
       << "</di_weibullCanopySTR>"
 
@@ -644,16 +654,19 @@ const char* WriteMastingDisperseAutocorrelationXMLFile1()
       << "<di_mdaReproFracA>"
       << "<di_mdarfaVal species=\"Species_1\">1</di_mdarfaVal>"
       << "<di_mdarfaVal species=\"Species_2\">10000</di_mdarfaVal>"
+      << "<di_mdarfaVal species=\"Species_3\">10000</di_mdarfaVal>"
       << "<di_mdarfaVal species=\"Species_4\">10000</di_mdarfaVal>"
       << "</di_mdaReproFracA>"
       << "<di_mdaReproFracB>"
       << "<di_mdarfbVal species=\"Species_1\">1</di_mdarfbVal>"
       << "<di_mdarfbVal species=\"Species_2\">1</di_mdarfbVal>"
+      << "<di_mdarfbVal species=\"Species_3\">1</di_mdarfbVal>"
       << "<di_mdarfbVal species=\"Species_4\">1</di_mdarfbVal>"
       << "</di_mdaReproFracB>"
       << "<di_mdaReproFracC>"
       << "<di_mdarfcVal species=\"Species_1\">0</di_mdarfcVal>"
       << "<di_mdarfcVal species=\"Species_2\">1</di_mdarfcVal>"
+      << "<di_mdarfcVal species=\"Species_3\">1</di_mdarfcVal>"
       << "<di_mdarfcVal species=\"Species_4\">1</di_mdarfcVal>"
       << "</di_mdaReproFracC>"
 
@@ -661,6 +674,7 @@ const char* WriteMastingDisperseAutocorrelationXMLFile1()
       << "<di_mdaRhoACF>"
       << "<di_mdaraVal species=\"Species_1\">1</di_mdaraVal>"
       << "<di_mdaraVal species=\"Species_2\">1</di_mdaraVal>"
+      << "<di_mdaraVal species=\"Species_3\">1</di_mdaraVal>"
       << "<di_mdaraVal species=\"Species_4\">1</di_mdaraVal>"
       << "</di_mdaRhoACF>"
 
@@ -668,6 +682,7 @@ const char* WriteMastingDisperseAutocorrelationXMLFile1()
       << "<di_mdaRhoNoiseSD>"
       << "<di_mdarnsdVal species=\"Species_1\">0</di_mdarnsdVal>"
       << "<di_mdarnsdVal species=\"Species_2\">0</di_mdarnsdVal>"
+      << "<di_mdarnsdVal species=\"Species_3\">0</di_mdarnsdVal>"
       << "<di_mdarnsdVal species=\"Species_4\">0</di_mdarnsdVal>"
       << "</di_mdaRhoNoiseSD>"
 
@@ -676,11 +691,13 @@ const char* WriteMastingDisperseAutocorrelationXMLFile1()
       << "<di_mdaPRA>"
       << "<di_mdapraVal species=\"Species_1\">0.75</di_mdapraVal>"
       << "<di_mdapraVal species=\"Species_2\">100</di_mdapraVal>"
+      << "<di_mdapraVal species=\"Species_3\">100</di_mdapraVal>"
       << "<di_mdapraVal species=\"Species_4\">100</di_mdapraVal>"
       << "</di_mdaPRA>"
       << "<di_mdaPRB>"
       << "<di_mdaprbVal species=\"Species_1\">0.004</di_mdaprbVal>"
       << "<di_mdaprbVal species=\"Species_2\">0.004</di_mdaprbVal>"
+      << "<di_mdaprbVal species=\"Species_3\">0.004</di_mdaprbVal>"
       << "<di_mdaprbVal species=\"Species_4\">0.004</di_mdaprbVal>"
       << "</di_mdaPRB>"
 
@@ -688,22 +705,26 @@ const char* WriteMastingDisperseAutocorrelationXMLFile1()
       << "<di_mdaSPSSD>"
       << "<di_mdaspssdVal species=\"Species_1\">0.1</di_mdaspssdVal>"
       << "<di_mdaspssdVal species=\"Species_2\">0.1</di_mdaspssdVal>"
+      << "<di_mdaspssdVal species=\"Species_3\">0</di_mdaspssdVal>"
       << "<di_mdaspssdVal species=\"Species_4\">0.1</di_mdaspssdVal>"
       << "</di_mdaSPSSD>"
 
       << "<di_canopyFunction>"
       << "<di_cfVal species=\"Species_1\">0</di_cfVal>"
       << "<di_cfVal species=\"Species_2\">0</di_cfVal>"
+      << "<di_cfVal species=\"Species_3\">0</di_cfVal>"
       << "<di_cfVal species=\"Species_4\">0</di_cfVal>"
       << "</di_canopyFunction>"
       << "<di_weibullCanopyDispersal>"
       << "<di_wcdVal species=\"Species_1\">1.76E-04</di_wcdVal>"
       << "<di_wcdVal species=\"Species_2\">1.82E-04</di_wcdVal>"
+      << "<di_wcdVal species=\"Species_3\">1.82E-04</di_wcdVal>"
       << "<di_wcdVal species=\"Species_4\">9.61E-05</di_wcdVal>"
       << "</di_weibullCanopyDispersal>"
       << "<di_weibullCanopyTheta>"
       << "<di_wctVal species=\"Species_1\">3</di_wctVal>"
       << "<di_wctVal species=\"Species_2\">3</di_wctVal>"
+      << "<di_wctVal species=\"Species_3\">3</di_wctVal>"
       << "<di_wctVal species=\"Species_4\">3</di_wctVal>"
       << "</di_weibullCanopyTheta>"
       << "</MastingDisperseAutocorrelation1>"
