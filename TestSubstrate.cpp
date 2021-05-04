@@ -43,6 +43,12 @@ TEST(Substrate, TestTreeFall) {
     //Grab our pointers
     p_oPop = (clTreePopulation*) p_oSimManager->GetPopulationObject("treepopulation");
 
+    // There should not be packages from our initial conditions - this tests
+    // that the substrate map flag was triggered
+    clGrid *p_oSubstrateGrid = p_oSimManager->GetGridObject("Substrate");
+    clPackage *p_oCohort = p_oSubstrateGrid->GetFirstPackageOfCell(0, 0);
+    ASSERT_TRUE(NULL == p_oCohort);
+
     //Create 1000 of each species of tree, all adults
     for (i = 0; i < 1000; i++) {
       p_oTree = p_oPop->CreateTree(1, 1, 0, clTreePopulation::adult, 17);
@@ -131,6 +137,12 @@ TEST(Substrate, TestTreeFall) {
 
     //Run for 1 timestep
     p_oSimManager->RunSim(1);
+
+    // There should be packages from our initial conditions - this tests
+    // that the substrate map flag was not triggered
+    p_oSubstrateGrid = p_oSimManager->GetGridObject("Substrate");
+    p_oCohort = p_oSubstrateGrid->GetFirstPackageOfCell(0, 0);
+    ASSERT_TRUE(NULL != p_oCohort);
 
     //Create 1000 of each species of tree, all adults
     for (i = 0; i < 1000; i++) {
@@ -4348,6 +4360,14 @@ const char* WriteSubstrateXMLFile5()
        << "</ma_floatCodes>"
        << "<ma_lengthXCells>3</ma_lengthXCells>"
        << "<ma_lengthYCells>2</ma_lengthYCells>"
+       << "<ma_v y=\"0\" x=\"0\">"
+       << "<fl c=\"0\">0</fl>"
+       << "<fl c=\"1\">0</fl>"
+       << "<fl c=\"2\">0</fl>"
+       << "<fl c=\"3\">0.00289823</fl>"
+       << "<fl c=\"4\">0</fl>"
+       << "<fl c=\"5\">0.997102</fl>"
+       << "</ma_v>"
        << "</grid>"
        << "<grid gridName=\"substratecalcs\">"
        << "<ma_floatCodes>"
@@ -4486,6 +4506,9 @@ const char* WriteSubstrateXMLFile5()
        << "<su_podfVal species=\"Species_3\">0.0</su_podfVal>"
        << "</su_propOfDeadFall>"
        << "<su_propOfFallUproot>"
+       //<< "<su_pofuVal species=\"Species_1\">1</su_pofuVal>"
+       //<< "<su_pofuVal species=\"Species_2\">1</su_pofuVal>"
+       //<< "<su_pofuVal species=\"Species_3\">1</su_pofuVal>"
        << "<su_pofuVal species=\"Species_1\">1</su_pofuVal>"
        << "<su_pofuVal species=\"Species_2\">1</su_pofuVal>"
        << "<su_pofuVal species=\"Species_3\">1</su_pofuVal>"
