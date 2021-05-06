@@ -33,6 +33,9 @@ TEST(DetailedSubstrate, TestSubstrateGridSetup) {
     EXPECT_LT(fabs(p_oSubstrateGrid->GetLengthXCells() - 8), 0.001);
     EXPECT_LT(fabs(p_oSubstrateGrid->GetLengthYCells() - 8), 0.001);
 
+    EXPECT_TRUE(p_oSubstrateGrid->GetFloatDataCode("loggroup1smalldecay1") > -1);
+    EXPECT_TRUE(p_oSubstrateGrid->GetFloatDataCode("vloggroup1smalldecay1") > -1);
+
     //Feed file # 2 and make sure grid resolutions are right
     p_oSimManager->ReadFile(WriteDetailedSubstrateXMLFile2());
     p_oSubstrateGrid = p_oSimManager->GetGridObject("DetailedSubstrate");
@@ -46,6 +49,10 @@ TEST(DetailedSubstrate, TestSubstrateGridSetup) {
 
     p_oSubstrateCalcsGrid->GetValueOfCell(0, 0, p_oSubstrateCalcsGrid->GetFloatDataCode("newtipup"), &fVal);
     EXPECT_LT(fabs(fVal - 0.1), 0.001);
+
+    EXPECT_TRUE(p_oSubstrateGrid->GetFloatDataCode("loggroup1smalldecay1") > -1);
+    EXPECT_TRUE(p_oSubstrateGrid->GetFloatDataCode("vloggroup1smalldecay1") > -1);
+
     delete p_oSimManager;
   } catch (modelErr &e) {
     delete p_oSimManager;
