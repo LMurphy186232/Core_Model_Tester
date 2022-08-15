@@ -31,7 +31,7 @@ TEST(FoliarChemistry, TestNormalProcessingRun1) {
 
     //Now do the run
     p_oSimManager->RunSim(1);
-    p_oGrid = p_oSimManager->GetGridObject("Foliar Chemistry");
+    p_oGrid = p_oSimManager->GetGridObject("Rodent Lambda");
     ASSERT_TRUE(NULL != p_oGrid);
 
     //************
