@@ -19,7 +19,7 @@
 // results compared. Then we check seed distribution by checking the number of
 // seedlings out of an original 100 that have z values greater than 0.
 /////////////////////////////////////////////////////////////////////////////
-TEST(MicroEstablishment, TestGetSubstrateProportions) {
+/*TEST(MicroEstablishment, TestGetSubstrateProportions) {
   clTreePopulation *p_oPop;
   clMicroEstablishment *p_oEstablishment;
   clGrid *p_oSubstrate, *p_oSeeds;
@@ -926,7 +926,7 @@ TEST(MicroEstablishment, TestGetSubstrateProportions) {
     delete p_oSimManager;
     FAIL() << "Testing failed in function: " << e.sFunction << " with message: " << e.sMoreInfo;
   }
-}
+} */
 
 /////////////////////////////////////////////////////////////////////////////
 // TestGetFreshLogProportions()
@@ -936,7 +936,7 @@ TEST(MicroEstablishment, TestGetSubstrateProportions) {
 // all three, specific substrate proportions are assigned to cells and the
 // results compared.
 /////////////////////////////////////////////////////////////////////////////
-TEST(MicroEstablishment, TestGetFreshLogProportions) {
+/*TEST(MicroEstablishment, TestGetFreshLogProportions) {
   clMicroEstablishment *p_oEstablishment;
   clGrid *p_oSubstrate, *p_oSeeds;
   clPackage *p_oCohort;
@@ -1525,7 +1525,7 @@ TEST(MicroEstablishment, TestGetFreshLogProportions) {
     delete p_oSimManager;
     FAIL() << "Testing failed in function: " << e.sFunction << " with message: " << e.sMoreInfo;
   }
-}
+} */
 
 /////////////////////////////////////////////////////////////////////////////
 // TestMoundZDistributions()
@@ -1677,7 +1677,7 @@ TEST(MicroEstablishment, TestGetFreshLogProportions) {
 // will be split evenly between the four possible ages: 0, 2, 4, and 6. Then
 // the seedlings are checked to make sure they're roughly equal to those ages.
 /////////////////////////////////////////////////////////////////////////////
-TEST(MicroEstablishment, TestSetZAndRespite) {
+/*TEST(MicroEstablishment, TestSetZAndRespite) {
   clMicroEstablishment *p_oEstablishment;
   clTreePopulation * p_oPop;
   clTreeSearch *p_oAllSeedlings;
@@ -1806,7 +1806,7 @@ TEST(MicroEstablishment, TestSetZAndRespite) {
     delete p_oSimManager;
     FAIL() << "Testing failed in function: " << e.sFunction << " with message: " << e.sMoreInfo;
   }
-}
+}*/
 
 /////////////////////////////////////////////////////////////////////////////
 // TestErrorProcessing()
@@ -2487,3 +2487,4 @@ void WriteMicroEstablishmentCommonStuff( std::fstream &oOut )
        << "</tr_whatSaplingCrownHeightHeight>"
        << "</allometry>";
 }
+
