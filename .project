@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>Core Model Tester Current</name>
+	<name>Core_Model_Tester</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -28,7 +28,7 @@
 		<link>
 			<name>Core_Model</name>
 			<type>2</type>
-			<location>C:/Code/current_development/Core_Model</location>
+			<location>C:/Code/current_development/Core_Model_Alana/Core_Model</location>
 		</link>
 	</linkedResources>
 </projectDescription>
