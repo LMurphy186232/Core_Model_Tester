@@ -188,42 +188,6 @@ const char* WriteTreePopulationXMLFile1();
  */
 const char* WriteTreePopulationXMLFile2();
 
-/**
- * Writes a parameter file for testing. Characteristics:
- * <ul>
- * <li>Two species.
- * <li>There is no behavior which uses snags.
- * <li>There is a behavior which uses stumps, but only for Species 1.
- * <li>There is a tree map with seedlings, saplings, adults, and snags.
- * </ul>
- * @return Filename written.
- */
-const char* WriteTreePopulationXMLFile3();
-
-/**
- * Writes a parameter file for testing. Characteristics:
- * <ul>
- * <li>Two species.
- * <li>There is a behavior which uses snags.
- * <li>There is a behavior which uses stumps, but only for Species 1.
- * <li>There is a tree map with seedlings, saplings, adults, and snags.
- * </ul>
- * @return Filename written.
- */
-const char* WriteTreePopulationXMLFile4();
-
-/**
- * Writes a parameter file for testing. Characteristics:
- * <ul>
- * <li>3 years per timestep.
- * <li>Two species.
- * <li>There is a behavior which uses snags.
- * <li>There is a behavior which uses stumps, but only for Species 1.
- * <li>There is a tree map with seedlings, saplings, adults, and snags.
- * </ul>
- * @return Filename written.
- */
-const char* WriteTreePopulationXMLFile5();
 
 /**
  * Writes a parameter file for testing distance-height tree searches on

@@ -961,6 +961,8 @@ TEST(TreePopulation, TestInitialDensities) {
     while ( p_oTree )
     {
 
+      if (p_oTree->GetType() == clTreePopulation::snag) FAIL() << "Snag found for run 2!";
+
       if (p_oTree->GetType() != clTreePopulation::seedling) {
         //Get the DBH
         p_oTree->GetValue( p_oPop->GetDbhCode( p_oTree->GetSpecies(), p_oTree->GetType() ), & fDbh );
@@ -1016,6 +1018,8 @@ TEST(TreePopulation, TestInitialDensities) {
     p_oTree = p_oAllTrees->NextTree();
     while ( p_oTree )
     {
+
+      if (p_oTree->GetType() == clTreePopulation::snag) FAIL() << "Snag found for run 3!";
 
       if (p_oTree->GetType() != clTreePopulation::seedling) {
         //Get the DBH
@@ -1097,6 +1101,8 @@ TEST(TreePopulation, TestInitialDensities) {
     while ( p_oTree )
     {
 
+      if (p_oTree->GetType() == clTreePopulation::snag) FAIL() << "Snag found for run 4!";
+
       if (p_oTree->GetType() != clTreePopulation::seedling) {
         //Get the DBH
         p_oTree->GetValue( p_oPop->GetDbhCode( p_oTree->GetSpecies(), p_oTree->GetType() ), & fDbh );
@@ -1176,6 +1182,8 @@ TEST(TreePopulation, TestInitialDensities) {
     p_oTree = p_oAllTrees->NextTree();
     while ( p_oTree )
     {
+
+      if (p_oTree->GetType() == clTreePopulation::snag) FAIL() << "Snag found for run 5!";
 
       if (p_oTree->GetType() != clTreePopulation::seedling) {
         //Get the DBH
@@ -1257,6 +1265,8 @@ TEST(TreePopulation, TestInitialDensities) {
     while ( p_oTree )
     {
 
+      if (p_oTree->GetType() == clTreePopulation::snag) FAIL() << "Snag found for run 6!";
+
       if (p_oTree->GetType() != clTreePopulation::seedling) {
         //Get the DBH
         p_oTree->GetValue( p_oPop->GetDbhCode( p_oTree->GetSpecies(), p_oTree->GetType() ), & fDbh );
@@ -1336,6 +1346,8 @@ TEST(TreePopulation, TestInitialDensities) {
     p_oTree = p_oAllTrees->NextTree();
     while ( p_oTree )
     {
+
+      if (p_oTree->GetType() == clTreePopulation::snag) FAIL() << "Snag found for run 7!";
 
       if (p_oTree->GetType() != clTreePopulation::seedling) {
         //Get the DBH
