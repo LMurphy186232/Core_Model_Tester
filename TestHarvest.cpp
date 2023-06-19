@@ -25,6 +25,9 @@
 //
 // The harvest will be performed.  Then the remaining trees are checked to make
 // sure the proper ones were left alone.
+//
+// This run includes snags, and the harvest is aware of them, but is told
+// not to include them
 /////////////////////////////////////////////////////////////////////////////
 TEST(Harvest, DoHarvestRun1) {
   clTreePopulation * p_oPop;
@@ -405,8 +408,11 @@ TEST(Harvest, DoHarvestRun1a) {
 //           |   |80-85,     |        |         |              |
 //           |   |90-99      |        |         |              |
 //
-// The harvest will be performed.  Then the remaining trees are checked to make
+// The harvest will be performed. Then the remaining trees are checked to make
 // sure the proper ones were left alone.
+//
+// In this run, the snags are eligible for harvest, but only some of them
+// count
 /////////////////////////////////////////////////////////////////////////////
 TEST(Harvest, DoHarvestRun2) {
 
@@ -415,7 +421,7 @@ TEST(Harvest, DoHarvestRun2) {
   clTree *p_oTree;
   clGrid *p_oResults;
   std::stringstream sLabel;
-  int *p_iC = new int[4];
+  int *p_iC = new int[4], *p_iSn;
   float fTemp;
   int iNumXCells, iNumYCells, iNumSpecies, iX, iY, j, k,
   iSp0_90_99 = 0, iSp0_80_85 = 0, iSp0_50_80 = 0, iSp0_15_45 = 0,
@@ -427,33 +433,33 @@ TEST(Harvest, DoHarvestRun2) {
     p_oPop = ( clTreePopulation * ) p_oSimManager->GetPopulationObject( "treepopulation" );
     p_oResults = p_oSimManager->GetGridObject("Harvest Results");
 
-    //Add many snags to make sure they don't get counted
+    //Add many snags to make sure only some get counted
     for (i = 0; i < 100; i++) {
-      p_oPop->CreateTree(10, 10, 0, clTreePopulation::snag, 50);
+      p_oPop->CreateTree(10, 10, 0, clTreePopulation::snag, 47);
     }
     for (i = 0; i < 100; i++) {
-      p_oPop->CreateTree(10, 10, 1, clTreePopulation::snag, 50);
+      p_oPop->CreateTree(10, 10, 1, clTreePopulation::snag, 51);
     }
     for (i = 0; i < 100; i++) {
-      p_oPop->CreateTree(10, 10, 2, clTreePopulation::snag, 50);
+      p_oPop->CreateTree(10, 10, 2, clTreePopulation::snag, 47);
     }
     for (i = 0; i < 100; i++) {
-      p_oPop->CreateTree(10, 10, 3, clTreePopulation::snag, 50);
+      p_oPop->CreateTree(10, 10, 3, clTreePopulation::snag, 47);
     }
     for (i = 0; i < 100; i++) {
-      p_oPop->CreateTree(10, 10, 4, clTreePopulation::snag, 50);
+      p_oPop->CreateTree(10, 10, 4, clTreePopulation::snag, 47);
     }
     for (i = 0; i < 100; i++) {
-      p_oPop->CreateTree(10, 10, 5, clTreePopulation::snag, 50);
+      p_oPop->CreateTree(10, 10, 5, clTreePopulation::snag, 47);
     }
     for (i = 0; i < 100; i++) {
-      p_oPop->CreateTree(10, 10, 6, clTreePopulation::snag, 50);
+      p_oPop->CreateTree(10, 10, 6, clTreePopulation::snag, 47);
     }
     for (i = 0; i < 100; i++) {
-      p_oPop->CreateTree(10, 10, 7, clTreePopulation::snag, 50);
+      p_oPop->CreateTree(10, 10, 7, clTreePopulation::snag, 47);
     }
     for (i = 0; i < 100; i++) {
-      p_oPop->CreateTree(10, 10, 8, clTreePopulation::snag, 50);
+      p_oPop->CreateTree(10, 10, 8, clTreePopulation::snag, 47);
     }
 
     //Add a bunch of seedlings to check seedling destruction
@@ -484,7 +490,11 @@ TEST(Harvest, DoHarvestRun2) {
 
     //Count up the trees in our size classes
     p_iC = new int[iNumSpecies];
-    for (i = 0; i < iNumSpecies; i++) p_iC[i] = 0;
+    p_iSn = new int[iNumSpecies]; //snag countin'
+    for (i = 0; i < iNumSpecies; i++) {
+      p_iC[i] = 0;
+      p_iSn[i] = 0;
+    }
     p_oAllTrees = p_oPop->Find("all");
     p_oTree = p_oAllTrees->NextTree();
     while (p_oTree) {
@@ -519,6 +529,8 @@ TEST(Harvest, DoHarvestRun2) {
         }
       } else if (p_oTree->GetType() == clTreePopulation::seedling) {
         p_iC[p_oTree->GetSpecies()]++;
+      } else if (p_oTree->GetType() == clTreePopulation::snag) {
+        p_iSn[p_oTree->GetSpecies()]++;
       }
 
       p_oTree = p_oAllTrees->NextTree();
@@ -533,8 +545,12 @@ TEST(Harvest, DoHarvestRun2) {
     ASSERT_TRUE(iSp0_50_80 >= 31 && iSp0_50_80 <= 41);
     ASSERT_TRUE(iSp0_15_45 >= 23 && iSp0_15_45 <= 37);
 
+    //Snag check
+    ASSERT_TRUE(p_iSn[1] >= 50 && p_iSn[1] <= 70);
+
     for (i = 0; i < iNumSpecies; i++) {
       EXPECT_EQ(p_iC[i], 10000);
+      if (i != 1) EXPECT_EQ(p_iSn[i], 100);
     }
 
     //Check the results grid
@@ -572,6 +588,9 @@ TEST(Harvest, DoHarvestRun2) {
 //
 // The harvest will be performed.  Then the remaining trees are checked to make
 // sure the proper ones were left alone.
+//
+// Make one of the expected cut trees a snag, to make sure it's correctly
+// identified
 /////////////////////////////////////////////////////////////////////////////
 TEST(Harvest, DoHarvestRun3) {
 
@@ -611,6 +630,25 @@ TEST(Harvest, DoHarvestRun3) {
       }
     }
     delete[] p_iC;
+
+    // Turn a tree to cut into a snag
+    p_oAllTrees = p_oPop->Find("all");
+    p_oTree = p_oAllTrees->NextTree();
+    while (p_oTree) {
+
+      if (p_oTree->GetType() == clTreePopulation::sapling ||
+          p_oTree->GetType() == clTreePopulation::adult) {
+        if (p_oTree->GetSpecies() == 7) {
+
+          p_oTree->GetValue(p_oPop->GetDbhCode(p_oTree->GetSpecies(), p_oTree->GetType()), &fTemp);
+          if (fabs(fTemp - 99.9619) < 0.001) {
+            p_oPop->KillTree(p_oTree, natural);
+          }
+        }
+      }
+      p_oTree = p_oAllTrees->NextTree();
+    }
+
 
     //*********************************************
     // Timestep 1
@@ -796,6 +834,25 @@ TEST(Harvest, DoHarvestRun3a) {
     }
     delete[] p_iC;
 
+    // Turn the same tree into a snag as run 3 - this
+    // time it won't get cut
+    p_oAllTrees = p_oPop->Find("all");
+    p_oTree = p_oAllTrees->NextTree();
+    while (p_oTree) {
+
+      if (p_oTree->GetType() == clTreePopulation::sapling ||
+          p_oTree->GetType() == clTreePopulation::adult) {
+        if (p_oTree->GetSpecies() == 7) {
+
+          p_oTree->GetValue(p_oPop->GetDbhCode(p_oTree->GetSpecies(), p_oTree->GetType()), &fTemp);
+          if (fabs(fTemp - 99.9619) < 0.001) {
+            p_oPop->KillTree(p_oTree, natural);
+          }
+        }
+      }
+      p_oTree = p_oAllTrees->NextTree();
+    }
+
     //*********************************************
     // Timestep 1
     //*********************************************
@@ -810,7 +867,8 @@ TEST(Harvest, DoHarvestRun3a) {
     while (p_oTree) {
 
       if (p_oTree->GetType() == clTreePopulation::sapling ||
-          p_oTree->GetType() == clTreePopulation::adult) {
+          p_oTree->GetType() == clTreePopulation::adult ||
+          p_oTree->GetType() == clTreePopulation::snag) {
         if (p_oTree->GetSpecies() == 7) {
 
           p_oTree->GetValue(p_oPop->GetDbhCode(p_oTree->GetSpecies(), p_oTree->GetType()), &fTemp);
@@ -1076,6 +1134,7 @@ TEST(Harvest, DoHarvestRun4) {
       else if (fabs(p_oFakeTrees[i].fX - 15.5945) < 0.001 && fabs(p_oFakeTrees[i].fY - 8.71582) < 0.001) p_oFakeTrees[i].bDead = true;
       else if (fabs(p_oFakeTrees[i].fX - 25.1953) < 0.001 && fabs(p_oFakeTrees[i].fY - 8.25806) < 0.001) p_oFakeTrees[i].bDead = true;
     }
+
 
     //Run the sim and check the results
     p_oSimManager->RunSim(1);
@@ -2475,9 +2534,9 @@ TEST(Harvest, DoHarvestRun8) {
   clGrid *p_oResults;
   std::stringstream sLabel;
   int *p_iC = new int[4];
-  float fTemp, fX, fY;
+  float fTemp, fX, fY, fDbh;
   int iNumXCells, iNumYCells, iNumSpecies, iX, iY, j, k,
-  iNumTrees = 1980, iCounter = 0, i;
+  iNumTrees = 1980, iCounter = 0, i, iTemp;
   //Fake tree structure
   treestruct *p_oFakeTrees = new treestruct[iNumTrees];
 
@@ -2486,7 +2545,7 @@ TEST(Harvest, DoHarvestRun8) {
 
     p_oSimManager->ReadFile( WriteHarvestXMLFile8() );
     p_oPop = ( clTreePopulation * ) p_oSimManager->GetPopulationObject( "treepopulation" );
-    p_oResults = p_oSimManager->GetGridObject("Harvest Results");
+
 
     //Add a bunch of seedlings to check seedling destruction
     iNumXCells = p_oPop->GetNumXCells();
@@ -2523,8 +2582,25 @@ TEST(Harvest, DoHarvestRun8) {
         p_oTree->GetValue(p_oPop->GetYCode(p_oTree->GetSpecies(), p_oTree->GetType()), &fTemp);
         p_oFakeTrees[iCounter].fY = fTemp;
         p_oFakeTrees[iCounter].iSpecies = p_oTree->GetSpecies();
-        p_oFakeTrees[iCounter].bDead = false;
+
+        p_oTree->GetValue(p_oPop->GetDbhCode(p_oTree->GetSpecies(), p_oTree->GetType()), &fDbh);
+
+        //Expected results; make black cottonwoods not die if they're big
+        // because they'll be avoided snags
         p_oFakeTrees[iCounter].bFound = false;
+        if (p_oFakeTrees[iCounter].fX < 44 && p_oFakeTrees[iCounter].fY < 74) {
+          if (fDbh > 20) {
+            if (p_oFakeTrees[iCounter].iSpecies != 8) {
+              p_oFakeTrees[iCounter].bDead = true;
+            } else {
+              p_oFakeTrees[iCounter].bDead = false;
+            }
+          } else {
+            p_oFakeTrees[iCounter].bDead = true;
+          }
+        } else {
+          p_oFakeTrees[iCounter].bDead = false;
+        }
 
         iCounter++;
         if (iCounter == iNumTrees) break;
@@ -2532,22 +2608,47 @@ TEST(Harvest, DoHarvestRun8) {
       p_oTree = p_oAllTrees->NextTree();
     }
 
-    //Expected results
-    for (i = 0; i < iNumTrees; i++) {
-      if (p_oFakeTrees[i].fX < 44 && p_oFakeTrees[i].fY < 74) {
-        p_oFakeTrees[i].bDead = true;
-      } else {
-        p_oFakeTrees[i].bDead = false;
+
+
+    // Turn some trees to cut into snags
+    p_oAllTrees = p_oPop->Find("all");
+    p_oTree = p_oAllTrees->NextTree();
+    while (p_oTree) {
+      if (p_oTree->GetType() != clTreePopulation::seedling) {
+        p_oTree->GetValue(p_oPop->GetXCode(p_oTree->GetSpecies(), p_oTree->GetType()), &fX);
+        p_oTree->GetValue(p_oPop->GetYCode(p_oTree->GetSpecies(), p_oTree->GetType()), &fY);
+        p_oTree->GetValue(p_oPop->GetDbhCode(p_oTree->GetSpecies(), p_oTree->GetType()), &fDbh);
+        //fTemp = clModelMath::GetRand();
+        if (fX <= 44 && fY <= 74 && fDbh > 20) {
+          p_oPop->KillTree(p_oTree, natural);
+        }
       }
+      p_oTree = p_oAllTrees->NextTree();
+    }
+
+    // Assign some decay classes - all black cottonwoods get a high decay class
+    iTemp = 2;
+    p_oAllTrees = p_oPop->Find("all");
+    p_oTree = p_oAllTrees->NextTree();
+    while (p_oTree) {
+      if (p_oTree->GetType() == clTreePopulation::snag) {
+        if (p_oTree->GetSpecies() == 8) {
+          p_oTree->SetValue(p_oPop->GetIntDataCode("SnagDecayClass",
+              p_oTree->GetSpecies(), p_oTree->GetType()), iTemp);
+        }
+      }
+      p_oTree = p_oAllTrees->NextTree();
     }
 
     //Run the sim and check the results
     p_oSimManager->RunSim(1);
     CheckHarvestResults(p_oPop, iNumTrees, p_oFakeTrees);
+    p_oResults = p_oSimManager->GetGridObject("Harvest Results");
 
     p_iC = new int[iNumSpecies];
     for (i = 0; i < iNumSpecies; i++) p_iC[i] = 0;
     p_oAllTrees = p_oPop->Find("all");
+    p_oTree = p_oAllTrees->NextTree();
     while (p_oTree) {
       p_oTree->GetValue(p_oPop->GetXCode(p_oTree->GetSpecies(), p_oTree->GetType()), &fX);
       p_oTree->GetValue(p_oPop->GetYCode(p_oTree->GetSpecies(), p_oTree->GetType()), &fY);
@@ -2584,6 +2685,94 @@ TEST(Harvest, DoHarvestRun8) {
         }
       }
     }
+    // Some adult spot-checks
+    iX = 1; iY = 1;
+    sLabel << "Cut Density_0_0";
+    p_oResults->GetValueOfCell(iX, iY, p_oResults->GetIntDataCode(sLabel.str()), &j);
+    EXPECT_EQ(0, j);
+    sLabel.str(""); sLabel << "Cut Density_0_1";
+    p_oResults->GetValueOfCell(iX, iY, p_oResults->GetIntDataCode(sLabel.str()), &j);
+    EXPECT_EQ(0, j);
+    sLabel.str(""); sLabel << "Cut Density_0_2";
+    p_oResults->GetValueOfCell(iX, iY, p_oResults->GetIntDataCode(sLabel.str()), &j);
+    EXPECT_EQ(0, j);
+    sLabel.str(""); sLabel << "Cut Density_0_3";
+    p_oResults->GetValueOfCell(iX, iY, p_oResults->GetIntDataCode(sLabel.str()), &j);
+    EXPECT_EQ(0, j);
+    sLabel.str(""); sLabel << "Cut Density_0_4";
+    p_oResults->GetValueOfCell(iX, iY, p_oResults->GetIntDataCode(sLabel.str()), &j);
+    EXPECT_EQ(0, j);
+    sLabel.str(""); sLabel << "Cut Density_0_5";
+    p_oResults->GetValueOfCell(iX, iY, p_oResults->GetIntDataCode(sLabel.str()), &j);
+    EXPECT_EQ(1, j);
+    sLabel.str(""); sLabel << "Cut Density_0_6";
+    p_oResults->GetValueOfCell(iX, iY, p_oResults->GetIntDataCode(sLabel.str()), &j);
+    EXPECT_EQ(0, j);
+    sLabel.str(""); sLabel << "Cut Density_0_7";
+    p_oResults->GetValueOfCell(iX, iY, p_oResults->GetIntDataCode(sLabel.str()), &j);
+    EXPECT_EQ(0, j);
+    sLabel.str(""); sLabel << "Cut Density_0_8";
+    p_oResults->GetValueOfCell(iX, iY, p_oResults->GetIntDataCode(sLabel.str()), &j);
+    EXPECT_EQ(0, j);
+
+    iX = 1; iY = 4;
+    sLabel.str(""); sLabel << "Cut Density_0_0";
+    p_oResults->GetValueOfCell(iX, iY, p_oResults->GetIntDataCode(sLabel.str()), &j);
+    EXPECT_EQ(0, j);
+    sLabel.str(""); sLabel << "Cut Density_0_1";
+    p_oResults->GetValueOfCell(iX, iY, p_oResults->GetIntDataCode(sLabel.str()), &j);
+    EXPECT_EQ(0, j);
+    sLabel.str(""); sLabel << "Cut Density_0_2";
+    p_oResults->GetValueOfCell(iX, iY, p_oResults->GetIntDataCode(sLabel.str()), &j);
+    EXPECT_EQ(0, j);
+    sLabel.str(""); sLabel << "Cut Density_0_3";
+    p_oResults->GetValueOfCell(iX, iY, p_oResults->GetIntDataCode(sLabel.str()), &j);
+    EXPECT_EQ(0, j);
+    sLabel.str(""); sLabel << "Cut Density_0_4";
+    p_oResults->GetValueOfCell(iX, iY, p_oResults->GetIntDataCode(sLabel.str()), &j);
+    EXPECT_EQ(0, j);
+    sLabel.str(""); sLabel << "Cut Density_0_5";
+    p_oResults->GetValueOfCell(iX, iY, p_oResults->GetIntDataCode(sLabel.str()), &j);
+    EXPECT_EQ(0, j);
+    sLabel.str(""); sLabel << "Cut Density_0_6";
+    p_oResults->GetValueOfCell(iX, iY, p_oResults->GetIntDataCode(sLabel.str()), &j);
+    EXPECT_EQ(0, j);
+    sLabel.str(""); sLabel << "Cut Density_0_7";
+    p_oResults->GetValueOfCell(iX, iY, p_oResults->GetIntDataCode(sLabel.str()), &j);
+    EXPECT_EQ(1, j);
+    sLabel.str(""); sLabel << "Cut Density_0_8";
+    p_oResults->GetValueOfCell(iX, iY, p_oResults->GetIntDataCode(sLabel.str()), &j);
+    EXPECT_EQ(0, j);
+
+    iX = 3; iY = 13;
+    sLabel.str(""); sLabel << "Cut Density_0_0";
+    p_oResults->GetValueOfCell(iX, iY, p_oResults->GetIntDataCode(sLabel.str()), &j);
+    EXPECT_EQ(1, j);
+    sLabel.str(""); sLabel << "Cut Density_0_1";
+    p_oResults->GetValueOfCell(iX, iY, p_oResults->GetIntDataCode(sLabel.str()), &j);
+    EXPECT_EQ(0, j);
+    sLabel.str(""); sLabel << "Cut Density_0_2";
+    p_oResults->GetValueOfCell(iX, iY, p_oResults->GetIntDataCode(sLabel.str()), &j);
+    EXPECT_EQ(0, j);
+    sLabel.str(""); sLabel << "Cut Density_0_3";
+    p_oResults->GetValueOfCell(iX, iY, p_oResults->GetIntDataCode(sLabel.str()), &j);
+    EXPECT_EQ(0, j);
+    sLabel.str(""); sLabel << "Cut Density_0_4";
+    p_oResults->GetValueOfCell(iX, iY, p_oResults->GetIntDataCode(sLabel.str()), &j);
+    EXPECT_EQ(0, j);
+    sLabel.str(""); sLabel << "Cut Density_0_5";
+    p_oResults->GetValueOfCell(iX, iY, p_oResults->GetIntDataCode(sLabel.str()), &j);
+    EXPECT_EQ(0, j);
+    sLabel.str(""); sLabel << "Cut Density_0_6";
+    p_oResults->GetValueOfCell(iX, iY, p_oResults->GetIntDataCode(sLabel.str()), &j);
+    EXPECT_EQ(0, j);
+    sLabel.str(""); sLabel << "Cut Density_0_7";
+    p_oResults->GetValueOfCell(iX, iY, p_oResults->GetIntDataCode(sLabel.str()), &j);
+    EXPECT_EQ(0, j);
+    sLabel.str(""); sLabel << "Cut Density_0_8";
+    p_oResults->GetValueOfCell(iX, iY, p_oResults->GetIntDataCode(sLabel.str()), &j);
+    EXPECT_EQ(0, j);
+
 
     delete[] p_oFakeTrees;
     delete[] p_iC;
@@ -3934,7 +4123,7 @@ TEST(Harvest, DoHarvestRun9a) {
 void CheckHarvestResults(clTreePopulation *p_oPop, int iNumTrees, treestruct *p_FakeTrees) {
   clTreeSearch *p_oAllTrees;
   clTree *p_oTree;
-  float fX, fY;
+  float fX, fY; //, fDbh;
   int i;
 
   //Set all the found tags to false
@@ -3949,6 +4138,7 @@ void CheckHarvestResults(clTreePopulation *p_oPop, int iNumTrees, treestruct *p_
 
     p_oTree->GetValue(p_oPop->GetXCode(p_oTree->GetSpecies(), p_oTree->GetType()), &fX);
     p_oTree->GetValue(p_oPop->GetYCode(p_oTree->GetSpecies(), p_oTree->GetType()), &fY);
+    //p_oTree->GetValue(p_oPop->GetDbhCode(p_oTree->GetSpecies(), p_oTree->GetType()), &fDbh);
 
     for (i = 0; i < iNumTrees; i++) {
       if (fabs(p_FakeTrees[i].fX - fX) < 0.001 && fabs(p_FakeTrees[i].fY - fY) < 0.001) {
