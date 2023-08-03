@@ -24,6 +24,9 @@
 //
 // The mortality episode will be performed.  Then the remaining trees are
 // checked to make sure the proper ones were left alone.
+//
+// This run includes snags, and the event is aware of them, but is told
+// not to include them
 /////////////////////////////////////////////////////////////////////////////
 TEST(EpisodicMortality, DoMortEpisodeRun1) {
   clTreePopulation * p_oPop;
@@ -1404,9 +1407,9 @@ TEST(EpisodicMortality, DoMortEpisodeRun8) {
   clGrid *p_oResults;
   int *p_iC = new int[4];
   std::stringstream sLabel;
-  float fTemp, fX, fY;
+  float fTemp, fX, fY, fDbh;
   int iNumXCells, iNumYCells, iNumSpecies, iX, iY, j, k,
-  iNumTrees = 1980, iCounter = 0, i;
+  iNumTrees = 1980, iCounter = 0, i, iTemp;
   //Fake tree structure
   treestruct *p_oFakeTrees = new treestruct[iNumTrees];
 
@@ -1441,7 +1444,6 @@ TEST(EpisodicMortality, DoMortEpisodeRun8) {
     // Timestep 1
     //*********************************************
 
-    //Populate the fake tree struct with X and Y coords
     p_oAllTrees = p_oPop->Find("all");
     p_oTree = p_oAllTrees->NextTree();
     while (p_oTree) {
@@ -1452,8 +1454,25 @@ TEST(EpisodicMortality, DoMortEpisodeRun8) {
         p_oTree->GetValue(p_oPop->GetYCode(p_oTree->GetSpecies(), p_oTree->GetType()), &fTemp);
         p_oFakeTrees[iCounter].fY = fTemp;
         p_oFakeTrees[iCounter].iSpecies = p_oTree->GetSpecies();
-        p_oFakeTrees[iCounter].bDead = false;
+
+        p_oTree->GetValue(p_oPop->GetDbhCode(p_oTree->GetSpecies(), p_oTree->GetType()), &fDbh);
+
+        //Expected results; make black cottonwoods not die if they're big
+        // because they'll be avoided snags
         p_oFakeTrees[iCounter].bFound = false;
+        if (p_oFakeTrees[iCounter].fX < 44 && p_oFakeTrees[iCounter].fY < 74) {
+          if (fDbh > 20) {
+            if (p_oFakeTrees[iCounter].iSpecies != 8) {
+              p_oFakeTrees[iCounter].bDead = true;
+            } else {
+              p_oFakeTrees[iCounter].bDead = false;
+            }
+          } else {
+            p_oFakeTrees[iCounter].bDead = true;
+          }
+        } else {
+          p_oFakeTrees[iCounter].bDead = false;
+        }
 
         iCounter++;
         if (iCounter == iNumTrees) break;
@@ -1461,13 +1480,34 @@ TEST(EpisodicMortality, DoMortEpisodeRun8) {
       p_oTree = p_oAllTrees->NextTree();
     }
 
-    //Expected results
-    for (i = 0; i < iNumTrees; i++) {
-      if (p_oFakeTrees[i].fX < 44 && p_oFakeTrees[i].fY < 74) {
-        p_oFakeTrees[i].bDead = true;
-      } else {
-        p_oFakeTrees[i].bDead = false;
+    // Turn some trees to cut into snags
+    p_oAllTrees = p_oPop->Find("all");
+    p_oTree = p_oAllTrees->NextTree();
+    while (p_oTree) {
+      if (p_oTree->GetType() != clTreePopulation::seedling) {
+        p_oTree->GetValue(p_oPop->GetXCode(p_oTree->GetSpecies(), p_oTree->GetType()), &fX);
+        p_oTree->GetValue(p_oPop->GetYCode(p_oTree->GetSpecies(), p_oTree->GetType()), &fY);
+        p_oTree->GetValue(p_oPop->GetDbhCode(p_oTree->GetSpecies(), p_oTree->GetType()), &fDbh);
+        if (fX <= 44 && fY <= 74 && fDbh > 20) {
+          //p_oPop->KillTree(p_oTree, natural);
+          fX = fY;
+        }
       }
+      p_oTree = p_oAllTrees->NextTree();
+    }
+
+    // Assign some decay classes - all black cottonwoods get a high decay class
+    iTemp = 2;
+    p_oAllTrees = p_oPop->Find("all");
+    p_oTree = p_oAllTrees->NextTree();
+    while (p_oTree) {
+      if (p_oTree->GetType() == clTreePopulation::snag) {
+        if (p_oTree->GetSpecies() == 8) {
+          p_oTree->SetValue(p_oPop->GetIntDataCode("SnagDecayClass",
+              p_oTree->GetSpecies(), p_oTree->GetType()), iTemp);
+        }
+      }
+      p_oTree = p_oAllTrees->NextTree();
     }
 
     //Run the sim and check the results
@@ -1477,6 +1517,7 @@ TEST(EpisodicMortality, DoMortEpisodeRun8) {
     p_iC = new int[iNumSpecies];
     for (i = 0; i < iNumSpecies; i++) p_iC[i] = 0;
     p_oAllTrees = p_oPop->Find("all");
+    p_oTree = p_oAllTrees->NextTree();
     while (p_oTree) {
       p_oTree->GetValue(p_oPop->GetXCode(p_oTree->GetSpecies(), p_oTree->GetType()), &fX);
       p_oTree->GetValue(p_oPop->GetYCode(p_oTree->GetSpecies(), p_oTree->GetType()), &fY);
@@ -1867,8 +1908,10 @@ const char* WriteEpisodicMortalityXMLFile1()
   oOut << "</ds_deathEvent>"
       << "<ds_deathEvent>"
       << "<ds_applyToSpecies species=\"Lodgepole_Pine\" />"
+      << "<ds_maxSnagDecayClass>-1</ds_maxSnagDecayClass>"
       << "<ds_timestep>3</ds_timestep>"
       << "<ds_cutAmountType>absolute basal area</ds_cutAmountType>"
+      << "<ds_maxSnagDecayClass>-1</ds_maxSnagDecayClass>"
       << "<ds_dbhRange>"
       << "<ds_low>0.0</ds_low>"
       << "<ds_high>30.0</ds_high>"
@@ -1888,6 +1931,7 @@ const char* WriteEpisodicMortalityXMLFile1()
       << "<ds_deathEvent>"
       << "<ds_applyToSpecies species=\"Amabilis_Fir\" />"
       << "<ds_applyToSpecies species=\"Hybrid_Spruce\" />"
+      << "<ds_maxSnagDecayClass>-1</ds_maxSnagDecayClass>"
       << "<ds_timestep>1</ds_timestep>"
       << "<ds_cutAmountType>percent of basal area</ds_cutAmountType>"
       << "<ds_dbhRange>"
@@ -4013,6 +4057,28 @@ const char* WriteEpisodicMortalityXMLFile8()
       << "<applyTo species=\"Black_Cottonwood\" type=\"Snag\" />"
       << "<applyTo species=\"Paper_Birch\" type=\"Snag\" />"
       << "</behavior>"
+      << "<behavior>"
+      << "<behaviorName>StochasticMortality</behaviorName>"
+      << "<version>1</version>"
+      << "<applyTo species=\"Amabilis_Fir\" type=\"Adult\" />"
+      << "<applyTo species=\"Amabilis_Fir\" type=\"Snag\" />"
+      << "<applyTo species=\"Paper_Birch\" type=\"Adult\" />"
+      << "<applyTo species=\"Paper_Birch\" type=\"Snag\" />"
+      << "<applyTo species=\"Western_Hemlock\" type=\"Adult\" />"
+      << "<applyTo species=\"Western_Hemlock\" type=\"Snag\" />"
+      << "<listPosition>3</listPosition>"
+      << "</behavior>"
+      << "<behavior>"
+      << "<behaviorName>SnagDecayClassDynamics</behaviorName>"
+      << "<version>2.0</version>"
+      << "<listPosition>4</listPosition>"
+      << "<applyTo species=\"Amabilis_Fir\" type=\"Adult\" />"
+      << "<applyTo species=\"Amabilis_Fir\" type=\"Snag\" />"
+      << "<applyTo species=\"Paper_Birch\" type=\"Adult\" />"
+      << "<applyTo species=\"Paper_Birch\" type=\"Snag\" />"
+      << "<applyTo species=\"Western_Hemlock\" type=\"Adult\" />"
+      << "<applyTo species=\"Western_Hemlock\" type=\"Snag\" />"
+      << "</behavior>"
       << "</behaviorList>"
       << "<ConstantGLI2>"
       << "<li_constGLI>100</li_constGLI>"
@@ -4030,6 +4096,7 @@ const char* WriteEpisodicMortalityXMLFile8()
       << "<ds_applyToSpecies species=\"Black_Cottonwood\" />"
       << "<ds_timestep>1</ds_timestep>"
       << "<ds_cutAmountType>percent of density</ds_cutAmountType>"
+      << "<ha_maxSnagDecayClass>1</ha_maxSnagDecayClass>"
       << "<ds_dbhRange>"
       << "<ds_low>0.0</ds_low>"
       << "<ds_high>3000.0</ds_high>"
@@ -4053,6 +4120,60 @@ const char* WriteEpisodicMortalityXMLFile8()
   }
   oOut << "</ds_deathEvent>"
       << "</EpisodicMortality1>"
+      << "<StochasticMortality3>"
+      << "<mo_stochasticMortRate>"
+      << "<mo_smrVal species=\"Amabilis_Fir\">0.0</mo_smrVal>"
+      << "<mo_smrVal species=\"Paper_Birch\">0.0</mo_smrVal>"
+      << "<mo_smrVal species=\"Western_Hemlock\">0.0</mo_smrVal>"
+      << "</mo_stochasticMortRate>"
+      << "</StochasticMortality3>"
+      << "<SnagDecayClassDynamics4>"
+      << "<sd_snagDecompTreefallAlpha>-0.805</sd_snagDecompTreefallAlpha>"
+      << "<sd_snagDecompTreefallBeta>"
+      << "<sd_sdtbVal species=\"Amabilis_Fir\">0.000</sd_sdtbVal>"
+      << "<sd_sdtbVal species=\"Paper_Birch\">0.000</sd_sdtbVal>"
+      << "<sd_sdtbVal species=\"Western_Hemlock\">0.000</sd_sdtbVal>"
+      << "</sd_snagDecompTreefallBeta>"
+      << "<sd_snagDecompTreefallDelta>-0.016</sd_snagDecompTreefallDelta>"
+      << "<sd_snagDecompTreefallTheta>-0.026</sd_snagDecompTreefallTheta>"
+      << "<sd_snagDecompTreefallIota>3.389</sd_snagDecompTreefallIota>"
+      << "<sd_snagDecompTreefallLambda>-0.084</sd_snagDecompTreefallLambda>"
+      << "<sd_snagDecompSnagfallAlpha>5.691</sd_snagDecompSnagfallAlpha>"
+      << "<sd_snagDecompSnagfallBeta>"
+      << "<sd_sdsbVal species=\"Amabilis_Fir\">0.000</sd_sdsbVal>"
+      << "<sd_sdsbVal species=\"Paper_Birch\">0.000</sd_sdsbVal>"
+      << "<sd_sdsbVal species=\"Western_Hemlock\">0.000</sd_sdsbVal>"
+      << "</sd_snagDecompSnagfallBeta>"
+      << "<sd_snagDecompSnagfallGamma2>0.177</sd_snagDecompSnagfallGamma2>"
+      << "<sd_snagDecompSnagfallGamma3>0.542</sd_snagDecompSnagfallGamma3>"
+      << "<sd_snagDecompSnagfallGamma4>0.702</sd_snagDecompSnagfallGamma4>"
+      << "<sd_snagDecompSnagfallGamma5>0.528</sd_snagDecompSnagfallGamma5>"
+      << "<sd_snagDecompSnagfallZeta>-3.777</sd_snagDecompSnagfallZeta>"
+      << "<sd_snagDecompSnagfallEta>0.531</sd_snagDecompSnagfallEta>"
+      << "<sd_snagDecompSnagfallKappa>0.157</sd_snagDecompSnagfallKappa>"
+      << "<sd_snagDecompLiveTo1Prob>0.290</sd_snagDecompLiveTo1Prob>"
+      << "<sd_snagDecompLiveTo2Prob>0.229</sd_snagDecompLiveTo2Prob>"
+      << "<sd_snagDecompLiveTo3Prob>0.196</sd_snagDecompLiveTo3Prob>"
+      << "<sd_snagDecompLiveTo4Prob>0.124</sd_snagDecompLiveTo4Prob>"
+      << "<sd_snagDecompLiveTo5Prob>0.161</sd_snagDecompLiveTo5Prob>"
+      << "<sd_snagDecomp1To1Prob>0.045</sd_snagDecomp1To1Prob>"
+      << "<sd_snagDecomp1To2Prob>0.186</sd_snagDecomp1To2Prob>"
+      << "<sd_snagDecomp1To3Prob>0.329</sd_snagDecomp1To3Prob>"
+      << "<sd_snagDecomp1To4Prob>0.166</sd_snagDecomp1To4Prob>"
+      << "<sd_snagDecomp1To5Prob>0.274</sd_snagDecomp1To5Prob>"
+      << "<sd_snagDecomp2To2Prob>0.165</sd_snagDecomp2To2Prob>"
+      << "<sd_snagDecomp2To3Prob>0.379</sd_snagDecomp2To3Prob>"
+      << "<sd_snagDecomp2To4Prob>0.204</sd_snagDecomp2To4Prob>"
+      << "<sd_snagDecomp2To5Prob>0.252</sd_snagDecomp2To5Prob>"
+      << "<sd_snagDecomp3To3Prob>0.351</sd_snagDecomp3To3Prob>"
+      << "<sd_snagDecomp3To4Prob>0.346</sd_snagDecomp3To4Prob>"
+      << "<sd_snagDecomp3To5Prob>0.303</sd_snagDecomp3To5Prob>"
+      << "<sd_snagDecomp4To4Prob>0.527</sd_snagDecomp4To4Prob>"
+      << "<sd_snagDecomp4To5Prob>0.473</sd_snagDecomp4To5Prob>"
+      << "<sd_snagDecomp5To5Prob>1.000</sd_snagDecomp5To5Prob>"
+      << "<sd_minSnagBreakHeight>6</sd_minSnagBreakHeight>"
+      << "<sd_maxSnagBreakHeight>6</sd_maxSnagBreakHeight>"
+      << "</SnagDecayClassDynamics4>"
       << "</paramFile>";
 
   oOut.close();
