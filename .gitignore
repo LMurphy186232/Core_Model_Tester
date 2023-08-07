@@ -60,3 +60,5 @@ testout.txt
 HarvestTrees.txt
 /Default/
 /Debug/
+.*
+!/.gitignore
