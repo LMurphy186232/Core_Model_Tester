@@ -61,6 +61,47 @@ TEST(Plot, TestPlotGetters) {
   sExpectedResult = "plot";
   sActualResult = p_oPlot->GetName();
   EXPECT_EQ(sExpectedResult.compare(sActualResult), 0);
+
+  //-------------------------------------------------------------------------//
+  // Climate getters
+  //-------------------------------------------------------------------------//
+  fExpectedResult = 1150.645781;
+  fActualResult = p_oPlot->GetMeanAnnualPrecip();
+  EXPECT_LT(fabs(fExpectedResult - fActualResult), 0.0001);
+
+  fExpectedResult = 12.88171785;
+  fActualResult = p_oPlot->GetMeanAnnualTemp();
+  EXPECT_LT(fabs(fExpectedResult - fActualResult), 0.0001);
+
+
+  fExpectedResult = 1001;
+  fActualResult = p_oPlot->GetLTMAnnualPrecip();
+  EXPECT_LT(fabs(fExpectedResult - fActualResult), 0.0001);
+
+  fExpectedResult = 13.1;
+  fActualResult = p_oPlot->GetLTMAnnualTemp();
+  EXPECT_LT(fabs(fExpectedResult - fActualResult), 0.0001);
+
+  fExpectedResult = 3.7;
+  fActualResult = p_oPlot->GetNDeposition();
+  EXPECT_LT(fabs(fExpectedResult - fActualResult), 0.0001);
+
+  fExpectedResult = 987.1;
+  fActualResult = p_oPlot->GetSeasonalPrecipitation();
+  EXPECT_LT(fabs(fExpectedResult - fActualResult), 0.0001);
+
+  fExpectedResult = 783.8;
+  fActualResult = p_oPlot->GetLTMSeasonalPrecipitation();
+  EXPECT_LT(fabs(fExpectedResult - fActualResult), 0.0001);
+
+  fExpectedResult = 9334.2;
+  fActualResult = p_oPlot->GetWaterDeficit();
+  EXPECT_LT(fabs(fExpectedResult - fActualResult), 0.0001);
+
+  fExpectedResult = 764.24;
+  fActualResult = p_oPlot->GetLTMWaterDeficit();
+  EXPECT_LT(fabs(fExpectedResult - fActualResult), 0.0001);
+
   delete p_oSimManager;
 }
 
@@ -517,7 +558,8 @@ const char* WritePlotXMLFile1() {
   oOut.open(cFileString, ios::out | ios::trunc);
 
   oOut << "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?>"
-       << "<paramFile fileCode=\"06010101\">" << "<plot>"
+       << "<paramFile fileCode=\"06010101\">"
+       << "<plot>"
        << "<timesteps>1</timesteps>"
        << "<yearsPerTimestep>1</yearsPerTimestep>"
        << "<randomSeed>1</randomSeed>"
@@ -525,6 +567,13 @@ const char* WritePlotXMLFile1() {
        << "<plot_lenY>203.0</plot_lenY>"
        << "<plot_precip_mm_yr>1150.645781</plot_precip_mm_yr>"
        << "<plot_temp_C>12.88171785</plot_temp_C>"
+       << "<plot_ltm_precip>1001</plot_ltm_precip>"
+       << "<plot_ltm_temp>13.1</plot_ltm_temp>"
+       << "<plot_n_dep>3.7</plot_n_dep>"
+       << "<plot_seasonal_precipitation>987.1</plot_seasonal_precipitation>"
+       << "<plot_ltm_seasonal_precipitation>783.8</plot_ltm_seasonal_precipitation>"
+       << "<plot_water_deficit>9334.2</plot_water_deficit>"
+       << "<plot_ltm_water_deficit>764.24</plot_ltm_water_deficit>"
        << "<plot_latitude>55.37</plot_latitude>"
        << "<plot_title>Test Plot 2</plot_title>"
        << "</plot>"

@@ -47,7 +47,15 @@ Temporary Items
 *.dll
 *.a
 TestFile1.xml
+TestBatchFile1.xml
+TestOfftake1.txt
+TestSeeds.txt
+TestTreeMap.txt
+TreeMap.txt
+allparams.txt
+testout.txt
 .cproject
+.project
 .settings/language.settings.xml
 HarvestTrees.txt
 /Default/
