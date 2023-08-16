@@ -13,6 +13,19 @@
 const char* WriteClimateImporterXMLFile1();
 
 /**
+ * Writes a parameter file for normal proceessing, run 2.
+ * @return Filename written.
+ */
+const char* WriteClimateImporterXMLFile2();
+
+/**
+ * Writes a parameter file for normal proceessing, run 3.
+ * @return Filename written.
+ */
+const char* WriteClimateImporterXMLFile3();
+
+
+/**
  * Writes a parameter file for error processing. There is a negative precip
  * value.
  * @return Filename written.
