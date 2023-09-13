@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------
-// TestNCIDoubleNoLocalDiffClimateGrowth
+// TestNCIDoubleLocalDiffClimateGrowth
 //---------------------------------------------------------------------------
 #if !defined(TestNCIDoubleNoLocalDiffClimateGrowth_H)
 #define TestNCIDoubleNoLocalDiffClimateGrowth_H
@@ -14,13 +14,6 @@
  * 5, 6, and 7.
  * @return Filename written.
  */
-const char* WriteNCIDoubleNoLocalDiffClimateGrowthXMLFile1();
-
-/**
- * Writes a 1-year timestep file. This contains 4 species. NCI growth
- * (auto-height) is assigned to saplings and adults of Species 2, 3, and 4.
- * @return Filename written.
- */
-const char* WriteNCIDoubleNoLocalDiffClimateGrowthXMLFile2();
+const char* WriteNCIDoubleLocalDiffClimateGrowthXMLFile1();
 //---------------------------------------------------------------------------
-#endif // TestNCIDoubleNoLocalDiffClimateGrowth_H
+#endif // TestNCIDoubleLocalDiffClimateGrowth_H
