@@ -24,7 +24,7 @@ TEST(ClimateImporter, TestNormalProcessingRun1) {
     clGrid *p_oClimateGrid;
     float fActualTemp, fExpectedTemp, fActualPrecip, fExpectedPrecip,
           fActualWaterDeficit, fExpectedWaterDeficit,
-		  fActualSeasonal, fExpectedSeasonal;
+		  fActualSeasonal, fExpectedSeasonal, fActualNDep, fExpectedNDep;
     int iTempCode, iPrecipCode, iWDCode, iSeasonalCode;
 
     //Feed our file to the sim manager
@@ -41,14 +41,17 @@ TEST(ClimateImporter, TestNormalProcessingRun1) {
     fExpectedTemp = 6.855;
     fExpectedWaterDeficit = 91.08509587;
     fExpectedSeasonal = 881.900839;
+    fExpectedNDep = 3.4;
     fActualPrecip = p_oPlot->GetMeanAnnualPrecip();
     fActualTemp = p_oPlot->GetMeanAnnualTemp();
     fActualWaterDeficit = p_oPlot->GetWaterDeficit();
     fActualSeasonal = p_oPlot->GetSeasonalPrecipitation();
+    fActualNDep = p_oPlot->GetNDeposition();
     EXPECT_LT(fabs(fExpectedPrecip - fActualPrecip), 0.000001);
     EXPECT_LT(fabs(fExpectedTemp - fActualTemp), 0.000001);
     EXPECT_LT(fabs(fExpectedWaterDeficit - fActualWaterDeficit), 0.001);
     EXPECT_LT(fabs(fExpectedSeasonal - fActualSeasonal), 0.001);
+    EXPECT_LT(fabs(fExpectedNDep - fActualNDep), 0.001);
 
     p_oClimateGrid->GetValueOfCell(0, 0, iTempCode, &fActualTemp);
     p_oClimateGrid->GetValueOfCell(0, 0, iPrecipCode, &fActualPrecip);
@@ -65,14 +68,17 @@ TEST(ClimateImporter, TestNormalProcessingRun1) {
     fExpectedTemp = 6.855;
     fExpectedWaterDeficit = 91.08509587;
     fExpectedSeasonal = 881.900839;
+    fExpectedNDep = 3.4;
     fActualPrecip = p_oPlot->GetMeanAnnualPrecip();
     fActualTemp = p_oPlot->GetMeanAnnualTemp();
     fActualWaterDeficit = p_oPlot->GetWaterDeficit();
     fActualSeasonal = p_oPlot->GetSeasonalPrecipitation();
+    fActualNDep = p_oPlot->GetNDeposition();
     EXPECT_LT(fabs(fExpectedPrecip - fActualPrecip), 0.000001);
     EXPECT_LT(fabs(fExpectedTemp - fActualTemp), 0.000001);
     EXPECT_LT(fabs(fExpectedWaterDeficit - fActualWaterDeficit), 0.001);
     EXPECT_LT(fabs(fExpectedSeasonal - fActualSeasonal), 0.001);
+    EXPECT_LT(fabs(fExpectedNDep - fActualNDep), 0.001);
 
     EXPECT_LT(fabs(0 - p_oPlot->GetLTMAnnualPrecip()), 0.000001);
     EXPECT_LT(fabs(0 - p_oPlot->GetLTMAnnualTemp()), 0.000001);
@@ -254,8 +260,8 @@ TEST(ClimateImporter, TestNormalProcessingRun2) {
     clPlot *p_oPlot;
     clGrid *p_oClimateGrid;
     float fActualTemp, fExpectedTemp, fActualPrecip, fExpectedPrecip,
-          fActualWaterDeficit, fExpectedWaterDeficit,
-      fActualSeasonal, fExpectedSeasonal;
+              fActualWaterDeficit, fExpectedWaterDeficit,
+          fActualSeasonal, fExpectedSeasonal, fActualNDep, fExpectedNDep;
     int iTempCode, iPrecipCode, iWDCode, iSeasonalCode;
 
     //Feed our file to the sim manager
@@ -274,6 +280,7 @@ TEST(ClimateImporter, TestNormalProcessingRun2) {
     fExpectedTemp = 7.361666667;
     fExpectedWaterDeficit = 91.08509587;
     fExpectedSeasonal = 881.900839;
+    fExpectedNDep = 3.69;
     fActualPrecip = p_oPlot->GetMeanAnnualPrecip();
     fActualTemp = p_oPlot->GetMeanAnnualTemp();
     fActualWaterDeficit = p_oPlot->GetWaterDeficit();
@@ -315,14 +322,17 @@ TEST(ClimateImporter, TestNormalProcessingRun2) {
     fExpectedTemp = 7.361666667;
     fExpectedWaterDeficit = 91.08509587;
     fExpectedSeasonal = 881.900839;
+    fExpectedNDep = 3.69;
     fActualPrecip = p_oPlot->GetMeanAnnualPrecip();
     fActualTemp = p_oPlot->GetMeanAnnualTemp();
     fActualWaterDeficit = p_oPlot->GetWaterDeficit();
     fActualSeasonal = p_oPlot->GetSeasonalPrecipitation();
+    fActualNDep = p_oPlot->GetNDeposition();
     EXPECT_LT(fabs(fExpectedPrecip - fActualPrecip), 0.000001);
     EXPECT_LT(fabs(fExpectedTemp - fActualTemp), 0.000001);
     EXPECT_LT(fabs(fExpectedWaterDeficit - fActualWaterDeficit), 0.001);
     EXPECT_LT(fabs(fExpectedSeasonal - fActualSeasonal), 0.001);
+    EXPECT_LT(fabs(fExpectedNDep - fActualNDep), 0.001);
 
     //----- Grid values -----------------------------------------------------//
     p_oClimateGrid->GetValueOfCell(0, 0, iTempCode, &fActualTemp);
@@ -358,14 +368,17 @@ TEST(ClimateImporter, TestNormalProcessingRun2) {
     fExpectedTemp = 6.551666667;
     fExpectedWaterDeficit = 160.0181253;
     fExpectedSeasonal = 859.9102243;
+    fExpectedNDep = 6.56;
     fActualPrecip = p_oPlot->GetMeanAnnualPrecip();
     fActualTemp = p_oPlot->GetMeanAnnualTemp();
     fActualWaterDeficit = p_oPlot->GetWaterDeficit();
     fActualSeasonal = p_oPlot->GetSeasonalPrecipitation();
+    fActualNDep = p_oPlot->GetNDeposition();
     EXPECT_LT(fabs(fExpectedPrecip - fActualPrecip), 0.000001);
     EXPECT_LT(fabs(fExpectedTemp - fActualTemp), 0.000001);
     EXPECT_LT(fabs(fExpectedWaterDeficit - fActualWaterDeficit), 0.001);
     EXPECT_LT(fabs(fExpectedSeasonal - fActualSeasonal), 0.001);
+    EXPECT_LT(fabs(fExpectedNDep - fActualNDep), 0.001);
 
     //----- Grid values -----------------------------------------------------//
     p_oClimateGrid->GetValueOfCell(0, 0, iTempCode, &fActualTemp);
@@ -401,14 +414,17 @@ TEST(ClimateImporter, TestNormalProcessingRun2) {
     fExpectedTemp = 6.555;
     fExpectedWaterDeficit = 11.9990999;
     fExpectedSeasonal = 989.3014842;
+    fExpectedNDep = 4.5;
     fActualPrecip = p_oPlot->GetMeanAnnualPrecip();
     fActualTemp = p_oPlot->GetMeanAnnualTemp();
     fActualWaterDeficit = p_oPlot->GetWaterDeficit();
     fActualSeasonal = p_oPlot->GetSeasonalPrecipitation();
+    fActualNDep = p_oPlot->GetNDeposition();
     EXPECT_LT(fabs(fExpectedPrecip - fActualPrecip), 0.000001);
     EXPECT_LT(fabs(fExpectedTemp - fActualTemp), 0.000001);
     EXPECT_LT(fabs(fExpectedWaterDeficit - fActualWaterDeficit), 0.001);
     EXPECT_LT(fabs(fExpectedSeasonal - fActualSeasonal), 0.001);
+    EXPECT_LT(fabs(fExpectedNDep - fActualNDep), 0.001);
 
     //----- Grid values -----------------------------------------------------//
     p_oClimateGrid->GetValueOfCell(0, 0, iTempCode, &fActualTemp);
@@ -444,14 +460,17 @@ TEST(ClimateImporter, TestNormalProcessingRun2) {
     fExpectedTemp = 6.9575;
     fExpectedWaterDeficit = 130.4596051;
     fExpectedSeasonal = 946.4096629;
+    fExpectedNDep = 1.82;
     fActualPrecip = p_oPlot->GetMeanAnnualPrecip();
     fActualTemp = p_oPlot->GetMeanAnnualTemp();
     fActualWaterDeficit = p_oPlot->GetWaterDeficit();
     fActualSeasonal = p_oPlot->GetSeasonalPrecipitation();
+    fActualNDep = p_oPlot->GetNDeposition();
     EXPECT_LT(fabs(fExpectedPrecip - fActualPrecip), 0.000001);
     EXPECT_LT(fabs(fExpectedTemp - fActualTemp), 0.000001);
     EXPECT_LT(fabs(fExpectedWaterDeficit - fActualWaterDeficit), 0.001);
     EXPECT_LT(fabs(fExpectedSeasonal - fActualSeasonal), 0.001);
+    EXPECT_LT(fabs(fExpectedNDep - fActualNDep), 0.001);
 
     //----- Grid values -----------------------------------------------------//
     p_oClimateGrid->GetValueOfCell(0, 0, iTempCode, &fActualTemp);
@@ -487,14 +506,17 @@ TEST(ClimateImporter, TestNormalProcessingRun2) {
     fExpectedTemp = 7.813333333;
     fExpectedWaterDeficit = 129.3160883;
     fExpectedSeasonal = 902.2940183;
+    fExpectedNDep = 3.7;
     fActualPrecip = p_oPlot->GetMeanAnnualPrecip();
     fActualTemp = p_oPlot->GetMeanAnnualTemp();
     fActualWaterDeficit = p_oPlot->GetWaterDeficit();
     fActualSeasonal = p_oPlot->GetSeasonalPrecipitation();
+    fActualNDep = p_oPlot->GetNDeposition();
     EXPECT_LT(fabs(fExpectedPrecip - fActualPrecip), 0.000001);
     EXPECT_LT(fabs(fExpectedTemp - fActualTemp), 0.000001);
     EXPECT_LT(fabs(fExpectedWaterDeficit - fActualWaterDeficit), 0.001);
     EXPECT_LT(fabs(fExpectedSeasonal - fActualSeasonal), 0.001);
+    EXPECT_LT(fabs(fExpectedNDep - fActualNDep), 0.001);
 
     //----- Grid values -----------------------------------------------------//
     p_oClimateGrid->GetValueOfCell(0, 0, iTempCode, &fActualTemp);
@@ -530,14 +552,17 @@ TEST(ClimateImporter, TestNormalProcessingRun2) {
     fExpectedTemp = 7.115;
     fExpectedWaterDeficit = 152.2639151;
     fExpectedSeasonal = 862.5541861;
+    fExpectedNDep = 3.3;
     fActualPrecip = p_oPlot->GetMeanAnnualPrecip();
     fActualTemp = p_oPlot->GetMeanAnnualTemp();
     fActualWaterDeficit = p_oPlot->GetWaterDeficit();
     fActualSeasonal = p_oPlot->GetSeasonalPrecipitation();
+    fActualNDep = p_oPlot->GetNDeposition();
     EXPECT_LT(fabs(fExpectedPrecip - fActualPrecip), 0.000001);
     EXPECT_LT(fabs(fExpectedTemp - fActualTemp), 0.000001);
     EXPECT_LT(fabs(fExpectedWaterDeficit - fActualWaterDeficit), 0.001);
     EXPECT_LT(fabs(fExpectedSeasonal - fActualSeasonal), 0.001);
+    EXPECT_LT(fabs(fExpectedNDep - fActualNDep), 0.001);
 
     //----- Grid values -----------------------------------------------------//
     p_oClimateGrid->GetValueOfCell(0, 0, iTempCode, &fActualTemp);
@@ -1568,6 +1593,15 @@ const char* WriteClimateImporterXMLFile2()
      << "<sc_cimpdecVal ts=\"5\">191.54</sc_cimpdecVal>"
      << "<sc_cimpdecVal ts=\"6\">131.83</sc_cimpdecVal>"
      << "</sc_ciMonthlyPptDec>"
+
+     << "<sc_ciNDep>"
+     << "<sc_cindVal ts=\"1\">3.69</sc_cindVal>"
+     << "<sc_cindVal ts=\"2\">6.56</sc_cindVal>"
+     << "<sc_cindVal ts=\"3\">4.5</sc_cindVal>"
+     << "<sc_cindVal ts=\"4\">1.82</sc_cindVal>"
+     << "<sc_cindVal ts=\"5\">3.7</sc_cindVal>"
+     << "<sc_cindVal ts=\"6\">3.3</sc_cindVal>"
+     << "</sc_ciNDep>"
 
      << "<sc_ciJanRad>7468.475</sc_ciJanRad>"
      << "<sc_ciFebRad>10353.32</sc_ciFebRad>"
@@ -2695,6 +2729,7 @@ void WriteClimateImporterCommonStuff( std::fstream &oOut ) {
        << "<plot_latitude>55.37</plot_latitude>"
        << "<plot_seasonal_precipitation>600</plot_seasonal_precipitation>"
        << "<plot_water_deficit>500</plot_water_deficit>"
+       << "<plot_n_dep>3.4</plot_n_dep>"
        << "</plot>";
 
   oOut << "<trees>"
