@@ -449,6 +449,143 @@ TEST(NCIDoubleNoLocalDiffClimateGrowth, TestRun2) {
 
 
 ////////////////////////////////////////////////////////////////////////////
+// TestRun3()
+////////////////////////////////////////////////////////////////////////////
+TEST(NCIDoubleNoLocalDiffClimateGrowth, TestRun3) {
+  clSimManager * p_oSimManager = new clSimManager( 7, 1, "" );
+  try {
+    clTreePopulation * p_oPop;
+    clTreeSearch *p_oTrees;
+    clTree *p_oTree;
+    float *p_fMean = new float[15], *p_fSD = new float[15];
+    float fDiam, fGrowth;
+    int *p_iCount = new int[15];
+    int iSpecies, i;
+
+
+    //Load our test file and get our tree population pointers
+    p_oSimManager->ReadFile(WriteNCIDoubleNoLocalDiffClimateGrowthXMLFile3());
+    p_oPop = (clTreePopulation *) p_oSimManager->GetPopulationObject(
+        "treepopulation");
+
+    //Create our trees: 1000 of each species. Size doesn't matter, there's no
+    //size effect
+    fDiam = 11;
+    for (iSpecies = 0; iSpecies < 15; iSpecies++) {
+      for (i = 0; i < 1000; i++) {
+        p_oPop->CreateTree(10, 10, iSpecies, clTreePopulation::adult, fDiam);
+      }
+    }
+
+    // Timestep 1
+    p_oSimManager->RunSim(1);
+
+    //-----------------------------------------------------------------------//
+    // Calculate mean
+    //-----------------------------------------------------------------------//
+    for (i = 0; i < 16; i++) {
+      p_fMean[i] = 0;
+      p_fSD[i] = 0;
+      p_iCount[i] = 0;
+    }
+
+    p_oTrees = p_oPop->Find("all");
+    p_oTree = p_oTrees->NextTree();
+    while (p_oTree) {
+
+      //----- Get the value for growth, in mm -------------------------------//
+      p_oTree->GetValue(p_oPop->GetDbhCode(p_oTree->GetSpecies(),
+                                           p_oTree->GetType()), &fGrowth);
+
+      //----- To cm, and add it up ------------------------------------------//
+      p_fMean[p_oTree->GetSpecies()] += (fGrowth - fDiam);
+      p_iCount[p_oTree->GetSpecies()]++;
+
+      p_oTree = p_oTrees->NextTree();
+    }
+
+    for (i = 0; i < 15; i++) {
+      ASSERT_EQ(1000, p_iCount[i]);
+    }
+
+    //----- Calculate mean --------------------------------------------------//
+    for (i = 0; i < 16; i++) {
+      p_fMean[i] /= p_iCount[i];
+    }
+
+    //-----------------------------------------------------------------------//
+    // Calculate sd
+    //-----------------------------------------------------------------------//
+    p_oTrees = p_oPop->Find("all");
+    p_oTree = p_oTrees->NextTree();
+    while (p_oTree) {
+
+      //----- Get the value for growth --------------------------------------//
+      p_oTree->GetValue(p_oPop->GetDbhCode(p_oTree->GetSpecies(),
+                                                 p_oTree->GetType()), &fGrowth);
+      fGrowth -= fDiam;
+
+      //----- The sd calc ---------------------------------------------------//
+      fGrowth -= p_fMean[p_oTree->GetSpecies()];
+      fGrowth = fabs(fGrowth);
+      p_fSD[p_oTree->GetSpecies()] += fGrowth*fGrowth;
+
+      p_oTree = p_oTrees->NextTree();
+    }
+
+    for (i = 0; i < 15; i++) {
+      p_fSD[i] /= p_iCount[i];
+      p_fSD[i] = sqrt(p_fSD[i]);
+    }
+
+    //-----------------------------------------------------------------------//
+    // Check results
+    //-----------------------------------------------------------------------//
+    EXPECT_LT(fabs(p_fMean[0]  - 10.33)/p_fMean[0] , 0.1);
+    EXPECT_LT(fabs(p_fMean[1]  - 2.61 )/p_fMean[1] , 0.1);
+    EXPECT_LT(fabs(p_fMean[2]  - 2.32 )/p_fMean[2] , 0.1);
+    EXPECT_LT(fabs(p_fMean[3]  - 2.17 )/p_fMean[3] , 0.1);
+    EXPECT_LT(fabs(p_fMean[4]  - 10.2 )/p_fMean[4] , 0.1);
+    EXPECT_LT(fabs(p_fMean[5]  - 8.57 )/p_fMean[5] , 0.1);
+    EXPECT_LT(fabs(p_fMean[6]  - 3.73 )/p_fMean[6] , 0.1);
+    EXPECT_LT(fabs(p_fMean[7]  - 10.53)/p_fMean[7] , 0.1);
+    EXPECT_LT(fabs(p_fMean[8]  - 5.15 )/p_fMean[8] , 0.1);
+    EXPECT_LT(fabs(p_fMean[9]  - 1.24 )/p_fMean[9] , 0.1);
+    EXPECT_LT(fabs(p_fMean[10] - 7.61 )/p_fMean[10], 0.1);
+    EXPECT_LT(fabs(p_fMean[11] - 5.33 )/p_fMean[11], 0.1);
+    EXPECT_LT(fabs(p_fMean[12] - 10.15)/p_fMean[12], 0.1);
+    EXPECT_LT(fabs(p_fMean[13] - 2.54 )/p_fMean[13], 0.1);
+    EXPECT_LT(fabs(p_fMean[14] - 3.84 )/p_fMean[14], 0.1);
+
+    EXPECT_LT(fabs(p_fSD[0]  - 3.121232954)/p_fSD[0] , 0.16);
+    EXPECT_LT(fabs(p_fSD[1]  - 1.735385387)/p_fSD[1] , 0.16);
+    EXPECT_LT(fabs(p_fSD[2]  - 1.41801069 )/p_fSD[2] , 0.16);
+    EXPECT_LT(fabs(p_fSD[3]  - 1.227998749)/p_fSD[3] , 0.16);
+    EXPECT_LT(fabs(p_fSD[4]  - 5.139264775)/p_fSD[4] , 0.16);
+    EXPECT_LT(fabs(p_fSD[5]  - 2.988367301)/p_fSD[5] , 0.16);
+    EXPECT_LT(fabs(p_fSD[6]  - 1.926222992)/p_fSD[6] , 0.16);
+    EXPECT_LT(fabs(p_fSD[7]  - 7.261731735)/p_fSD[7] , 0.16);
+    EXPECT_LT(fabs(p_fSD[8]  - 2.313112789)/p_fSD[8] , 0.16);
+    EXPECT_LT(fabs(p_fSD[9]  - 0.820153422)/p_fSD[9] , 0.16);
+    EXPECT_LT(fabs(p_fSD[10] - 6.865953308)/p_fSD[10], 0.16);
+    EXPECT_LT(fabs(p_fSD[11] - 2.352311954)/p_fSD[11], 0.16);
+    EXPECT_LT(fabs(p_fSD[12] - 4.417110283)/p_fSD[12], 0.16);
+    EXPECT_LT(fabs(p_fSD[13] - 1.458415671)/p_fSD[13], 0.16);
+    EXPECT_LT(fabs(p_fSD[14] - 2.602503471)/p_fSD[14], 0.16);
+
+
+
+    delete[] p_fMean;
+    delete[] p_fSD;
+    delete[] p_iCount;
+    delete p_oSimManager;
+  } catch (modelErr &e) {
+    delete p_oSimManager;
+    FAIL() << "Testing failed in function: " << e.sFunction << " with message: " << e.sMoreInfo;
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////
 // WriteNCIDoubleNoLocalDiffClimateGrowthXMLFile1()
 ////////////////////////////////////////////////////////////////////////////
 const char* WriteNCIDoubleNoLocalDiffClimateGrowthXMLFile1() {
@@ -1562,3 +1699,220 @@ const char* WriteNCIDoubleNoLocalDiffClimateGrowthXMLFile2() {
 
   return cFileString;
 }
+
+
+
+const char* WriteNCIDoubleNoLocalDiffClimateGrowthXMLFile3() {
+  using namespace std;
+  const char *cFileString = "TestFile1.xml";
+
+  //Open file to write to
+  fstream oOut;
+  oOut.open(cFileString, ios::out | ios::trunc);
+
+  int i;
+
+  //Write file
+  oOut << "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\" ?>"
+      << "<paramFile fileCode=\"06010101\">"
+      << "<plot>"
+      << "<timesteps>6</timesteps>"
+      << "<yearsPerTimestep>1</yearsPerTimestep>"
+      << "<randomSeed>1</randomSeed>"
+      << "<plot_lenX>200.0</plot_lenX>"
+      << "<plot_lenY>200.0</plot_lenY>"
+      << "<plot_latitude>55.37</plot_latitude>"
+      << "<plot_precip_mm_yr>115</plot_precip_mm_yr>"
+      << "<plot_temp_C>12.88</plot_temp_C>"
+      << "<plot_n_dep>4.76</plot_n_dep>"
+      << "<plot_seasonal_precipitation>1150.65</plot_seasonal_precipitation>"
+      << "<plot_water_deficit>456.2</plot_water_deficit>"
+      << "</plot>";
+
+  oOut << "<trees>"
+      << "<tr_speciesList>";
+  for (i = 1; i < 16; i++) {
+    oOut << "<tr_species speciesName=\"Species_" << i << "\" />";
+  }
+  oOut << "</tr_speciesList>"
+      << "<tr_seedDiam10Cm>0.1</tr_seedDiam10Cm>"
+      << "<tr_minAdultDBH>";
+  for (i = 1; i < 16; i++) {
+    oOut << "<tr_madVal species=\"Species_" << i << "\">10.0</tr_madVal>";
+  }
+  oOut << "</tr_minAdultDBH>"
+      << "<tr_maxSeedlingHeight>";
+  for (i = 1; i < 16; i++) {
+    oOut << "<tr_mshVal species=\"Species_" << i << "\">1.35</tr_mshVal>";
+  }
+  oOut << "</tr_maxSeedlingHeight>"
+      << "</trees>"
+      << "<allometry>"
+      << "<tr_canopyHeight>";
+  for (i = 1; i < 16; i++) {
+    oOut << "<tr_chVal species=\"Species_" << i << "\">39.48</tr_chVal>";
+  }
+  oOut << "</tr_canopyHeight>"
+      << "<tr_stdAsympCrownRad>";
+  for (i = 1; i < 16; i++) {
+    oOut << "<tr_sacrVal species=\"Species_" << i << "\">0.0549</tr_sacrVal>";
+  }
+  oOut << "</tr_stdAsympCrownRad>"
+      << "<tr_stdCrownRadExp>";
+  for (i = 1; i < 16; i++) {
+    oOut << "<tr_screVal species=\"Species_" << i << "\">1.0</tr_screVal>";
+  }
+  oOut << "</tr_stdCrownRadExp>"
+      << "<tr_stdMaxCrownRad>";
+  for (i = 1; i < 16; i++) {
+    oOut << "<tr_smcrVal species=\"Species_" << i << "\">10</tr_smcrVal>";
+  }
+  oOut  << "</tr_stdMaxCrownRad>"
+      << "<tr_conversionDiam10ToDBH>";
+  for (i = 1; i < 16; i++) {
+    oOut << "<tr_cdtdVal species=\"Species_" << i << "\">1</tr_cdtdVal>";
+  }
+  oOut << "</tr_conversionDiam10ToDBH>"
+      << "<tr_interceptDiam10ToDBH>";
+  for (i = 1; i < 16; i++) {
+    oOut << "<tr_idtdVal species=\"Species_" << i << "\">0</tr_idtdVal>";
+  }
+  oOut << "</tr_interceptDiam10ToDBH>"
+      << "<tr_stdAsympCrownHt>";
+  for (i = 1; i < 16; i++) {
+    oOut << "<tr_sachVal species=\"Species_" << i << "\">0.389</tr_sachVal>";
+  }
+  oOut << "</tr_stdAsympCrownHt>"
+      << "<tr_stdCrownHtExp>";
+  for (i = 1; i < 16; i++) {
+    oOut << "<tr_scheVal species=\"Species_" << i << "\">1.0</tr_scheVal>";
+  }
+  oOut << "</tr_stdCrownHtExp>"
+      << "<tr_slopeOfHeight-Diam10>";
+  for (i = 1; i < 16; i++) {
+    oOut << "<tr_sohdVal species=\"Species_" << i << "\">0.03418</tr_sohdVal>";
+  }
+  oOut << "</tr_slopeOfHeight-Diam10>"
+      << "<tr_slopeOfAsymHeight>";
+  for (i = 1; i < 16; i++) {
+    oOut << "<tr_soahVal species=\"Species_" << i << "\">0.0299</tr_soahVal>";
+  }
+  oOut << "</tr_slopeOfAsymHeight>"
+      << "<tr_whatSeedlingHeightDiam>";
+  for (i = 1; i < 16; i++) {
+    oOut << "<tr_wsehdVal species=\"Species_" << i << "\">0</tr_wsehdVal>";
+  }
+  oOut << "</tr_whatSeedlingHeightDiam>"
+      << "<tr_whatSaplingHeightDiam>";
+  for (i = 1; i < 16; i++) {
+    oOut << "<tr_wsahdVal species=\"Species_" << i << "\">0</tr_wsahdVal>";
+  }
+  oOut << "</tr_whatSaplingHeightDiam>"
+      << "<tr_whatAdultHeightDiam>";
+  for (i = 1; i < 16; i++) {
+    oOut << "<tr_wahdVal species=\"Species_" << i << "\">0</tr_wahdVal>";
+  }
+  oOut << "</tr_whatAdultHeightDiam>"
+      << "<tr_whatAdultCrownRadDiam>";
+  for (i = 1; i < 16; i++) {
+    oOut << "<tr_wacrdVal species=\"Species_" << i << "\">0</tr_wacrdVal>";
+  }
+  oOut << "</tr_whatAdultCrownRadDiam>"
+      << "<tr_whatAdultCrownHeightHeight>";
+  for (i = 1; i < 16; i++) {
+    oOut << "<tr_wachhVal species=\"Species_" << i << "\">0</tr_wachhVal>";
+  }
+  oOut << "</tr_whatAdultCrownHeightHeight>"
+      << "<tr_whatSaplingCrownRadDiam>";
+  for (i = 1; i < 16; i++) {
+    oOut << "<tr_wscrdVal species=\"Species_" << i << "\">0</tr_wscrdVal>";
+  }
+  oOut << "</tr_whatSaplingCrownRadDiam>"
+      << "<tr_whatSaplingCrownHeightHeight>";
+  for (i = 1; i < 16; i++) {
+    oOut << "<tr_wschhVal species=\"Species_" << i << "\">0</tr_wschhVal>";
+  }
+  oOut << "</tr_whatSaplingCrownHeightHeight>"
+      << "</allometry>"
+      << "<behaviorList>"
+      << "<behavior>"
+      << "<behaviorName>NCIMasterGrowth</behaviorName>"
+      << "<version>3</version>"
+      << "<listPosition>1</listPosition>";
+  for (i = 1; i < 16; i++) {
+    oOut  << "<applyTo species=\"Species_" << i << "\" type=\"Adult\"/>";
+  }
+  oOut  << "</behavior>"
+      << "</behaviorList>"
+
+      << "<NCIMasterGrowth1>"
+      << "<nciWhichShadingEffect>" << no_shading << "</nciWhichShadingEffect>"
+      << "<nciWhichCrowdingEffect>" << no_crowding_effect << "</nciWhichCrowdingEffect>"
+      << "<nciWhichNCITerm>" << no_nci_term << "</nciWhichNCITerm>"
+      << "<nciWhichSizeEffect>" << no_size_effect << "</nciWhichSizeEffect>"
+      << "<nciWhichDamageEffect>" << no_damage_effect << "</nciWhichDamageEffect>"
+      << "<nciWhichPrecipitationEffect>" << no_precip_effect << "</nciWhichPrecipitationEffect>"
+      << "<nciWhichTemperatureEffect>" << no_temp_effect << "</nciWhichTemperatureEffect>"
+      << "<nciWhichNitrogenEffect>" << no_nitrogen_effect << "</nciWhichNitrogenEffect>"
+      << "<nciWhichInfectionEffect>" << no_infection_effect << "</nciWhichInfectionEffect>"
+      << "<gr_stochGrowthMethod>" << heteroscedastic_normal_pdf << "</gr_stochGrowthMethod>"
+      << "<gr_nciMaxPotentialGrowth>"
+      << "<gr_nmpgVal species=\"Species_1\">10.33</gr_nmpgVal>"
+      << "<gr_nmpgVal species=\"Species_2\">2.61</gr_nmpgVal>"
+      << "<gr_nmpgVal species=\"Species_3\">2.32</gr_nmpgVal>"
+      << "<gr_nmpgVal species=\"Species_4\">2.17</gr_nmpgVal>"
+      << "<gr_nmpgVal species=\"Species_5\">10.2</gr_nmpgVal>"
+      << "<gr_nmpgVal species=\"Species_6\">8.57</gr_nmpgVal>"
+      << "<gr_nmpgVal species=\"Species_7\">3.73</gr_nmpgVal>"
+      << "<gr_nmpgVal species=\"Species_8\">10.53</gr_nmpgVal>"
+      << "<gr_nmpgVal species=\"Species_9\">5.15</gr_nmpgVal>"
+      << "<gr_nmpgVal species=\"Species_10\">1.24</gr_nmpgVal>"
+      << "<gr_nmpgVal species=\"Species_11\">7.61</gr_nmpgVal>"
+      << "<gr_nmpgVal species=\"Species_12\">5.33</gr_nmpgVal>"
+      << "<gr_nmpgVal species=\"Species_13\">10.15</gr_nmpgVal>"
+      << "<gr_nmpgVal species=\"Species_14\">2.54</gr_nmpgVal>"
+      << "<gr_nmpgVal species=\"Species_15\">3.84</gr_nmpgVal>"
+      << "</gr_nciMaxPotentialGrowth>"
+      << "<gr_hetNormInt>"
+      << "<gr_hniVal species=\"Species_1\">1.8825675</gr_hniVal>"
+      << "<gr_hniVal species=\"Species_2\">1.7211176</gr_hniVal>"
+      << "<gr_hniVal species=\"Species_3\">1.8288683</gr_hniVal>"
+      << "<gr_hniVal species=\"Species_4\">2.9281439</gr_hniVal>"
+      << "<gr_hniVal species=\"Species_5\">0.7299959</gr_hniVal>"
+      << "<gr_hniVal species=\"Species_6\">2.1709456</gr_hniVal>"
+      << "<gr_hniVal species=\"Species_7\">1.4508971</gr_hniVal>"
+      << "<gr_hniVal species=\"Species_8\">1.1418387</gr_hniVal>"
+      << "<gr_hniVal species=\"Species_9\">1.9373051</gr_hniVal>"
+      << "<gr_hniVal species=\"Species_10\">1.9448008</gr_hniVal>"
+      << "<gr_hniVal species=\"Species_11\">0.6998483</gr_hniVal>"
+      << "<gr_hniVal species=\"Species_12\">1.8916099</gr_hniVal>"
+      << "<gr_hniVal species=\"Species_13\">2.106962</gr_hniVal>"
+      << "<gr_hniVal species=\"Species_14\">0.4571966</gr_hniVal>"
+      << "<gr_hniVal species=\"Species_15\">1.2892418</gr_hniVal>"
+      << "</gr_hetNormInt>"
+      << "<gr_hetNormSigma>"
+      << "<gr_hnsVal species=\"Species_1\">0.7285181</gr_hnsVal>"
+      << "<gr_hnsVal species=\"Species_2\">0.8428638</gr_hnsVal>"
+      << "<gr_hnsVal species=\"Species_3\">0.7995021</gr_hnsVal>"
+      << "<gr_hnsVal species=\"Species_4\">0.7264695</gr_hnsVal>"
+      << "<gr_hnsVal species=\"Species_5\">0.8486945</gr_hnsVal>"
+      << "<gr_hnsVal species=\"Species_6\">0.7463495</gr_hnsVal>"
+      << "<gr_hnsVal species=\"Species_7\">0.7957558</gr_hnsVal>"
+      << "<gr_hnsVal species=\"Species_8\">0.9167974</gr_hnsVal>"
+      << "<gr_hnsVal species=\"Species_9\">0.7747422</gr_hnsVal>"
+      << "<gr_hnsVal species=\"Species_10\">0.7283079</gr_hnsVal>"
+      << "<gr_hnsVal species=\"Species_11\">0.9738845</gr_hnsVal>"
+      << "<gr_hnsVal species=\"Species_12\">0.7731892</gr_hnsVal>"
+      << "<gr_hnsVal species=\"Species_13\">0.8093394</gr_hnsVal>"
+      << "<gr_hnsVal species=\"Species_14\">0.8186369</gr_hnsVal>"
+      << "<gr_hnsVal species=\"Species_15\">0.879441</gr_hnsVal>"
+      << "</gr_hetNormSigma>"
+      << "</NCIMasterGrowth1>"
+
+
+      << "</paramFile>";
+  oOut.close();
+
+  return cFileString;
+}
+

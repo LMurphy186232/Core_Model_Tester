@@ -22,5 +22,12 @@ const char* WriteNCIDoubleNoLocalDiffClimateGrowthXMLFile1();
  * @return Filename written.
  */
 const char* WriteNCIDoubleNoLocalDiffClimateGrowthXMLFile2();
+
+/**
+ * Writes a 1-year timestep file. This is solely to test the heteroscedastic
+ * normal growth adjustment.
+ * @return Filename written.
+ */
+const char* WriteNCIDoubleNoLocalDiffClimateGrowthXMLFile3();
 //---------------------------------------------------------------------------
 #endif // TestNCIDoubleNoLocalDiffClimateGrowth_H
